@@ -23,6 +23,12 @@ public class PlayerKid : MonoBehaviour
     [SerializeField] private float dashCooldown;
     private float dashCooldownTimer;
 
+    [Header("Item Check")]
+    [SerializeField] private Transform itemCheck;
+    [SerializeField] private float itemCheckRadius;
+    [SerializeField] private LayerMask whatIsItem;
+    private bool isItemDetected;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -38,6 +44,7 @@ public class PlayerKid : MonoBehaviour
         HandleInput();
         HandleFlip();
         HandleAnimations();
+        HandleItemInteraction();
     }
 
     private void HandleInput()
@@ -57,6 +64,15 @@ public class PlayerKid : MonoBehaviour
         {
             dashCooldownTimer = dashCooldown;
             dashTime = dashDuration;
+        }
+    }
+
+    private void HandleItemInteraction()
+    {
+        isItemDetected = Physics2D.OverlapCircle(itemCheck.position, itemCheckRadius, whatIsItem);
+        if (isItemDetected)
+        {
+            Debug.Log("item ada!");
         }
     }
 
@@ -95,5 +111,10 @@ public class PlayerKid : MonoBehaviour
         facingDir = facingDir * -1;
         transform.Rotate(0, 180, 0);
         facingRight = !facingRight;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(itemCheck.position, itemCheckRadius);
     }
 }
