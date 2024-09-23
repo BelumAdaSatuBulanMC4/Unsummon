@@ -5,12 +5,16 @@ using UnityEngine;
 public class PlayerKid : MonoBehaviour
 {
     private Rigidbody2D rb;
+    private Animator anim;
 
     [Header("Movement")]
     [SerializeField] private float moveSpeed;
 
     private float xInput;
     private float yInput;
+
+    private bool facingRight = true;
+    private int facingDir = 1;
 
     [Header("Dash info")]
     [SerializeField] private float dashSpeed;
@@ -22,14 +26,18 @@ public class PlayerKid : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponentInChildren<Animator>();
     }
 
     void Update()
     {
-        HandleMovement();
-        HandleInput();
         dashTime -= Time.deltaTime;
         dashCooldownTimer -= Time.deltaTime;
+
+        HandleMovement();
+        HandleInput();
+        HandleFlip();
+        HandleAnimations();
     }
 
     private void HandleInput()
@@ -62,5 +70,30 @@ public class PlayerKid : MonoBehaviour
         {
             rb.velocity = new Vector2(xInput * moveSpeed, yInput * moveSpeed);
         }
+    }
+
+    private void HandleAnimations()
+    {
+        if (rb.velocity.x != 0 || rb.velocity.y != 0)
+        {
+            anim.SetFloat("moving", 1);
+        }
+        else
+        {
+            anim.SetFloat("moving", 0);
+        }
+    }
+
+    private void HandleFlip()
+    {
+        if (xInput < 0 && facingRight || xInput > 0 && !facingRight)
+            Flip();
+    }
+
+    private void Flip()
+    {
+        facingDir = facingDir * -1;
+        transform.Rotate(0, 180, 0);
+        facingRight = !facingRight;
     }
 }
