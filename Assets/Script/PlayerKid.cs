@@ -29,6 +29,8 @@ public class PlayerKid : MonoBehaviour
     [SerializeField] private LayerMask whatIsItem;
     private bool isItemDetected;
 
+    private Collider2D[] detectedItems;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -69,11 +71,36 @@ public class PlayerKid : MonoBehaviour
 
     private void HandleItemInteraction()
     {
-        isItemDetected = Physics2D.OverlapCircle(itemCheck.position, itemCheckRadius, whatIsItem);
-        if (isItemDetected)
+        // isItemDetected = Physics2D.OverlapCircle(itemCheck.position, itemCheckRadius, whatIsItem);
+        // if (isItemDetected)
+        // {
+        //     Debug.Log("item ada!");
+        // }
+        detectedItems = Physics2D.OverlapCircleAll(itemCheck.position, itemCheckRadius, whatIsItem);
+
+        // If any items are detected, interact with them
+        foreach (Collider2D itemCollider in detectedItems)
         {
-            Debug.Log("item ada!");
+            Item item = itemCollider.GetComponent<Item>(); // Assuming the squares have a script named 'Item'
+            if (item != null)
+            {
+                InteractWithItem(item);
+            }
         }
+    }
+
+    void InteractWithItem(Item item)
+    {
+        if (Input.GetKeyDown(KeyCode.E)) // Assuming "E" is the key to interact
+        {
+            Debug.Log("Interacting with: " + item.name);
+            item.DisplayInteraction(); // Change the variable inside the item
+        }
+    }
+
+    public void GettingKilled()
+    {
+        Debug.Log("the player has been killed");
     }
 
     private void HandleMovement()
