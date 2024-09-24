@@ -517,7 +517,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   kidCheck: {fileID: 1347448081}
-  kidCheckRadius: 1.14
+  kidCheckRadius: 1.3
   whatIsKid:
     serializedVersion: 2
     m_Bits: 8

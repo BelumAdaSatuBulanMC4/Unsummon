@@ -132,8 +132,9 @@ public class Pocong : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R)) // Assuming "E" is the key to interact
         {
-            Debug.Log("Interacting with: " + kid.name);
-            kid.GettingKilled(); // Change the variable inside the item
+            // Debug.Log("Interacting with: " + kid.name);
+            // kid.GettingKilled(); // Change the variable inside the item
+            kid.Knocked(transform.position.x);
         }
     }
 

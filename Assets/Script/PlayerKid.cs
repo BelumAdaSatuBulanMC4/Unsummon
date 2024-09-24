@@ -16,6 +16,11 @@ public class PlayerKid : MonoBehaviour
     private bool facingRight = true;
     private int facingDir = 1;
 
+    [Header("KnockBack")]
+    [SerializeField] private float knockBackDuration = 1;
+    [SerializeField] private Vector2 knockBackPower;
+    private bool isKnocked;
+
     [Header("Dash info")]
     [SerializeField] private float dashSpeed;
     [SerializeField] private float dashDuration;
@@ -101,6 +106,36 @@ public class PlayerKid : MonoBehaviour
     public void GettingKilled()
     {
         Debug.Log("the player has been killed");
+    }
+
+    public void Knocked(float sourceOfDamage)
+    {
+        float knockbackDir = 1;
+
+        if (transform.position.x < sourceOfDamage)
+        {
+            knockbackDir = -1;
+        }
+
+        if (isKnocked)
+        {
+            return;
+        }
+
+        //startroutine
+        StartCoroutine(KnockedRoutine());
+        rb.velocity = new Vector2(knockBackPower.x * knockbackDir, knockBackPower.y);
+    }
+
+    private IEnumerator KnockedRoutine()
+    {
+        isKnocked = true;
+        anim.SetBool("isHit", isKnocked);
+
+        yield return new WaitForSeconds(knockBackDuration);
+
+        isKnocked = false;
+        anim.SetBool("isHit", isKnocked);
     }
 
     private void HandleMovement()
