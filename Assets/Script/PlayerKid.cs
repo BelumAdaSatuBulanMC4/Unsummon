@@ -52,6 +52,7 @@ public class PlayerKid : MonoBehaviour
         HandleFlip();
         HandleAnimations();
         HandleItemInteraction();
+        HandleLocationChanged();
     }
 
     private void HandleInput()
@@ -91,6 +92,14 @@ public class PlayerKid : MonoBehaviour
             {
                 InteractWithItem(item);
             }
+        }
+    }
+
+    private void HandleLocationChanged()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            PlayerManager.instance.UpdateKidPosition(this, transform.position);
         }
     }
 

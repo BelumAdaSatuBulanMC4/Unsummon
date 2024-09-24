@@ -55,6 +55,7 @@ public class Pocong : MonoBehaviour
         HandleAnimations();
         HandleItemInteraction();
         HandleKidInteraction();
+        GetKidsPosition();
     }
 
     private void HandleInput()
@@ -135,6 +136,18 @@ public class Pocong : MonoBehaviour
             // Debug.Log("Interacting with: " + kid.name);
             // kid.GettingKilled(); // Change the variable inside the item
             kid.Knocked(transform.position.x);
+        }
+    }
+
+    private void GetKidsPosition()
+    {
+        Dictionary<PlayerKid, Vector3> kidPositions = PlayerManager.instance.GetKidPositions();
+
+        foreach (var kid in kidPositions)
+        {
+            Debug.Log($"Pocong knows Kid {kid.Key.gameObject.name} is at position {kid.Value}");
+
+            // Add custom logic here if Pocong should act on the received positions
         }
     }
 
