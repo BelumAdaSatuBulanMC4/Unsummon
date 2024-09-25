@@ -20,6 +20,13 @@ public class Character : MonoBehaviour
     [SerializeField] protected LayerMask whatIsItem;
     protected Collider2D[] detectedItems;
 
+    [Header("Dash info")]
+    [SerializeField] protected float dashSpeed;
+    [SerializeField] protected float dashDuration;
+    protected float dashTime;
+    [SerializeField] protected float dashCooldown;
+    protected float dashCooldownTimer;
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -27,7 +34,11 @@ public class Character : MonoBehaviour
 
     protected virtual void Update()
     {
+        dashTime -= Time.deltaTime;
+        dashCooldownTimer -= Time.deltaTime;
+
         HandleInput();
+        HandleMovement();
         HandleItemInteraction();
         HandleFlip();
     }
@@ -36,6 +47,20 @@ public class Character : MonoBehaviour
     {
         xInput = Input.GetAxisRaw("Horizontal");
         yInput = Input.GetAxisRaw("Vertical");
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            DashAbility();
+        }
+    }
+
+    private void DashAbility()
+    {
+        if (dashCooldownTimer < 0)
+        {
+            dashCooldownTimer = dashCooldown;
+            dashTime = dashDuration;
+        }
     }
 
     private void HandleItemInteraction()
@@ -55,7 +80,6 @@ public class Character : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Debug.Log("Interacting with: " + item.name);
             item.DisplayInteraction();
         }
     }
@@ -63,6 +87,18 @@ public class Character : MonoBehaviour
     protected virtual void Movement()
     {
         rb.velocity = new Vector2(xInput * moveSpeed, yInput * moveSpeed);
+    }
+
+    private void HandleMovement()
+    {
+        if (dashTime > 0)
+        {
+            rb.velocity = new Vector2(xInput * moveSpeed * dashSpeed, yInput * moveSpeed * dashSpeed);
+        }
+        else
+        {
+            rb.velocity = new Vector2(xInput * moveSpeed, yInput * moveSpeed);
+        }
     }
 
     private void HandleFlip()

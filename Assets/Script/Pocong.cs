@@ -6,13 +6,6 @@ public class Pocong : Character
 {
     private Animator anim;
 
-    [Header("Hopping info")]
-    [SerializeField] private float leapSpeed;
-    [SerializeField] private float leapDuration;
-    private float leapTime;
-    [SerializeField] private float leapCooldown;
-    private float leapCooldownTimer;
-
     [Header("Kid Check")]
     [SerializeField] private Transform kidCheck;
     [SerializeField] private float kidCheckRadius;
@@ -29,32 +22,10 @@ public class Pocong : Character
 
     protected override void Update()
     {
-        leapTime -= Time.deltaTime;
-        leapCooldownTimer -= Time.deltaTime;
-
         base.Update();
-        HandleSpesificInput();
-        HandleMovement();
         HandleAnimations();
         HandleKidInteraction();
         GetKidsPosition();
-    }
-
-    private void HandleSpesificInput()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            DashAbility();
-        }
-    }
-
-    private void DashAbility()
-    {
-        if (leapCooldownTimer < 0)
-        {
-            leapCooldownTimer = leapCooldown;
-            leapTime = leapDuration;
-        }
     }
 
     private void HandleKidInteraction()
@@ -87,18 +58,6 @@ public class Pocong : Character
         foreach (var kid in kidPositions)
         {
             Debug.Log($"Pocong knows Kid {kid.Key.gameObject.name} is at position {kid.Value}");
-        }
-    }
-
-    private void HandleMovement()
-    {
-        if (leapTime > 0)
-        {
-            rb.velocity = new Vector2(xInput * leapSpeed, yInput * leapSpeed);
-        }
-        else
-        {
-            Movement();
         }
     }
 
