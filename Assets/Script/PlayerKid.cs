@@ -2,19 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerKid : MonoBehaviour
+public class PlayerKid : Character
 {
-    private Rigidbody2D rb;
     private Animator anim;
-
-    [Header("Movement")]
-    [SerializeField] private float moveSpeed;
-
-    private float xInput;
-    private float yInput;
-
-    private bool facingRight = true;
-    private int facingDir = 1;
 
     [Header("KnockBack")]
     [SerializeField] private float knockBackDuration = 1;
@@ -28,38 +18,26 @@ public class PlayerKid : MonoBehaviour
     [SerializeField] private float dashCooldown;
     private float dashCooldownTimer;
 
-    [Header("Item Check")]
-    [SerializeField] private Transform itemCheck;
-    [SerializeField] private float itemCheckRadius;
-    [SerializeField] private LayerMask whatIsItem;
-    private bool isItemDetected;
-
-    private Collider2D[] detectedItems;
-
-    private void Awake()
+    protected override void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
+        base.Awake();
         anim = GetComponentInChildren<Animator>();
     }
 
-    void Update()
+    protected override void Update()
     {
         dashTime -= Time.deltaTime;
         dashCooldownTimer -= Time.deltaTime;
 
+        base.Update();
+        HandleSpesificInput();
         HandleMovement();
-        HandleInput();
-        HandleFlip();
         HandleAnimations();
-        HandleItemInteraction();
         HandleLocationChanged();
     }
 
-    private void HandleInput()
+    private void HandleSpesificInput()
     {
-        xInput = Input.GetAxisRaw("Horizontal");
-        yInput = Input.GetAxisRaw("Vertical");
-
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             DashAbility();
@@ -75,40 +53,11 @@ public class PlayerKid : MonoBehaviour
         }
     }
 
-    private void HandleItemInteraction()
-    {
-        // isItemDetected = Physics2D.OverlapCircle(itemCheck.position, itemCheckRadius, whatIsItem);
-        // if (isItemDetected)
-        // {
-        //     Debug.Log("item ada!");
-        // }
-        detectedItems = Physics2D.OverlapCircleAll(itemCheck.position, itemCheckRadius, whatIsItem);
-
-        // If any items are detected, interact with them
-        foreach (Collider2D itemCollider in detectedItems)
-        {
-            Item item = itemCollider.GetComponent<Item>(); // Assuming the squares have a script named 'Item'
-            if (item != null)
-            {
-                InteractWithItem(item);
-            }
-        }
-    }
-
     private void HandleLocationChanged()
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
             PlayerManager.instance.UpdateKidPosition(this, transform.position);
-        }
-    }
-
-    void InteractWithItem(Item item)
-    {
-        if (Input.GetKeyDown(KeyCode.E)) // Assuming "E" is the key to interact
-        {
-            Debug.Log("Interacting with: " + item.name);
-            item.DisplayInteraction(); // Change the variable inside the item
         }
     }
 
@@ -151,11 +100,11 @@ public class PlayerKid : MonoBehaviour
     {
         if (dashTime > 0)
         {
-            rb.velocity = new Vector2(xInput * dashSpeed, yInput * dashSpeed);
+            rb.velocity = new Vector2(xInput * moveSpeed * dashSpeed, yInput * moveSpeed * dashSpeed);
         }
         else
         {
-            rb.velocity = new Vector2(xInput * moveSpeed, yInput * moveSpeed);
+            Movement();
         }
     }
 
@@ -171,21 +120,8 @@ public class PlayerKid : MonoBehaviour
         }
     }
 
-    private void HandleFlip()
-    {
-        if (xInput < 0 && facingRight || xInput > 0 && !facingRight)
-            Flip();
-    }
-
-    private void Flip()
-    {
-        facingDir = facingDir * -1;
-        transform.Rotate(0, 180, 0);
-        facingRight = !facingRight;
-    }
-
     private void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(itemCheck.position, itemCheckRadius);
+        DrawItemDetector();
     }
 }
