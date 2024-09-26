@@ -89,73 +89,18 @@ public class Character : MonoBehaviour
 
     void InteractWithItem(Item item)
     {
-        if (item == null) return; // Check if item is null to prevent NullReferenceException
-
+        if (item == null) return;
         if (Input.GetKeyDown(KeyCode.E) && typeChar == "Player")
         {
-            // item.DisplayInteraction();
-
-            // if (GameManager.instance == null)
-            // {
-            //     Debug.LogError("GameManager instance is null! Make sure GameManager is in the scene.");
-            //     return; // Prevent further execution if GameManager is null
-            // }
-
             if (!item.isActivated)
                 GameManager.instance.KidTurnedOnItem(item); // Notify GameManager when a Kid turns on an item
         }
         else if (Input.GetKeyDown(KeyCode.R) && typeChar == "Pocong")
         {
-            // item.DisplayInteraction();
-
-            // if (GameManager.instance == null)
-            // {
-            //     Debug.LogError("GameManager instance is null! Make sure GameManager is in the scene.");
-            //     return; // Prevent further execution if GameManager is null
-            // }
             if (item.isActivated)
                 GameManager.instance.PocongTurnedOffItem(item); // Notify GameManager when Pocong turns off an item
         }
     }
-
-    // void InteractWithItem(Item item)
-    // {
-    //     if (item == null) return; // Check if item is null to prevent the NullReferenceException
-
-    //     if (Input.GetKeyDown(KeyCode.E) && typeChar == "Player")
-    //     {
-    //         item.DisplayInteraction();
-    //         GameManager.instance.KidTurnedOnItem(item); // Notify GameManager when a Kid turns on an item
-    //     }
-    //     else if (Input.GetKeyDown(KeyCode.R) && typeChar == "Pocong")
-    //     {
-    //         item.DisplayInteraction();
-    //         GameManager.instance.PocongTurnedOffItem(item); // Notify GameManager when Pocong turns off an item
-    //     }
-    // }
-    // void InteractWithItem(Item item)
-    // {
-    //     if (Input.GetKeyDown(KeyCode.E))
-    //     {
-    //         item.DisplayInteraction();
-    //     }
-    // }
-
-    // private void InteractWithItem(Item item)
-    // {
-    //     if (Input.GetKeyDown(KeyCode.E))
-    //     {
-    //         if (typeChar == "Player")
-    //         {
-    //             Debug.Log("masuk handle item");
-    //             GameManager.instance.KidTurnedOnItem(item);
-    //         }
-    //         else if (typeChar == "Pocong")
-    //         {
-    //             GameManager.instance.PocongTurnedOffItem(item);
-    //         }
-    //     }
-    // }
 
     protected virtual void Movement()
     {

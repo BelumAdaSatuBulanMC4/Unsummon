@@ -13,13 +13,19 @@ public class PlayerKid : Character
     protected override void Awake()
     {
         base.Awake();
+        typeChar = "Player";
+        PlayerManager.instance.RegisterKid(this);
         anim = GetComponentInChildren<Animator>();
+    }
+
+    private void OnDestroy()
+    {
+        PlayerManager.instance.UnregisterKid(this); // Unregister when destroyed
     }
 
     protected override void Update()
     {
         base.Update();
-        typeChar = "Player";
         HandleAnimations();
         HandleLocationChanged();
     }
