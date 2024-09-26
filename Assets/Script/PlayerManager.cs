@@ -7,6 +7,8 @@ public class PlayerManager : MonoBehaviour
     // Dictionary to store each Kid's position and time
     public static PlayerManager instance;
     private Dictionary<PlayerKid, Vector3> kidPositions = new Dictionary<PlayerKid, Vector3>();
+    private Dictionary<PlayerSpirit, Vector3> spiritPositions = new Dictionary<PlayerSpirit, Vector3>();
+
 
     // Register a Kid and start tracking its position
 
@@ -54,6 +56,19 @@ public class PlayerManager : MonoBehaviour
         StartCoroutine(RemoveKidPositionAfterTime(kid, 7f));
     }
 
+    public void UpdateSpiritPosition(PlayerSpirit spirit, Vector3 position)
+    {
+        if (spiritPositions.ContainsKey(spirit))
+        {
+            spiritPositions[spirit] = position;
+        }
+        else
+        {
+            spiritPositions.Add(spirit, position);
+        }
+        StartCoroutine(RemoveSpiritPositionAfterTime(spirit, 7f));
+    }
+
     // Coroutine to remove the Kid's position after a delay
     private IEnumerator RemoveKidPositionAfterTime(PlayerKid kid, float delay)
     {
@@ -63,6 +78,17 @@ public class PlayerManager : MonoBehaviour
         {
             Debug.Log($"Kid {kid.gameObject.name}'s position removed from Manager after {delay} seconds.");
             kidPositions.Remove(kid);
+        }
+    }
+
+    private IEnumerator RemoveSpiritPositionAfterTime(PlayerSpirit spirit, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (spiritPositions.ContainsKey(spirit))
+        {
+            Debug.Log($"Spirit {spirit.gameObject.name}'s position removed from Manager after {delay} seconds.");
+            spiritPositions.Remove(spirit);
         }
     }
 

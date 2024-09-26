@@ -42,9 +42,9 @@ GameObject:
   - component: {fileID: 3251251258958118885}
   - component: {fileID: 239944545097121263}
   - component: {fileID: 4293613482000115830}
-  - component: {fileID: 4442565419866626792}
+  - component: {fileID: 2348903827103676390}
   m_Layer: 3
-  m_Name: Player
+  m_Name: PlayerKid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,7 +129,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0.016851366, y: -0.23591864}
   m_Size: {x: 1.1628193, y: 1.5447834}
   m_Direction: 0
---- !u!114 &4442565419866626792
+--- !u!114 &2348903827103676390
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,18 +138,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 4057405978394237103}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ac98ec98f62042f688641e2be69be7f, type: 3}
+  m_Script: {fileID: 11500000, guid: cab0f6219056847d982176a2d8a48135, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  dashSpeed: 15
-  dashDuration: 0.5
-  dashCooldown: 2
+  moveSpeed: 0
   itemCheck: {fileID: 2023791975658744652}
-  itemCheckRadius: 0.9
+  itemCheckRadius: 0.72
   whatIsItem:
     serializedVersion: 2
     m_Bits: 64
+  dashSpeed: 0
+  dashDuration: 0
+  dashCooldown: 0
+  knockBackDuration: 1
+  knockBackPower: {x: 0, y: 0}
 --- !u!1 &4197801008147064992
 GameObject:
   m_ObjectHideFlags: 0

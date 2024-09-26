@@ -17,6 +17,7 @@ public class Pocong : Character
     protected override void Awake()
     {
         base.Awake();
+        typeChar = "Pocong";
         anim = GetComponentInChildren<Animator>();
     }
 
@@ -55,10 +56,10 @@ public class Pocong : Character
     {
         Dictionary<PlayerKid, Vector3> kidPositions = PlayerManager.instance.GetKidPositions();
 
-        foreach (var kid in kidPositions)
-        {
-            Debug.Log($"Pocong knows Kid {kid.Key.gameObject.name} is at position {kid.Value}");
-        }
+        // foreach (var kid in kidPositions)
+        // {
+        //     Debug.Log($"Pocong knows Kid {kid.Key.gameObject.name} is at position {kid.Value}");
+        // }
     }
 
     private void HandleAnimations()

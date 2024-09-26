@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     protected Rigidbody2D rb;
+    protected String typeChar;
 
     [Header("Movement")]
     [SerializeField] protected float moveSpeed;
@@ -34,8 +36,11 @@ public class Character : MonoBehaviour
 
     protected virtual void Update()
     {
-        dashTime -= Time.deltaTime;
-        dashCooldownTimer -= Time.deltaTime;
+        if (typeChar == "Player" || typeChar == "Pocong")
+        {
+            dashTime -= Time.deltaTime;
+            dashCooldownTimer -= Time.deltaTime;
+        }
 
         HandleInput();
         HandleMovement();
@@ -48,9 +53,12 @@ public class Character : MonoBehaviour
         xInput = Input.GetAxisRaw("Horizontal");
         yInput = Input.GetAxisRaw("Vertical");
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (typeChar == "Player" || typeChar == "Pocong")
         {
-            DashAbility();
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                DashAbility();
+            }
         }
     }
 
@@ -65,13 +73,16 @@ public class Character : MonoBehaviour
 
     private void HandleItemInteraction()
     {
-        detectedItems = Physics2D.OverlapCircleAll(itemCheck.position, itemCheckRadius, whatIsItem);
-        foreach (Collider2D itemCollider in detectedItems)
+        if (typeChar == "Player" || typeChar == "Pocong")
         {
-            Item item = itemCollider.GetComponent<Item>();
-            if (item != null)
+            detectedItems = Physics2D.OverlapCircleAll(itemCheck.position, itemCheckRadius, whatIsItem);
+            foreach (Collider2D itemCollider in detectedItems)
             {
-                InteractWithItem(item);
+                Item item = itemCollider.GetComponent<Item>();
+                if (item != null)
+                {
+                    InteractWithItem(item);
+                }
             }
         }
     }

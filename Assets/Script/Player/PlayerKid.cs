@@ -19,6 +19,7 @@ public class PlayerKid : Character
     protected override void Update()
     {
         base.Update();
+        typeChar = "Player";
         HandleAnimations();
         HandleLocationChanged();
     }
