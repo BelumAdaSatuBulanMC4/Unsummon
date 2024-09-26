@@ -12,7 +12,7 @@ TagManager:
   - Water
   - UI
   - Items
-  - 
+  - Pocong
   - 
   - 
   - 
@@ -40,4 +40,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 943103625
+    locked: 0
+  - name: Items
+    uniqueID: 2339001505
+    locked: 0
+  - name: Player
+    uniqueID: 2752794191
     locked: 0
