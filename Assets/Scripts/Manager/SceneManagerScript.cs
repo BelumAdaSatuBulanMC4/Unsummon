@@ -11,5 +11,10 @@ public class SceneManagerScript : MonoBehaviour
     {
         SceneManager.LoadScene("MainMenu");
     }
+
+    public void GoToGamePlay()
+    {
+        SceneManager.LoadScene("GamePlay");
+    }
 }
 
