@@ -38,6 +38,7 @@ public class PlayerKid : Character
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
+            CameraManager.instance.CameraShake();
             PlayerManager.instance.UpdateKidPosition(this, transform.position);
         }
     }
@@ -64,7 +65,6 @@ public class PlayerKid : Character
         {
             return;
         }
-
         StartCoroutine(KnockedRoutine());
         rb.velocity = new Vector2(knockBackPower.x * knockbackDir, knockBackPower.y);
     }
