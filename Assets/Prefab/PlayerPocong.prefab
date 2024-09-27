@@ -142,7 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80f12cbe657814ba4bad5cb278380509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 0
   itemCheck: {fileID: 8399580634329649872}
   itemCheckRadius: 0.9
   whatIsItem:

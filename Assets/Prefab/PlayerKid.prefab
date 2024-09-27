@@ -141,15 +141,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cab0f6219056847d982176a2d8a48135, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0
+  moveSpeed: 5
   itemCheck: {fileID: 2023791975658744652}
   itemCheckRadius: 0.72
   whatIsItem:
     serializedVersion: 2
     m_Bits: 64
-  dashSpeed: 0
-  dashDuration: 0
-  dashCooldown: 0
+  dashSpeed: 3
+  dashDuration: 0.5
+  dashCooldown: 5
   knockBackDuration: 1
   knockBackPower: {x: 0, y: 0}
   spiritPrefab: {fileID: 5544716519150484690, guid: 8e4fb9c8fda97466b80758ab8e3daddd, type: 3}

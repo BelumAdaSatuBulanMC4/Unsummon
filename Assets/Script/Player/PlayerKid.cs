@@ -48,7 +48,8 @@ public class PlayerKid : Character
         Debug.Log("the player has been killed");
         Transform kidTransform = transform;
         Instantiate(deadBodyPrefab, kidTransform.position, kidTransform.rotation);
-        Instantiate(spiritPrefab, kidTransform.position, kidTransform.rotation);
+        GameObject spirit = Instantiate(spiritPrefab, kidTransform.position, kidTransform.rotation);
+        CameraManager.instance.ChangeCameraFollow(spirit.transform);
         Destroy(gameObject);
     }
 
