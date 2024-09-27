@@ -25716,7 +25716,7 @@ GameObject:
   - component: {fileID: 683646548}
   - component: {fileID: 683646547}
   - component: {fileID: 683646546}
-  - component: {fileID: 683646545}
+  - component: {fileID: 683646549}
   m_Layer: 5
   m_Name: TeleportButton
   m_TagString: Untagged
@@ -25744,21 +25744,6 @@ RectTransform:
   m_AnchoredPosition: {x: -90, y: 300}
   m_SizeDelta: {x: 69.44, y: 84}
   m_Pivot: {x: 1, y: 0}
---- !u!114 &683646545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 683646543}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b572f000899945fc87bc8328a561c66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: Pocong
-  enabledColor: {r: 1, g: 1, b: 1, a: 1}
-  disabledColor: {r: 1, g: 1, b: 1, a: 0.6862745}
 --- !u!114 &683646546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25841,6 +25826,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 683646543}
   m_CullTransparentMesh: 1
+--- !u!114 &683646549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 683646543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6267c8e5e4130442f85df92a3ee32d0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: Pocong
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 1, g: 1, b: 1, a: 0.5}
 --- !u!1 &696304387
 GameObject:
   m_ObjectHideFlags: 0
