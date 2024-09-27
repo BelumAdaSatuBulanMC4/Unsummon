@@ -8,7 +8,7 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager instance;
     private Dictionary<PlayerKid, Vector3> kidPositions = new Dictionary<PlayerKid, Vector3>();
     private Dictionary<PlayerSpirit, Vector3> spiritPositions = new Dictionary<PlayerSpirit, Vector3>();
-
+    private List<PlayerKid> allKids = new List<PlayerKid>();
 
     // Register a Kid and start tracking its position
 
@@ -28,6 +28,7 @@ public class PlayerManager : MonoBehaviour
         if (!kidPositions.ContainsKey(kid))
         {
             kidPositions.Add(kid, kid.transform.position);
+            allKids.Add(kid);
         }
     }
 
@@ -37,7 +38,13 @@ public class PlayerManager : MonoBehaviour
         if (kidPositions.ContainsKey(kid))
         {
             kidPositions.Remove(kid);
+            allKids.Remove(kid);
         }
+    }
+
+    public List<PlayerKid> GetAllKids()
+    {
+        return new List<PlayerKid>(allKids); // Return a copy of the list
     }
 
     // Update the position of a specific Kid and start a coroutine to remove it after 7 seconds

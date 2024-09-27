@@ -25,6 +25,7 @@ public class Pocong : Character
     {
         base.Update();
         HandleAnimations();
+        HandleTeleport();
         HandleKidInteraction();
         GetKidsPosition();
     }
@@ -55,11 +56,41 @@ public class Pocong : Character
     private void GetKidsPosition()
     {
         Dictionary<PlayerKid, Vector3> kidPositions = PlayerManager.instance.GetKidPositions();
+    }
 
-        // foreach (var kid in kidPositions)
-        // {
-        //     Debug.Log($"Pocong knows Kid {kid.Key.gameObject.name} is at position {kid.Value}");
-        // }
+    private void HandleTeleport()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            List<PlayerKid> allKids = PlayerManager.instance.GetAllKids();
+            PlayerKid kidToSwap = ChooseKidToSwap(allKids);
+
+            if (kidToSwap != null)
+            {
+                SwapPositions(kidToSwap);
+            }
+            else
+            {
+                Debug.Log("No Kid selected for swapping.");
+            }
+        }
+    }
+
+    private PlayerKid ChooseKidToSwap(List<PlayerKid> kids)
+    {
+        if (kids.Count > 0)
+        {
+            int randomIndex = Random.Range(0, kids.Count);
+            return kids[randomIndex];
+        }
+        return null;
+    }
+
+    private void SwapPositions(PlayerKid kid)
+    {
+        Vector3 tempPocongPosition = transform.position;
+        transform.position = kid.transform.position;
+        kid.transform.position = tempPocongPosition;
     }
 
     private void HandleAnimations()

@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 1928934963886746261}
   - component: {fileID: 5774474978769489332}
   - component: {fileID: 3222138979314632981}
-  - component: {fileID: 3955682825483092375}
   m_Layer: 7
   m_Name: PlayerPocong
   m_TagString: Untagged
@@ -271,8 +270,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1542173105
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -6367560908665664636, guid: d348dff3819df794186a80cb95777629, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

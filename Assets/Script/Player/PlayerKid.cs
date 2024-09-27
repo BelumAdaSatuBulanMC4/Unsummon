@@ -10,16 +10,26 @@ public class PlayerKid : Character
     [SerializeField] private float knockBackDuration = 1;
     [SerializeField] private Vector2 knockBackPower;
     private bool isKnocked;
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject spiritPrefab;   // Assign the Spirit prefab in the Inspector
+    [SerializeField] private GameObject deadBodyPrefab;
     protected override void Awake()
     {
         base.Awake();
+        typeChar = "Player";
+        PlayerManager.instance.RegisterKid(this);
         anim = GetComponentInChildren<Animator>();
+    }
+
+    private void OnDestroy()
+    {
+        PlayerManager.instance.UnregisterKid(this); // Unregister when destroyed
     }
 
     protected override void Update()
     {
         base.Update();
-        typeChar = "Player";
         HandleAnimations();
         HandleLocationChanged();
     }
@@ -28,13 +38,19 @@ public class PlayerKid : Character
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
+            CameraManager.instance.CameraShake();
             PlayerManager.instance.UpdateKidPosition(this, transform.position);
         }
     }
 
-    public void GettingKilled()
+    private void GettingKilled()
     {
         Debug.Log("the player has been killed");
+        Transform kidTransform = transform;
+        Instantiate(deadBodyPrefab, kidTransform.position, kidTransform.rotation);
+        GameObject spirit = Instantiate(spiritPrefab, kidTransform.position, kidTransform.rotation);
+        CameraManager.instance.ChangeCameraFollow(spirit.transform);
+        Destroy(gameObject);
     }
 
     public void Knocked(float sourceOfDamage)
@@ -50,7 +66,6 @@ public class PlayerKid : Character
         {
             return;
         }
-
         StartCoroutine(KnockedRoutine());
         rb.velocity = new Vector2(knockBackPower.x * knockbackDir, knockBackPower.y);
     }
@@ -64,6 +79,7 @@ public class PlayerKid : Character
 
         isKnocked = false;
         anim.SetBool("isHit", isKnocked);
+        GettingKilled();
     }
 
     private void HandleAnimations()

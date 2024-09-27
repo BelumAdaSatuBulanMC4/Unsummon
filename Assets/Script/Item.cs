@@ -5,16 +5,17 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     public int itemValue = 0;
+    public bool isActivated = false;
 
     public void ChangeVariable()
     {
-        itemValue += 1;
-        Debug.Log("Item " + name + " value changed to: " + itemValue);
+        isActivated = true;
+        GetComponent<SpriteRenderer>().color = Color.green;
     }
     public void ResetValue()
     {
-        itemValue = 0;
-        Debug.Log("Item " + name + " value reset to: " + itemValue);
+        isActivated = false;
+        GetComponent<SpriteRenderer>().color = Color.white;
     }
     public void DisplayInteraction()
     {

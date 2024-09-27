@@ -89,9 +89,16 @@ public class Character : MonoBehaviour
 
     void InteractWithItem(Item item)
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (item == null) return;
+        if (Input.GetKeyDown(KeyCode.E) && typeChar == "Player")
         {
-            item.DisplayInteraction();
+            if (!item.isActivated)
+                GameManager.instance.KidTurnedOnItem(item); // Notify GameManager when a Kid turns on an item
+        }
+        else if (Input.GetKeyDown(KeyCode.R) && typeChar == "Pocong")
+        {
+            if (item.isActivated)
+                GameManager.instance.PocongTurnedOffItem(item); // Notify GameManager when Pocong turns off an item
         }
     }
 
