@@ -143,20 +143,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80f12cbe657814ba4bad5cb278380509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0
+  isAuthor: 1
+  moveSpeed: 5
   itemCheck: {fileID: 8399580634329649872}
   itemCheckRadius: 0.9
   whatIsItem:
     serializedVersion: 2
     m_Bits: 8
-  dashSpeed: 0
-  dashDuration: 0
-  dashCooldown: 0
+  dashSpeed: 2
+  dashDuration: 0.5
+  dashCooldown: 2
   kidCheck: {fileID: 8755744105393276333}
   kidCheckRadius: 1.3
   whatIsKid:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
+  attackCooldown: 5
+  teleportCooldown: 5
 --- !u!114 &3955682825483092375
 MonoBehaviour:
   m_ObjectHideFlags: 0

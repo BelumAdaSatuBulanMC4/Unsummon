@@ -4,10 +4,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_DashButton : MonoBehaviour
+public class UI_AttackButton : MonoBehaviour
 {
     private Button button;
-    private Character chara;
+    private Pocong chara;
     private TextMeshProUGUI buttonText;
 
     [SerializeField] string type;
@@ -24,31 +24,18 @@ public class UI_DashButton : MonoBehaviour
 
     private void Start()
     {
-        if (type == "Kid")
-        {
-            chara = FindAuthorKid();
-        }
-        else if (type == "Pocong")
-        {
-            chara = FindAuthorPocong();
-        }
-
+        chara = FindAuthorPocong();
         if (chara != null)
         {
-            button.onClick.AddListener(TriggerDash);
-        }
-        else
-        {
-            Debug.LogWarning("No player with isAuthor found.");
+            button.onClick.AddListener(TriggerKill);
         }
     }
 
     private void Update()
     {
-        // If the character exists, check the cooldown timer
         if (chara != null)
         {
-            if (chara.GetDashCooldown() <= 0)
+            if (chara.GetAttackCooldown() <= 0)
             {
                 EnableButton();
                 buttonText.text = "";
@@ -56,26 +43,12 @@ public class UI_DashButton : MonoBehaviour
             else
             {
                 DisableButton();
-                buttonText.text = Mathf.CeilToInt(chara.GetDashCooldown()).ToString();
+                buttonText.text = Mathf.CeilToInt(chara.GetAttackCooldown()).ToString();
             }
         }
     }
 
-    private Character FindAuthorKid()
-    {
-        PlayerKid[] allKids = FindObjectsOfType<PlayerKid>();
-        foreach (PlayerKid playerKid in allKids)
-        {
-            if (playerKid.isAuthor)
-            {
-                return playerKid;
-            }
-        }
-
-        return null;
-    }
-
-    private Character FindAuthorPocong()
+    private Pocong FindAuthorPocong()
     {
         Pocong[] pocong = FindObjectsOfType<Pocong>();
         foreach (Pocong playerPocong in pocong)
@@ -89,15 +62,14 @@ public class UI_DashButton : MonoBehaviour
         return null;
     }
 
-    public void TriggerDash()
+    public void TriggerKill()
     {
-        if (chara != null && chara.GetDashCooldown() <= 0)
+        if (chara != null && chara.GetAttackCooldown() <= 0)
         {
-            chara.DashButton();
+            chara.AttackButton();
         }
     }
 
-    // Method to enable the button
     private void EnableButton()
     {
         button.interactable = true;
@@ -111,24 +83,3 @@ public class UI_DashButton : MonoBehaviour
         buttonImage.color = disabledColor;  // Set to semi-transparency
     }
 }
-
-
-// public class UI_DashButton : MonoBehaviour
-// {
-//     [SerializeField] Character kid;
-//     private Button button;
-
-//     private void Awake()
-//     {
-//         button = GetComponent<Button>();
-//     }
-
-//     private void Start()
-//     {
-//         button.onClick.AddListener(TriggerDash);
-//     }
-//     public void TriggerDash()
-//     {
-//         kid.DashButton();
-//     }
-// }
