@@ -10,6 +10,10 @@ public class PlayerKid : Character
     [SerializeField] private float knockBackDuration = 1;
     [SerializeField] private Vector2 knockBackPower;
     private bool isKnocked;
+
+    [Header("Prefabs")]
+    [SerializeField] private GameObject spiritPrefab;   // Assign the Spirit prefab in the Inspector
+    [SerializeField] private GameObject deadBodyPrefab;
     protected override void Awake()
     {
         base.Awake();
@@ -38,9 +42,13 @@ public class PlayerKid : Character
         }
     }
 
-    public void GettingKilled()
+    private void GettingKilled()
     {
         Debug.Log("the player has been killed");
+        Transform kidTransform = transform;
+        Instantiate(deadBodyPrefab, kidTransform.position, kidTransform.rotation);
+        Instantiate(spiritPrefab, kidTransform.position, kidTransform.rotation);
+        Destroy(gameObject);
     }
 
     public void Knocked(float sourceOfDamage)
@@ -70,6 +78,7 @@ public class PlayerKid : Character
 
         isKnocked = false;
         anim.SetBool("isHit", isKnocked);
+        GettingKilled();
     }
 
     private void HandleAnimations()

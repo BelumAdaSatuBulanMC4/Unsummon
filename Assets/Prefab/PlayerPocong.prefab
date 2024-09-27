@@ -43,7 +43,6 @@ GameObject:
   - component: {fileID: 1928934963886746261}
   - component: {fileID: 5774474978769489332}
   - component: {fileID: 3222138979314632981}
-  - component: {fileID: 3955682825483092375}
   m_Layer: 7
   m_Name: PlayerPocong
   m_TagString: Untagged
@@ -143,7 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80f12cbe657814ba4bad5cb278380509, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0
+  moveSpeed: 5
   itemCheck: {fileID: 8399580634329649872}
   itemCheckRadius: 0.9
   whatIsItem:
@@ -157,18 +156,6 @@ MonoBehaviour:
   whatIsKid:
     serializedVersion: 2
     m_Bits: 8
---- !u!114 &3955682825483092375
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3527622045971319382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e24024e659674416388622aa8f1a3d88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4937776174938825183
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,8 +258,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1542173105
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: -6367560908665664636, guid: d348dff3819df794186a80cb95777629, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

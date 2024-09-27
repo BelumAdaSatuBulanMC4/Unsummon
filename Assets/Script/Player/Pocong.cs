@@ -56,19 +56,14 @@ public class Pocong : Character
     private void GetKidsPosition()
     {
         Dictionary<PlayerKid, Vector3> kidPositions = PlayerManager.instance.GetKidPositions();
-
-        // foreach (var kid in kidPositions)
-        // {
-        //     Debug.Log($"Pocong knows Kid {kid.Key.gameObject.name} is at position {kid.Value}");
-        // }
     }
 
     private void HandleTeleport()
     {
-        if (Input.GetKeyDown(KeyCode.F))  // Key to trigger teleport
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            List<PlayerKid> allKids = PlayerManager.instance.GetAllKids();  // Get all the Kids
-            PlayerKid kidToSwap = ChooseKidToSwap(allKids);  // Select a Kid to swap with
+            List<PlayerKid> allKids = PlayerManager.instance.GetAllKids();
+            PlayerKid kidToSwap = ChooseKidToSwap(allKids);
 
             if (kidToSwap != null)
             {
@@ -83,8 +78,6 @@ public class Pocong : Character
 
     private PlayerKid ChooseKidToSwap(List<PlayerKid> kids)
     {
-        // For simplicity, choose a random kid to swap with.
-        // You can customize this logic to allow manual selection.
         if (kids.Count > 0)
         {
             int randomIndex = Random.Range(0, kids.Count);
@@ -95,14 +88,9 @@ public class Pocong : Character
 
     private void SwapPositions(PlayerKid kid)
     {
-        // Swap positions between Pocong and the selected Kid
         Vector3 tempPocongPosition = transform.position;
-
-        // Swap positions
         transform.position = kid.transform.position;
         kid.transform.position = tempPocongPosition;
-
-        Debug.Log($"Pocong swapped positions with {kid.gameObject.name}!");
     }
 
     private void HandleAnimations()
