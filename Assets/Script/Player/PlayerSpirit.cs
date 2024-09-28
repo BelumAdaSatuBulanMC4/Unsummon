@@ -97,6 +97,11 @@ public class PlayerSpirit : Character
         MakeNoise();
     }
 
+    public void SetAuthor(bool setBool)
+    {
+        isAuthor = setBool;
+    }
+
     public float GetNoiseCooldown()
     {
         return noiseCooldownTimer;

@@ -49,7 +49,11 @@ public class PlayerKid : Character
         Transform kidTransform = transform;
         Instantiate(deadBodyPrefab, kidTransform.position, kidTransform.rotation);
         GameObject spirit = Instantiate(spiritPrefab, kidTransform.position, kidTransform.rotation);
-        CameraManager.instance.ChangeCameraFollow(spirit.transform);
+        if (isAuthor)
+        {
+            spirit.GetComponent<PlayerSpirit>().SetAuthor(true);
+            CameraManager.instance.ChangeCameraFollow(spirit.transform);
+        }
         Destroy(gameObject);
     }
 

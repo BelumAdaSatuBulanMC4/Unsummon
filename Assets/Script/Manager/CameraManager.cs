@@ -19,6 +19,16 @@ public class CameraManager : MonoBehaviour
     {
         instance = this;
         source = GetComponent<CinemachineImpulseSource>();
+
+        Character authorCharacter = FindAuthorCharacter();
+        if (authorCharacter != null)
+        {
+            ChangeCameraFollow(authorCharacter.transform);
+        }
+        else
+        {
+            Debug.LogWarning("No character with isAuthor found.");
+        }
     }
 
     public void CameraShake()
@@ -34,5 +44,18 @@ public class CameraManager : MonoBehaviour
         {
             virtualCamera.Follow = newTarget;
         }
+    }
+
+    private Character FindAuthorCharacter()
+    {
+        Character[] allCharacters = FindObjectsOfType<Character>();  // Find all characters in the scene
+        foreach (Character character in allCharacters)
+        {
+            if (character.isAuthor)
+            {
+                return character;  // Return the first character with isAuthor set to true
+            }
+        }
+        return null;  // Return null if no author character is found
     }
 }
