@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
 
 public class MainMenuDisplay : MonoBehaviour
 {
+    public TMP_InputField codeRoomInput;
     private async void Start() {
         try {
             await UnityServices.InitializeAsync();
@@ -23,7 +25,7 @@ public class MainMenuDisplay : MonoBehaviour
     }
 
     public void StartClient() {
-        ClientManager.Instance.StartClient();
+        ClientManager.Instance.StartClient(codeRoomInput.text);
     }
 
 }
