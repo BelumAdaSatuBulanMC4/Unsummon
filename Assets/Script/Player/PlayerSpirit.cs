@@ -14,6 +14,10 @@ public class PlayerSpirit : Character
     [SerializeField] private LayerMask whatIsPlayerKid;
     [SerializeField] private LayerMask whatIsPlayerPocong;
 
+    [Header("Noise Info")]
+    [SerializeField] protected float noiseCooldown; // Teleport cooldown duration
+    protected float noiseCooldownTimer;
+
     private Collider2D[] detectedKids;
     private Collider2D[] detectedPocong;
 
@@ -22,6 +26,7 @@ public class PlayerSpirit : Character
     protected override void Awake()
     {
         base.Awake();
+        typeChar = "Spirit";
         anim = GetComponentInChildren<Animator>();
         spiritCollider = GetComponent<Collider2D>();
     }
@@ -29,9 +34,11 @@ public class PlayerSpirit : Character
     protected override void Update()
     {
         base.Update();
-        typeChar = "Spirit";
+
+        noiseCooldownTimer -= Time.deltaTime;
+
         HandleAnimations();
-        HandleLocationChanged();
+        // HandleLocationChanged();
         HandlePlayerCollision();
     }
 
@@ -61,12 +68,16 @@ public class PlayerSpirit : Character
             }
     }
 
-    private void HandleLocationChanged()
+    private void MakeNoise()
     {
-        if (Input.GetKeyDown(KeyCode.Y))
+        // if (Input.GetKeyDown(KeyCode.Y))
+        // {
+        if (noiseCooldownTimer < 0)
         {
             PlayerManager.instance.UpdateSpiritPosition(this, transform.position);
+            noiseCooldownTimer = noiseCooldown;
         }
+        // }
     }
 
     private void HandleAnimations()
@@ -79,6 +90,21 @@ public class PlayerSpirit : Character
         {
             anim.SetFloat("moving", 0);
         }
+    }
+
+    public void NoiseButton()
+    {
+        MakeNoise();
+    }
+
+    public void SetAuthor(bool setBool)
+    {
+        isAuthor = setBool;
+    }
+
+    public float GetNoiseCooldown()
+    {
+        return noiseCooldownTimer;
     }
 
     // private void OnDrawGizmos()

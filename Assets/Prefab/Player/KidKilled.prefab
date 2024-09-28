@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7752884769145363100}
   - component: {fileID: 8763405219018009792}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: KidKilled
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +70,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1542173105
+  m_SortingLayerID: -2019370759
   m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 6868122594974341346, guid: 18a451ae5d817e04bbf3101eaed9466e, type: 3}
