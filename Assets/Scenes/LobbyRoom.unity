@@ -1464,6 +1464,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerProfile: []
   newPlayerProfile: []
+  startButton: {fileID: 0}
 --- !u!1 &1064895843
 GameObject:
   m_ObjectHideFlags: 0
@@ -2049,6 +2050,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1927861720}
   - component: {fileID: 1927861719}
+  - component: {fileID: 1927861722}
   - component: {fileID: 1927861721}
   m_Layer: 0
   m_Name: LobbyManager
@@ -2109,6 +2111,28 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4ced6760205ca45c493db77df5e9540b, type: 3}
   - {fileID: 21300000, guid: 4ced6760205ca45c493db77df5e9540b, type: 3}
   - {fileID: 21300000, guid: 4ced6760205ca45c493db77df5e9540b, type: 3}
+  startButton: {fileID: 1467710480}
+--- !u!114 &1927861722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1927861718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3345100723
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &2146028909
 GameObject:
   m_ObjectHideFlags: 0

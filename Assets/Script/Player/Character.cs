@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : NetworkBehaviour
 {
     protected Rigidbody2D rb;
     protected String typeChar;
@@ -42,7 +43,12 @@ public class Character : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         inputPlayer = new InputActions();
+        // isAuthor = IsOwner;
         // FindFirstObjectByType<UI_DashButton>().UpdatePlayersRef(this);
+    }
+
+    private void Start() {
+        isAuthor = IsOwner;
     }
 
     private void OnEnable()
@@ -70,6 +76,7 @@ public class Character : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (!IsOwner) { return; }
         if (typeChar == "Player" || typeChar == "Pocong")
         {
             dashTime -= Time.deltaTime;
