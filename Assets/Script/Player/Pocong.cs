@@ -13,6 +13,14 @@ public class Pocong : Character
     private bool isKidDetected;
     private Collider2D[] detectedKids;
 
+    [Header("Attack Info")]
+    [SerializeField] protected float attackCooldown; // Attack cooldown duration
+    protected float attackCooldownTimer;
+
+    [Header("Teleport Info")]
+    [SerializeField] protected float teleportCooldown; // Teleport cooldown duration
+    protected float teleportCooldownTimer;
+
 
     protected override void Awake()
     {
@@ -24,7 +32,12 @@ public class Pocong : Character
     protected override void Update()
     {
         base.Update();
+
+        attackCooldownTimer -= Time.deltaTime;
+        teleportCooldownTimer -= Time.deltaTime;
+
         HandleAnimations();
+        // HandleTeleport();
         HandleKidInteraction();
         GetKidsPosition();
     }
@@ -32,34 +45,137 @@ public class Pocong : Character
     private void HandleKidInteraction()
     {
         detectedKids = Physics2D.OverlapCircleAll(kidCheck.position, kidCheckRadius, whatIsKid);
-
-        foreach (Collider2D kidCollider in detectedKids)
-        {
-            PlayerKid kid = kidCollider.GetComponent<PlayerKid>(); // Assuming the kids have a script named 'PlayerKid'
-            if (kid != null)
-            {
-                killTheKid(kid);
-            }
-        }
+        // Debug.Log("Detected kids " + detectedKids.Length);
+        // foreach (Collider2D kidCollider in detectedKids)
+        // {
+        //     PlayerKid kid = kidCollider.GetComponent<PlayerKid>(); // Assuming the kids have a script named 'PlayerKid'
+        //     if (kid != null)
+        //     {
+        //         killTheKid(kid);
+        //     }
+        // }
 
     }
 
     void killTheKid(PlayerKid kid)
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            kid.Knocked(transform.position.x);
-        }
+        // if (Input.GetKeyDown(KeyCode.R))
+        // {
+        kid.Knocked(transform.position.x);
+        // }
     }
 
     private void GetKidsPosition()
     {
         Dictionary<PlayerKid, Vector3> kidPositions = PlayerManager.instance.GetKidPositions();
+    }
 
-        // foreach (var kid in kidPositions)
-        // {
-        //     Debug.Log($"Pocong knows Kid {kid.Key.gameObject.name} is at position {kid.Value}");
-        // }
+    public void AttackButton()
+    {
+        AttackAbility();
+    }
+
+    public void TeleportButton()
+    {
+        TeleportAbility();
+    }
+
+    public float GetAttackCooldown()
+    {
+        return attackCooldownTimer;
+    }
+
+    public float GetTeleportCooldown()
+    {
+        return teleportCooldownTimer;
+    }
+
+    private void AttackAbility()
+    {
+        if (attackCooldownTimer < 0)
+        {
+            Debug.Log("masuk attack ability");
+            foreach (Collider2D kidCollider in detectedKids)
+            {
+                PlayerKid kid = kidCollider.GetComponent<PlayerKid>(); // Assuming the kids have a script named 'PlayerKid'
+                if (kid != null)
+                {
+                    Debug.Log("before kill");
+                    killTheKid(kid);
+                }
+            }
+            // Perform attack
+            // Debug.Log("Attacking...");
+
+            // Reset the cooldown timer
+            attackCooldownTimer = attackCooldown;
+        }
+        else
+        {
+            Debug.Log("Attack on cooldown. Time remaining: " + attackCooldownTimer);
+        }
+    }
+
+    private void TeleportAbility()
+    {
+        if (teleportCooldownTimer < 0)
+        {
+            List<PlayerKid> allKids = PlayerManager.instance.GetAllKids();
+            PlayerKid kidToSwap = ChooseKidToSwap(allKids);
+
+            if (kidToSwap != null)
+            {
+                SwapPositions(kidToSwap);
+            }
+            else
+            {
+                Debug.Log("No Kid selected for swapping.");
+            }
+            // Perform teleport
+            // Debug.Log("Teleporting...");
+
+            // Reset the cooldown timer
+            teleportCooldownTimer = teleportCooldown;
+        }
+        else
+        {
+            Debug.Log("Teleport on cooldown. Time remaining: " + teleportCooldownTimer);
+        }
+    }
+
+    private void HandleTeleport()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            List<PlayerKid> allKids = PlayerManager.instance.GetAllKids();
+            PlayerKid kidToSwap = ChooseKidToSwap(allKids);
+
+            if (kidToSwap != null)
+            {
+                SwapPositions(kidToSwap);
+            }
+            else
+            {
+                Debug.Log("No Kid selected for swapping.");
+            }
+        }
+    }
+
+    private PlayerKid ChooseKidToSwap(List<PlayerKid> kids)
+    {
+        if (kids.Count > 0)
+        {
+            int randomIndex = Random.Range(0, kids.Count);
+            return kids[randomIndex];
+        }
+        return null;
+    }
+
+    private void SwapPositions(PlayerKid kid)
+    {
+        Vector3 tempPocongPosition = transform.position;
+        transform.position = kid.transform.position;
+        kid.transform.position = tempPocongPosition;
     }
 
     private void HandleAnimations()

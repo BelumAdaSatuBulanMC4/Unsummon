@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &868452479497935188
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8219391307993261388}
+  m_Layer: 8
+  m_Name: PlayerCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8219391307993261388
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868452479497935188}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.08, y: -0.21, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6704383231857762970}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1745503125147311123
 GameObject:
   m_ObjectHideFlags: 0
@@ -11,7 +42,7 @@ GameObject:
   - component: {fileID: 5559871111234675093}
   - component: {fileID: 2656276105778655303}
   - component: {fileID: 7413337262094136950}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Animator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,8 +102,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1273902977
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: -6367560908665664636, guid: 3750f45c844123341b9a777a96cb1eca, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -115,7 +146,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4645809575848959822}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ItemCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,7 +180,7 @@ GameObject:
   - component: {fileID: 8506646461062356253}
   - component: {fileID: 6232275230208816746}
   - component: {fileID: 6662549893788451634}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PlayerSpirit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -171,6 +202,7 @@ Transform:
   m_Children:
   - {fileID: 5559871111234675093}
   - {fileID: 4645809575848959822}
+  - {fileID: 8219391307993261388}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &8506646461062356253
@@ -247,12 +279,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 917e2999e99a141c1b19730ffa9ecf6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 0
   itemCheck: {fileID: 4645809575848959822}
   itemCheckRadius: 0.98
   whatIsItem:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   dashSpeed: 0
   dashDuration: 0
   dashCooldown: 0
+  playerCheck: {fileID: 8219391307993261388}
+  playerCheckRadius: 1.61
+  whatIsPlayerKid:
+    serializedVersion: 2
+    m_Bits: 8
+  whatIsPlayerPocong:
+    serializedVersion: 2
+    m_Bits: 128
