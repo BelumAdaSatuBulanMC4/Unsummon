@@ -36,6 +36,8 @@ public class Character : MonoBehaviour
     [SerializeField] protected float dashCooldown;
     protected float dashCooldownTimer;
 
+    protected string currentlocation;
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -59,11 +61,12 @@ public class Character : MonoBehaviour
         inputPlayer.Kid.Move.canceled -= ctx => moveInput = Vector2.zero;
     }
 
-    public void DashButton()
+    public string GetCurrentLocation() => currentlocation;
+    public void CurrentLocationChanged(string loc)
     {
-        DashAbility();
-        // Debug.Log("lompat");
+        currentlocation = loc;
     }
+    public void DashButton() => DashAbility();
 
     protected virtual void Update()
     {

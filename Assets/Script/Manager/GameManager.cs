@@ -32,6 +32,16 @@ public class GameManager : MonoBehaviour
         Debug.Log("Kid turned on an item!");
     }
 
+    public int GetActiveItems()
+    {
+        return activeItems;
+    }
+
+    public int GetTotalItems()
+    {
+        return totalItems;
+    }
+
     public void subActivatedItems()
     {
         if (activeItems > 0)
