@@ -18,8 +18,13 @@ public class PlayerKid : Character
     {
         base.Awake();
         typeChar = "Player";
-        PlayerManager.instance.RegisterKid(this);
+        // PlayerManager.instance.RegisterKid(this);
         anim = GetComponentInChildren<Animator>();
+    }
+
+    private void Start()
+    {
+        PlayerManager.instance.RegisterKid(this); // Pindahkan ke Start
     }
 
     private void OnDestroy()

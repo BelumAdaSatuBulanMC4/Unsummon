@@ -178,18 +178,33 @@ public class Character : NetworkBehaviour
     }
 
     [ServerRpc]
-    void SendMovementRequestServerRpc(Vector2 movementInput)
+    void SendMovementRequestServerRpc(Vector2 movementInput, ServerRpcParams rpcParams = default)
     {
-        // Memanggil fungsi ClientRpc untuk mengupdate posisi pada semua client
-        Debug.Log($"Server received move input: {movementInput} from Client {OwnerClientId}");
-        MovePlayerClientRpc(movementInput);
+        // Proses hanya di server untuk pemilik object
+        var clientId = rpcParams.Receive.SenderClientId;
+        if (NetworkManager.ConnectedClients.TryGetValue(clientId, out var client))
+        {
+            var playerObject = client.PlayerObject.GetComponent<Character>();
+            if (playerObject != null)
+            {
+                // Update posisi di server
+                playerObject.rb.velocity = new Vector2(movementInput.x * moveSpeed, movementInput.y * moveSpeed);
+
+                // Kirim update ke semua client
+                MovePlayerClientRpc(playerObject.rb.velocity, clientId);
+            }
+        }
     }
 
+
     [ClientRpc]
-    void MovePlayerClientRpc(Vector2 movementInput)
+    void MovePlayerClientRpc(Vector2 newVelocity, ulong clientId)
     {
-        // Update posisi semua pemain
-        Debug.Log($"Updating position for player {OwnerClientId} with input: {movementInput}");
-        rb.velocity = new Vector2(movementInput.x * moveSpeed, movementInput.y * moveSpeed);
+        // Hanya update posisi client yang sesuai
+        if (OwnerClientId == clientId)
+        {
+            rb.velocity = newVelocity;
+        }
     }
+
 }
