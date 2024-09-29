@@ -27671,9 +27671,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1494755928}
   - component: {fileID: 1494755931}
-  - component: {fileID: 1494755932}
   - component: {fileID: 1494755934}
   - component: {fileID: 1494755933}
+  - component: {fileID: 1494755932}
   m_Layer: 0
   m_Name: '**Manager**'
   m_TagString: Untagged

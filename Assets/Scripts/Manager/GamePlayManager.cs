@@ -18,14 +18,13 @@ public class GamePlayManager : NetworkBehaviour
     // Spawn semua pemain di posisi yang sama
     private void SpawnPlayers()
     {
+        if (!IsServer) return;
         foreach (var client in NetworkManager.ConnectedClientsList)
         {
             Debug.Log($"Player: {client.ClientId}");
             GameObject playerInstance = Instantiate(playerPrefab, spawnPosition, Quaternion.identity);
             playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(client.ClientId);
         }
-        // GameObject playerInstance = Instantiate(playerPrefab, spawnPosition, Quaternion.identity);
-        // playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject();
     }
 }
 

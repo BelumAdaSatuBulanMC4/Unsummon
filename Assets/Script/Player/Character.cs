@@ -53,6 +53,7 @@ public class Character : NetworkBehaviour
 
     private void OnEnable()
     {
+        // if (!IsOwner) { return; }
         inputPlayer.Enable();
         // inputPlayer.Kid.Dash.performed += ctx => DashAbility();
         inputPlayer.Kid.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
@@ -61,6 +62,7 @@ public class Character : NetworkBehaviour
 
     private void OnDisable()
     {
+        // if (!IsOwner) { return; }
         inputPlayer.Disable();
         // inputPlayer.Kid.Dash.performed -= ctx => DashAbility();
         inputPlayer.Kid.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
@@ -109,6 +111,7 @@ public class Character : NetworkBehaviour
 
     private void DashAbility()
     {
+        // if (!IsOwner) { return; }
         if (typeChar == "Player" || typeChar == "Pocong")
         {
             if (dashCooldownTimer < 0)
@@ -122,6 +125,7 @@ public class Character : NetworkBehaviour
 
     private void HandleItemInteraction()
     {
+        // if (!IsOwner) { return; }
         if (typeChar == "Player" || typeChar == "Pocong")
         {
             detectedItems = Physics2D.OverlapCircleAll(itemCheck.position, itemCheckRadius, whatIsItem);
@@ -138,6 +142,7 @@ public class Character : NetworkBehaviour
 
     void InteractWithItem(Item item)
     {
+        // if (!IsOwner) { return; }
         if (item == null) return;
         if (Input.GetKeyDown(KeyCode.E) && typeChar == "Player")
         {
@@ -154,11 +159,13 @@ public class Character : NetworkBehaviour
 
     protected virtual void Movement()
     {
+        // if (!IsOwner) { return; }
         rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
     }
 
     private void HandleMovement()
     {
+        // if (!IsOwner) { return; }
         if (dashTime > 0)
         {
             rb.velocity = new Vector2(moveInput.x * moveSpeed * dashSpeed, moveInput.y * moveSpeed * dashSpeed);
@@ -171,6 +178,7 @@ public class Character : NetworkBehaviour
 
     private void HandleFlip()
     {
+        // if (!IsOwner) { return; }
         if (moveInput.x < 0 && facingRight || moveInput.x > 0 && !facingRight)
             Flip();
     }
@@ -185,6 +193,7 @@ public class Character : NetworkBehaviour
 
     protected void DrawItemDetector()
     {
+        // if (!IsOwner) { return; }
         Gizmos.DrawWireSphere(itemCheck.position, itemCheckRadius);
     }
 }
