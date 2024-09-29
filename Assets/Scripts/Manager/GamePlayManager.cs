@@ -21,7 +21,12 @@ public class GamePlayManager : NetworkBehaviour
         if (!IsServer) return;
         foreach (var client in NetworkManager.ConnectedClientsList)
         {
-            Debug.Log($"Player: {client.ClientId}");
+            // Debug.Log($"Player: {client.ClientId}");
+            if (PlayerManager.instance != null) {
+                Debug.Log("PlayerManager sudah diinisialisasi!");
+            } else {
+                Debug.LogError("PlayerManager belum diinisialisasi!");
+            }
             GameObject playerInstance = Instantiate(playerPrefab, spawnPosition, Quaternion.identity);
             playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(client.ClientId);
         }

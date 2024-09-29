@@ -19,12 +19,21 @@ public class PlayerKid : Character
         base.Awake();
         typeChar = "Player";
         // PlayerManager.instance.RegisterKid(this);
-        anim = GetComponentInChildren<Animator>();
+        // anim = GetComponentInChildren<Animator>();
     }
 
     private void Start()
     {
-        PlayerManager.instance.RegisterKid(this); // Pindahkan ke Start
+        // PlayerManager.instance.RegisterKid(this);
+        if (PlayerManager.instance != null)
+        {
+            PlayerManager.instance.RegisterKid(this);
+        }
+        else
+        {
+            Debug.LogError("PlayerManager is not initialized!");
+        }
+        anim = GetComponentInChildren<Animator>();
     }
 
     private void OnDestroy()
