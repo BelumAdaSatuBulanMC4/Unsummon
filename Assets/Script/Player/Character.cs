@@ -47,13 +47,12 @@ public class Character : NetworkBehaviour
         // FindFirstObjectByType<UI_DashButton>().UpdatePlayersRef(this);
     }
 
-    private void Start() {
-        isAuthor = IsOwner;
-    }
+    // private void Start() {
+    //     isAuthor = IsOwner;
+    // }
 
     private void OnEnable()
     {
-        // if (!IsOwner) { return; }
         inputPlayer.Enable();
         // inputPlayer.Kid.Dash.performed += ctx => DashAbility();
         inputPlayer.Kid.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
@@ -62,7 +61,6 @@ public class Character : NetworkBehaviour
 
     private void OnDisable()
     {
-        // if (!IsOwner) { return; }
         inputPlayer.Disable();
         // inputPlayer.Kid.Dash.performed -= ctx => DashAbility();
         inputPlayer.Kid.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
@@ -85,7 +83,9 @@ public class Character : NetworkBehaviour
             dashCooldownTimer -= Time.deltaTime;
         }
 
-        // HandleInput();
+        // Kirim input ke server untuk sinkronisasi
+        SendMovementRequestServerRpc(moveInput);
+
         HandleMovement();
         HandleItemInteraction();
         HandleFlip();
@@ -95,23 +95,9 @@ public class Character : NetworkBehaviour
     {
         return dashCooldownTimer;
     }
-    private void HandleInput()
-    {
-        // xInput = Input.GetAxisRaw("Horizontal");
-        // yInput = Input.GetAxisRaw("Vertical");
-
-        // if (typeChar == "Player" || typeChar == "Pocong")
-        // {
-        //     if (Input.GetKeyDown(KeyCode.LeftShift))
-        //     {
-        //         DashAbility();
-        //     }
-        // }
-    }
 
     private void DashAbility()
     {
-        // if (!IsOwner) { return; }
         if (typeChar == "Player" || typeChar == "Pocong")
         {
             if (dashCooldownTimer < 0)
@@ -125,7 +111,6 @@ public class Character : NetworkBehaviour
 
     private void HandleItemInteraction()
     {
-        // if (!IsOwner) { return; }
         if (typeChar == "Player" || typeChar == "Pocong")
         {
             detectedItems = Physics2D.OverlapCircleAll(itemCheck.position, itemCheckRadius, whatIsItem);
@@ -142,7 +127,6 @@ public class Character : NetworkBehaviour
 
     void InteractWithItem(Item item)
     {
-        // if (!IsOwner) { return; }
         if (item == null) return;
         if (Input.GetKeyDown(KeyCode.E) && typeChar == "Player")
         {
@@ -159,13 +143,11 @@ public class Character : NetworkBehaviour
 
     protected virtual void Movement()
     {
-        // if (!IsOwner) { return; }
         rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
     }
 
     private void HandleMovement()
     {
-        // if (!IsOwner) { return; }
         if (dashTime > 0)
         {
             rb.velocity = new Vector2(moveInput.x * moveSpeed * dashSpeed, moveInput.y * moveSpeed * dashSpeed);
@@ -178,7 +160,6 @@ public class Character : NetworkBehaviour
 
     private void HandleFlip()
     {
-        // if (!IsOwner) { return; }
         if (moveInput.x < 0 && facingRight || moveInput.x > 0 && !facingRight)
             Flip();
     }
@@ -193,7 +174,22 @@ public class Character : NetworkBehaviour
 
     protected void DrawItemDetector()
     {
-        // if (!IsOwner) { return; }
         Gizmos.DrawWireSphere(itemCheck.position, itemCheckRadius);
+    }
+
+    [ServerRpc]
+    void SendMovementRequestServerRpc(Vector2 movementInput)
+    {
+        // Memanggil fungsi ClientRpc untuk mengupdate posisi pada semua client
+        Debug.Log($"Server received move input: {movementInput} from Client {OwnerClientId}");
+        MovePlayerClientRpc(movementInput);
+    }
+
+    [ClientRpc]
+    void MovePlayerClientRpc(Vector2 movementInput)
+    {
+        // Update posisi semua pemain
+        Debug.Log($"Updating position for player {OwnerClientId} with input: {movementInput}");
+        rb.velocity = new Vector2(movementInput.x * moveSpeed, movementInput.y * moveSpeed);
     }
 }
