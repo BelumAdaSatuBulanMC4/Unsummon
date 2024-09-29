@@ -8,16 +8,13 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Items
   - Water
   - UI
-  - 
-  - 
-  - 
-  - Items
+  - DeadBody
+  - Kid
   - Pocong
   - Spirit
-  - 
   - 
   - 
   - 
@@ -43,4 +40,22 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1456335479
+    locked: 0
+  - name: Items
+    uniqueID: 1875501971
+    locked: 0
+  - name: DeadBody
+    uniqueID: 2275596537
+    locked: 0
+  - name: Kid
+    uniqueID: 3238698807
+    locked: 0
+  - name: Pocong
+    uniqueID: 1663724197
+    locked: 0
+  - name: Spirit
+    uniqueID: 1273902977
     locked: 0
