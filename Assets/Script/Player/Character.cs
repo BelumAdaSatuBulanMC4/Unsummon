@@ -45,16 +45,8 @@ public class Character : NetworkBehaviour
         inputPlayer = new InputActions();
     }
 
-    // protected virtual void Start()
-    // {
-    //     // isAuthor = IsOwner;
-    //     rb = GetComponent<Rigidbody2D>();
-    //     inputPlayer = new InputActions();
-    // }
-
     private void OnEnable()
     {
-        // if (!IsOwner) { return; }
         inputPlayer.Enable();
         // inputPlayer.Kid.Dash.performed += ctx => DashAbility();
         inputPlayer.Kid.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
@@ -63,11 +55,7 @@ public class Character : NetworkBehaviour
 
     private void OnDisable()
     {
-        // if (!IsOwner) { return; }
         inputPlayer.Disable();
-        // inputPlayer.Kid.Dash.performed -= ctx => DashAbility();
-        // inputPlayer.Kid.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
-        // inputPlayer.Kid.Move.canceled -= ctx => moveInput = Vector2.zero;
     }
 
     public string GetCurrentLocation() => currentlocation;
@@ -86,6 +74,7 @@ public class Character : NetworkBehaviour
             dashCooldownTimer -= Time.deltaTime;
         }
 
+        // isAuthor = IsOwner;
         // Terapkan input langsung di client tanpa menunggu server
         HandleMovement();
         HandleItemInteraction();
@@ -201,35 +190,5 @@ public class Character : NetworkBehaviour
             transform.position = newPosition;
         }
     }
-
-    // [ServerRpc]
-    // void SendMovementRequestServerRpc(Vector2 movementInput, ServerRpcParams rpcParams = default)
-    // {
-    //     // Proses hanya di server untuk pemilik object
-    //     var clientId = rpcParams.Receive.SenderClientId;
-    //     if (NetworkManager.ConnectedClients.TryGetValue(clientId, out var client))
-    //     {
-    //         var playerObject = client.PlayerObject.GetComponent<Character>();
-    //         if (playerObject != null)
-    //         {
-    //             // Update posisi di server
-    //             playerObject.rb.velocity = new Vector2(movementInput.x * moveSpeed, movementInput.y * moveSpeed);
-
-    //             // Kirim update ke semua client
-    //             // MovePlayerClientRpc(playerObject.rb.velocity, clientId);
-    //         }
-    //     }
-    // }
-
-
-    // [ClientRpc]
-    // void MovePlayerClientRpc(Vector2 newVelocity, ulong clientId)
-    // {
-    //     // Hanya update posisi client yang sesuai
-    //     if (OwnerClientId != clientId)
-    //     {
-    //         rb.velocity = newVelocity;
-    //     }
-    // }
 
 }
