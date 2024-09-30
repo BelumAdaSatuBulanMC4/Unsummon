@@ -83,10 +83,10 @@ public class Character : NetworkBehaviour
             dashCooldownTimer -= Time.deltaTime;
         }
 
-        // Kirim input ke server untuk sinkronisasi
+        // Terapkan input langsung di client tanpa menunggu server
+        HandleMovement();
         SendMovementRequestServerRpc(moveInput);
 
-        HandleMovement();
         HandleItemInteraction();
         HandleFlip();
     }
@@ -201,7 +201,7 @@ public class Character : NetworkBehaviour
     void MovePlayerClientRpc(Vector2 newVelocity, ulong clientId)
     {
         // Hanya update posisi client yang sesuai
-        if (OwnerClientId == clientId)
+        if (OwnerClientId != clientId)
         {
             rb.velocity = newVelocity;
         }

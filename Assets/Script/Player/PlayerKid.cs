@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,28 +25,32 @@ public class PlayerKid : Character
 
     private void Start()
     {
-        // PlayerManager.instance.RegisterKid(this);
-        if (PlayerManager.instance != null)
-        {
-            PlayerManager.instance.RegisterKid(this);
-        }
-        else
-        {
-            Debug.LogError("PlayerManager is not initialized!");
-        }
         anim = GetComponentInChildren<Animator>();
+        StartCoroutine(RegisterKidWhenReady());
     }
 
-    private void OnDestroy()
+    private IEnumerator RegisterKidWhenReady()
     {
+        while (PlayerManager.instance == null)
+        {
+            yield return null; // Wait until PlayerManager is initialized
+        }
+
+        PlayerManager.instance.RegisterKid(this);
+        Debug.Log("Player manager berhasil diintansiasi");
+    }
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
         PlayerManager.instance.UnregisterKid(this); // Unregister when destroyed
     }
 
     protected override void Update()
     {
-        base.Update();
         HandleAnimations();
         HandleLocationChanged();
+        base.Update();
     }
 
     private void HandleLocationChanged()
