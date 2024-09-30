@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,30 +29,54 @@ public class PlayerKid : Character
     {
         base.Awake();
         typeChar = "Player";
-        PlayerManager.instance.RegisterKid(this);
-        anim = GetComponentInChildren<Animator>();
+        // PlayerManager.instance.RegisterKid(this);
+        // anim = GetComponentInChildren<Animator>();
         myCollider = GetComponent<Collider2D>();
     }
 
-    private void OnDestroy()
+    void Start()
     {
+        // base.Start();
+        typeChar = "Player";
+        anim = GetComponentInChildren<Animator>();
+        StartCoroutine(RegisterKidWhenReady());
+        myCollider = GetComponent<Collider2D>();
+    }
+
+    private IEnumerator RegisterKidWhenReady()
+    {
+        while (PlayerManager.instance == null)
+        {
+            yield return null; // Wait until PlayerManager is initialized
+        }
+
+        PlayerManager.instance.RegisterKid(this);
+        Debug.Log("Player manager berhasil diintansiasi");
+    }
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
         PlayerManager.instance.UnregisterKid(this); // Unregister when destroyed
     }
 
     protected override void Update()
     {
+        if (!IsOwner) { return; }
         base.Update();
         HandleAnimations();
         HandleLocationChanged();
         HandlePlayerCollision();
-        if (isAuthor)
-        {
-            controller_UI.SetActive(true);
-        }
-        else
-        {
-            controller_UI.SetActive(false);
-        }
+        // if (isAuthor)
+        controller_UI.SetActive(true);
+        // if (IsOwner)
+        // {
+        //     controller_UI.SetActive(true);
+        // }
+        // else
+        // {
+        //     controller_UI.SetActive(false);
+        // }
         // Debug.Log("location of kid " + transform.position);
     }
 

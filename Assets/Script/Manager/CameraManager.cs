@@ -19,7 +19,9 @@ public class CameraManager : MonoBehaviour
     {
         instance = this;
         source = GetComponent<CinemachineImpulseSource>();
+    }
 
+    private void Start() {
         Character authorCharacter = FindAuthorCharacter();
         if (authorCharacter != null)
         {

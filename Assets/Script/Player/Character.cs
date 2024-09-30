@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : NetworkBehaviour
 {
     protected Rigidbody2D rb;
     protected String typeChar;
@@ -42,11 +43,18 @@ public class Character : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         inputPlayer = new InputActions();
-        // FindFirstObjectByType<UI_DashButton>().UpdatePlayersRef(this);
     }
+
+    // protected virtual void Start()
+    // {
+    //     // isAuthor = IsOwner;
+    //     rb = GetComponent<Rigidbody2D>();
+    //     inputPlayer = new InputActions();
+    // }
 
     private void OnEnable()
     {
+        // if (!IsOwner) { return; }
         inputPlayer.Enable();
         // inputPlayer.Kid.Dash.performed += ctx => DashAbility();
         inputPlayer.Kid.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
@@ -55,10 +63,11 @@ public class Character : MonoBehaviour
 
     private void OnDisable()
     {
+        // if (!IsOwner) { return; }
         inputPlayer.Disable();
         // inputPlayer.Kid.Dash.performed -= ctx => DashAbility();
-        inputPlayer.Kid.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
-        inputPlayer.Kid.Move.canceled -= ctx => moveInput = Vector2.zero;
+        // inputPlayer.Kid.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
+        // inputPlayer.Kid.Move.canceled -= ctx => moveInput = Vector2.zero;
     }
 
     public string GetCurrentLocation() => currentlocation;
@@ -70,34 +79,23 @@ public class Character : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (!IsOwner) { return; }
         if (typeChar == "Player" || typeChar == "Pocong")
         {
             dashTime -= Time.deltaTime;
             dashCooldownTimer -= Time.deltaTime;
         }
 
-        // HandleInput();
+        // Terapkan input langsung di client tanpa menunggu server
         HandleMovement();
         HandleItemInteraction();
         HandleFlip();
+        SendPositionToServerServerRpc();
     }
 
     public float GetDashCooldown()
     {
         return dashCooldownTimer;
-    }
-    private void HandleInput()
-    {
-        // xInput = Input.GetAxisRaw("Horizontal");
-        // yInput = Input.GetAxisRaw("Vertical");
-
-        // if (typeChar == "Player" || typeChar == "Pocong")
-        // {
-        //     if (Input.GetKeyDown(KeyCode.LeftShift))
-        //     {
-        //         DashAbility();
-        //     }
-        // }
     }
 
     private void DashAbility()
@@ -157,6 +155,7 @@ public class Character : MonoBehaviour
         }
         else
         {
+            Debug.Log($"Movement: {moveInput} for {IsOwner}");
             rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
         }
     }
@@ -185,4 +184,52 @@ public class Character : MonoBehaviour
     {
         Gizmos.DrawWireSphere(itemCheck.position, itemCheckRadius);
     }
+
+    [ServerRpc]
+    void SendPositionToServerServerRpc()
+    {
+        // Server memperbarui posisi pemain di server dan mengirimkan ke semua client
+        UpdatePositionClientRpc(transform.position);
+    }
+
+    [ClientRpc]
+    void UpdatePositionClientRpc(Vector2 newPosition)
+    {
+        if (!IsOwner)
+        {
+            // Jika bukan owner (client lain), update posisi berdasarkan data dari server
+            transform.position = newPosition;
+        }
+    }
+
+    // [ServerRpc]
+    // void SendMovementRequestServerRpc(Vector2 movementInput, ServerRpcParams rpcParams = default)
+    // {
+    //     // Proses hanya di server untuk pemilik object
+    //     var clientId = rpcParams.Receive.SenderClientId;
+    //     if (NetworkManager.ConnectedClients.TryGetValue(clientId, out var client))
+    //     {
+    //         var playerObject = client.PlayerObject.GetComponent<Character>();
+    //         if (playerObject != null)
+    //         {
+    //             // Update posisi di server
+    //             playerObject.rb.velocity = new Vector2(movementInput.x * moveSpeed, movementInput.y * moveSpeed);
+
+    //             // Kirim update ke semua client
+    //             // MovePlayerClientRpc(playerObject.rb.velocity, clientId);
+    //         }
+    //     }
+    // }
+
+
+    // [ClientRpc]
+    // void MovePlayerClientRpc(Vector2 newVelocity, ulong clientId)
+    // {
+    //     // Hanya update posisi client yang sesuai
+    //     if (OwnerClientId != clientId)
+    //     {
+    //         rb.velocity = newVelocity;
+    //     }
+    // }
+
 }
