@@ -21,20 +21,31 @@ public class LobbyManager : NetworkBehaviour
     {
         Debug.Log("Player Joined dengan Client ID: " + clientId);
         SendImageToAllClientRpc(clientId);
-        // if (playerProfile[clientId] != null) {
-        //     playerProfile[clientId].sprite = newPlayerProfile[clientId];
-        // } else {
-        //     Debug.Log($"Player Profile dengan clientID {clientId} tidak ada!");
-        // }
     }
 
     // Server ke semua Client (dieksekusi di client)
     [ClientRpc]
     private void SendImageToAllClientRpc(ulong clientId) {
-        if (playerProfile[clientId] != null) {
-            playerProfile[clientId].sprite = newPlayerProfile[clientId];
-        } else {
-            Debug.Log($"Player Profile dengan clientID {clientId} tidak ada!");
+        // if (playerProfile[clientId] != null) {
+        //     playerProfile[clientId].sprite = newPlayerProfile[clientId];
+        // } else {
+        //     Debug.Log($"Player Profile dengan clientID {clientId} tidak ada!");
+        // }
+        // if (OwnerClientId == clientId) {
+        //     int totalPlayer = (int)clientId;
+        //     for (int i = 0; i < totalPlayer-1; i++) {
+        //         playerProfile[clientId].sprite = newPlayerProfile[clientId];
+        //         Debug.Log($"Profile player {clientId} telah diubah");
+        //     }
+        // }
+        int totalPlayer = (int)clientId;
+        for (int i = 0; i <= totalPlayer; i++) {            
+            if (playerProfile[i] != null) {
+                playerProfile[i].sprite = newPlayerProfile[i];
+                Debug.Log($"Profile player {clientId} telah diubah");
+            } else {
+                Debug.Log($"Player Profile dengan clientID {clientId} tidak ada!");
+            }
         }
     }
 
@@ -46,6 +57,12 @@ public class LobbyManager : NetworkBehaviour
             LoadGamePlaySceneServerRpc();
         }
     }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void LoadGamePlaySceneServerRpc()
+    {
+        NetworkManager.SceneManager.LoadScene("GamePlay", LoadSceneMode.Single);
+    }
     
     public void OnBackButtonPressed() {
         // Shutdown NetworkManager ketika kembali ke Main Menu
@@ -56,12 +73,6 @@ public class LobbyManager : NetworkBehaviour
 
         // Kembali ke Main Menu (implementasi LoadScene sesuai dengan logika kamu)
         SceneManager.LoadScene("MainMenu");
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void LoadGamePlaySceneServerRpc()
-    {
-        NetworkManager.SceneManager.LoadScene("GamePlay", LoadSceneMode.Single);
     }
 
 
