@@ -29,15 +29,11 @@ public class PlayerKid : Character
     {
         base.Awake();
         typeChar = "Player";
-        // PlayerManager.instance.RegisterKid(this);
-        // anim = GetComponentInChildren<Animator>();
         myCollider = GetComponent<Collider2D>();
     }
 
     void Start()
     {
-        // base.Start();
-        typeChar = "Player";
         anim = GetComponentInChildren<Animator>();
         StartCoroutine(RegisterKidWhenReady());
         myCollider = GetComponent<Collider2D>();
@@ -67,17 +63,7 @@ public class PlayerKid : Character
         HandleAnimations();
         HandleLocationChanged();
         HandlePlayerCollision();
-        // if (isAuthor)
         controller_UI.SetActive(true);
-        // if (IsOwner)
-        // {
-        //     controller_UI.SetActive(true);
-        // }
-        // else
-        // {
-        //     controller_UI.SetActive(false);
-        // }
-        // Debug.Log("location of kid " + transform.position);
     }
 
     private void HandleLocationChanged()
@@ -87,11 +73,6 @@ public class PlayerKid : Character
             PlayerManager.instance.UpdateKidPosition(this, transform.position);
 
         }
-
-        // if (dashTime > 0)
-        // {
-        //     PlayerManager.instance.UpdateKidPosition(this, transform.position);
-        // }
     }
 
     private void HandlePlayerCollision()
