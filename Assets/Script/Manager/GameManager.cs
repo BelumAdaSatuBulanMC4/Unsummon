@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     private int totalItems = 5;
+    private int totalKids = 4;
     private int activeItems = 0;
+    private int killedKids = 0;
+    private bool kidsWin;
+    private bool pocongWin;
 
 
     private void Awake()
@@ -51,6 +56,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void updateKilledKids()
+    {
+        if (killedKids < totalKids)
+        {
+            killedKids++;
+        }
+        else
+        {
+            kidsWin = false;
+            pocongWin = true;
+            EndGame(kidsWin);
+        }
+    }
+
     public void KidTurnedOnItem(Item item)
     {
         if (activeItems < totalItems)
@@ -61,10 +80,15 @@ public class GameManager : MonoBehaviour
 
             if (activeItems == totalItems)
             {
-                EndGame(true);
+                kidsWin = true;
+                pocongWin = false;
+                EndGame(kidsWin);
             }
         }
     }
+
+    public bool getPocongWin() => pocongWin;
+    public bool getKidsWin() => kidsWin;
 
     public void PocongTurnedOffItem(Item item)
     {
@@ -80,15 +104,14 @@ public class GameManager : MonoBehaviour
     {
         if (kidsWon)
         {
-            Debug.Log("Kids have won the game!");
+            // Debug.Log("Kids have won the game!");
+            SceneManager.LoadScene("");
         }
         else
         {
             Debug.Log("Pocong has won the game!");
+            SceneManager.LoadScene("MiniGameScene");
         }
-
-        // Restart or end the game
-        // Reset all items, notify players, etc.
     }
 }
 
