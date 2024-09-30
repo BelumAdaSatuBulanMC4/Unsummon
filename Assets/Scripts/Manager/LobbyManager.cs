@@ -20,6 +20,17 @@ public class LobbyManager : NetworkBehaviour
     private void OnPlayerJoined(ulong clientId)
     {
         Debug.Log("Player Joined dengan Client ID: " + clientId);
+        SendImageToAllClientRpc(clientId);
+        // if (playerProfile[clientId] != null) {
+        //     playerProfile[clientId].sprite = newPlayerProfile[clientId];
+        // } else {
+        //     Debug.Log($"Player Profile dengan clientID {clientId} tidak ada!");
+        // }
+    }
+
+    // Server ke semua Client (dieksekusi di client)
+    [ClientRpc]
+    private void SendImageToAllClientRpc(ulong clientId) {
         if (playerProfile[clientId] != null) {
             playerProfile[clientId].sprite = newPlayerProfile[clientId];
         } else {
@@ -27,6 +38,14 @@ public class LobbyManager : NetworkBehaviour
         }
     }
 
+    public void OnStartButtonPressed()
+    {
+        Debug.Log("Tombol start berhasil ditekan!");
+        if (IsHost)
+        {
+            LoadGamePlaySceneServerRpc();
+        }
+    }
     
     public void OnBackButtonPressed() {
         // Shutdown NetworkManager ketika kembali ke Main Menu
@@ -37,15 +56,6 @@ public class LobbyManager : NetworkBehaviour
 
         // Kembali ke Main Menu (implementasi LoadScene sesuai dengan logika kamu)
         SceneManager.LoadScene("MainMenu");
-    }
-
-    public void OnStartButtonPressed()
-    {
-        Debug.Log("Tombol start berhasil ditekan!");
-        if (IsHost)
-        {
-            LoadGamePlaySceneServerRpc();
-        }
     }
 
     [ServerRpc(RequireOwnership = false)]
