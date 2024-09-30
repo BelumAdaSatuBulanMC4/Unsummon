@@ -43,28 +43,19 @@ public class Character : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         inputPlayer = new InputActions();
-        // isAuthor = IsOwner;
-        // FindFirstObjectByType<UI_DashButton>().UpdatePlayersRef(this);
     }
-
-    // private void Start() {
-    //     isAuthor = IsOwner;
-    // }
 
     private void OnEnable()
     {
         inputPlayer.Enable();
         // inputPlayer.Kid.Dash.performed += ctx => DashAbility();
-        inputPlayer.Kid.Move.performed += ctx => {moveInput = ctx.ReadValue<Vector2>(); };
+        inputPlayer.Kid.Move.performed += ctx => { moveInput = ctx.ReadValue<Vector2>(); };
         inputPlayer.Kid.Move.canceled += ctx => moveInput = Vector2.zero;
     }
 
     private void OnDisable()
     {
         inputPlayer.Disable();
-        // inputPlayer.Kid.Dash.performed -= ctx => DashAbility();
-        // inputPlayer.Kid.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
-        // inputPlayer.Kid.Move.canceled -= ctx => moveInput = Vector2.zero;
     }
 
     public string GetCurrentLocation() => currentlocation;
@@ -83,13 +74,12 @@ public class Character : NetworkBehaviour
             dashCooldownTimer -= Time.deltaTime;
         }
 
-        SendMovementRequestServerRpc(moveInput);
+        // isAuthor = IsOwner;
         // Terapkan input langsung di client tanpa menunggu server
-        // HandleMovement();
-        // SendMovementRequestServerRpc(moveInput);
-
+        HandleMovement();
         HandleItemInteraction();
         HandleFlip();
+        SendPositionToServerServerRpc();
     }
 
     public float GetDashCooldown()
@@ -105,7 +95,6 @@ public class Character : NetworkBehaviour
             {
                 dashCooldownTimer = dashCooldown;
                 dashTime = dashDuration;
-
             }
         }
     }
@@ -155,9 +144,16 @@ public class Character : NetworkBehaviour
         }
         else
         {
+            Debug.Log($"Movement: {moveInput} for {IsOwner}");
             rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
         }
     }
+
+    // private IEnumerator PositionPocong()
+    // {
+    //     yield return new WaitForSeconds(dashTime);
+    //     PlayerManager.instance.UpdateKidPosition(this, transform.position);
+    // }
 
     private void HandleFlip()
     {
@@ -179,33 +175,19 @@ public class Character : NetworkBehaviour
     }
 
     [ServerRpc]
-    void SendMovementRequestServerRpc(Vector2 movementInput, ServerRpcParams rpcParams = default)
+    void SendPositionToServerServerRpc()
     {
-        // Proses hanya di server untuk pemilik object
-        var clientId = rpcParams.Receive.SenderClientId;
-
-        if (NetworkManager.ConnectedClients.TryGetValue(clientId, out var client))
-        {
-            var playerObject = client.PlayerObject.GetComponent<Rigidbody2D>();
-            if (playerObject != null)
-            {
-                // Update posisi di server
-                playerObject.velocity = new Vector2(movementInput.x * moveSpeed, movementInput.y * moveSpeed);
-
-                // Kirim update ke semua client
-                // MovePlayerClientRpc(playerObject.rb.velocity, clientId);
-            }
-        }
+        // Server memperbarui posisi pemain di server dan mengirimkan ke semua client
+        UpdatePositionClientRpc(transform.position);
     }
 
-
     [ClientRpc]
-    void MovePlayerClientRpc(Vector2 newVelocity, ulong clientId)
+    void UpdatePositionClientRpc(Vector2 newPosition)
     {
-        // Hanya update posisi client yang sesuai
-        if (OwnerClientId != clientId)
+        if (!IsOwner)
         {
-            rb.velocity = newVelocity;
+            // Jika bukan owner (client lain), update posisi berdasarkan data dari server
+            transform.position = newPosition;
         }
     }
 

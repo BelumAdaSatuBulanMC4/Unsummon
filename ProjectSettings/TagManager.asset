@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Kids
+  - Controller
   layers:
   - Default
   - TransparentFX
@@ -15,9 +17,9 @@ TagManager:
   - Kid
   - Pocong
   - Spirit
-  - 
-  - 
-  - 
+  - Mirror
+  - CamBox
+  - Indicator
   - 
   - 
   - 
@@ -58,4 +60,7 @@ TagManager:
     locked: 0
   - name: Spirit
     uniqueID: 1273902977
+    locked: 0
+  - name: Indicator
+    uniqueID: 316288467
     locked: 0

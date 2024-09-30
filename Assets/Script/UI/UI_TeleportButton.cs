@@ -35,7 +35,7 @@ public class UI_TeleportButton : MonoBehaviour
     {
         if (chara != null)
         {
-            if (chara.GetTeleportCooldown() <= 0)
+            if (chara.GetTeleportCooldown() <= 0 && chara.GetIsMirrorDetected())
             {
                 EnableButton();
                 buttonText.text = "";
@@ -43,7 +43,14 @@ public class UI_TeleportButton : MonoBehaviour
             else
             {
                 DisableButton();
-                buttonText.text = Mathf.CeilToInt(chara.GetTeleportCooldown()).ToString();
+                if (Mathf.CeilToInt(chara.GetTeleportCooldown()) <= 0)
+                {
+                    buttonText.text = "";
+                }
+                else
+                {
+                    buttonText.text = Mathf.CeilToInt(chara.GetTeleportCooldown()).ToString();
+                }
             }
         }
     }
