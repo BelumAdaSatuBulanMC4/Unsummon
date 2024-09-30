@@ -3,5 +3,8 @@
     "files.exclude": {
         "**/*.meta": true
     },
-    "dotnet.defaultSolution": "Unsummon.sln"
+    "dotnet.defaultSolution": "Unsummon.sln",
+    "[csharp]": {
+        "editor.formatOnSave": true
+    }
 }

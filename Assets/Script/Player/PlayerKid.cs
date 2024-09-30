@@ -34,10 +34,13 @@ public class PlayerKid : Character
         myCollider = GetComponent<Collider2D>();
     }
 
-    private void Start()
+    void Start()
     {
+        // base.Start();
+        typeChar = "Player";
         anim = GetComponentInChildren<Animator>();
         StartCoroutine(RegisterKidWhenReady());
+        myCollider = GetComponent<Collider2D>();
     }
 
     private IEnumerator RegisterKidWhenReady()
@@ -59,18 +62,21 @@ public class PlayerKid : Character
 
     protected override void Update()
     {
+        if (!IsOwner) { return; }
         base.Update();
         HandleAnimations();
         HandleLocationChanged();
         HandlePlayerCollision();
-        if (isAuthor)
-        {
-            controller_UI.SetActive(true);
-        }
-        else
-        {
-            controller_UI.SetActive(false);
-        }
+        // if (isAuthor)
+        controller_UI.SetActive(true);
+        // if (IsOwner)
+        // {
+        //     controller_UI.SetActive(true);
+        // }
+        // else
+        // {
+        //     controller_UI.SetActive(false);
+        // }
         // Debug.Log("location of kid " + transform.position);
     }
 
