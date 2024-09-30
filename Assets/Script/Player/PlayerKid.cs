@@ -23,6 +23,8 @@ public class PlayerKid : Character
     [SerializeField] private LayerMask whatIsPlayerSpirit;
     private Collider2D[] detectedSpirits;
 
+    [SerializeField] private GameObject controller_UI;
+
     protected override void Awake()
     {
         base.Awake();
@@ -61,7 +63,15 @@ public class PlayerKid : Character
         HandleAnimations();
         HandleLocationChanged();
         HandlePlayerCollision();
-        Debug.Log("location of kid " + transform.position);
+        if (isAuthor)
+        {
+            controller_UI.SetActive(true);
+        }
+        else
+        {
+            controller_UI.SetActive(false);
+        }
+        // Debug.Log("location of kid " + transform.position);
     }
 
     private void HandleLocationChanged()
@@ -98,15 +108,15 @@ public class PlayerKid : Character
     private void GettingKilled()
     {
         Debug.Log("the player has been killed");
-        Transform kidTransform = transform;
-        Instantiate(deadBodyPrefab, kidTransform.position, kidTransform.rotation);
-        GameObject spirit = Instantiate(spiritPrefab, kidTransform.position, kidTransform.rotation);
-        if (isAuthor)
-        {
-            CameraManager.instance.CameraShake();
-            spirit.GetComponent<PlayerSpirit>().SetAuthor(true);
-            CameraManager.instance.ChangeCameraFollow(spirit.transform);
-        }
+        // Transform kidTransform = transform;
+        Instantiate(deadBodyPrefab, transform.position, transform.rotation);
+        // if (isAuthor)
+        // {
+        CameraManager.instance.CameraShake();
+        GameObject spirit = Instantiate(spiritPrefab, transform.position, transform.rotation);
+        spirit.GetComponentInChildren<PlayerSpirit>().SetAuthor(isAuthor);
+        // CameraManager.instance.ChangeCameraFollow(spirit.transform);
+        // }
         Destroy(gameObject);
     }
 

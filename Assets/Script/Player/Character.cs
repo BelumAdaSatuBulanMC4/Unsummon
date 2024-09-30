@@ -47,15 +47,15 @@ public class Character : NetworkBehaviour
         // FindFirstObjectByType<UI_DashButton>().UpdatePlayersRef(this);
     }
 
-    // private void Start() {
-    //     isAuthor = IsOwner;
-    // }
+    private void Start() {
+        isAuthor = IsOwner;
+    }
 
     private void OnEnable()
     {
         inputPlayer.Enable();
         // inputPlayer.Kid.Dash.performed += ctx => DashAbility();
-        inputPlayer.Kid.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        inputPlayer.Kid.Move.performed += ctx => {moveInput = ctx.ReadValue<Vector2>(); Debug.Log("gerak");};
         inputPlayer.Kid.Move.canceled += ctx => moveInput = Vector2.zero;
     }
 
@@ -153,6 +153,7 @@ public class Character : NetworkBehaviour
         }
         else
         {
+            Debug.Log("handle movement");
             rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
         }
     }
