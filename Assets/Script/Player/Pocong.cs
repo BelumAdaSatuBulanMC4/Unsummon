@@ -35,6 +35,8 @@ public class Pocong : Character
     [SerializeField] protected float teleportCooldown; // Teleport cooldown duration
     protected float teleportCooldownTimer;
 
+    [SerializeField] private GameObject controller_UI;
+
 
     protected override void Awake()
     {
@@ -51,7 +53,7 @@ public class Pocong : Character
         attackCooldownTimer -= Time.deltaTime;
         teleportCooldownTimer -= Time.deltaTime;
 
-        Debug.Log("location of pocong " + transform.position);
+        // Debug.Log("location of pocong " + transform.position);
 
         HandleAnimations();
         // HandleTeleport();
@@ -60,6 +62,14 @@ public class Pocong : Character
         HandleKidInteraction();
         HandleMirrorInteraction();
         GetKidsPosition();
+        if (isAuthor)
+        {
+            controller_UI.SetActive(true);
+        }
+        else
+        {
+            controller_UI.SetActive(false);
+        }
     }
     private void HandleLocationChanged()
     {

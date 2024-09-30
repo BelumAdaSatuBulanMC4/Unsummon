@@ -42,7 +42,7 @@ public class IndicatorScript : MonoBehaviour
     {
         for (int i = 0; i < players.Count; i++)
         {
-            if (players[i] != gameObject)
+            if (players[i] != gameObject && players[i] != null)
             {
                 UpdateOffScreenIndicator(players[i], activeIndicators[i]);
                 Debug.Log("location of player " + i + " " + players[i].transform.position);
@@ -55,7 +55,7 @@ public class IndicatorScript : MonoBehaviour
         Vector3 screenPosition = mainCamera.WorldToViewportPoint(player.transform.position);
 
         // Determine if the player is off-screen
-        bool isOffScreen = screenPosition.x < 0 || screenPosition.x > Screen.width || screenPosition.y < 0 || screenPosition.y > Screen.height;
+        bool isOffScreen = screenPosition.x <= 0 || screenPosition.x >= 1 || screenPosition.y <= 0 || screenPosition.y >= 1;
 
         if (isOffScreen)
         {

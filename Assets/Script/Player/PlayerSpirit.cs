@@ -23,6 +23,8 @@ public class PlayerSpirit : Character
 
     private bool isKidDetected = false;
     private bool isPocongDetected = false;
+
+    [SerializeField] private GameObject controller_UI;
     protected override void Awake()
     {
         base.Awake();
@@ -40,6 +42,15 @@ public class PlayerSpirit : Character
         HandleAnimations();
         // HandleLocationChanged();
         HandlePlayerCollision();
+
+        if (isAuthor)
+        {
+            controller_UI.SetActive(true);
+        }
+        else
+        {
+            controller_UI.SetActive(false);
+        }
     }
 
     private void HandlePlayerCollision()
