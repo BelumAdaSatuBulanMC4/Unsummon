@@ -86,19 +86,6 @@ public class Character : MonoBehaviour
     {
         return dashCooldownTimer;
     }
-    private void HandleInput()
-    {
-        // xInput = Input.GetAxisRaw("Horizontal");
-        // yInput = Input.GetAxisRaw("Vertical");
-
-        // if (typeChar == "Player" || typeChar == "Pocong")
-        // {
-        //     if (Input.GetKeyDown(KeyCode.LeftShift))
-        //     {
-        //         DashAbility();
-        //     }
-        // }
-    }
 
     private void DashAbility()
     {
@@ -133,14 +120,23 @@ public class Character : MonoBehaviour
         if (item == null) return;
         if (Input.GetKeyDown(KeyCode.E) && typeChar == "Player")
         {
-            Debug.Log("cek!");
+            // Debug.Log("cek!");
             if (!item.isActivated)
-                GameManager.instance.KidTurnedOnItem(item); // Notify GameManager when a Kid turns on an item
+            {
+                // GameManager.instance.KidTurnedOnItem(item);
+                UI_InGame.instance.OpenMiniGame();
+                UI_MiniGame.instance.CurrentItem(item);
+            }
         }
         else if (Input.GetKeyDown(KeyCode.R) && typeChar == "Pocong")
         {
             if (item.isActivated)
-                GameManager.instance.PocongTurnedOffItem(item); // Notify GameManager when Pocong turns off an item
+            {
+                // GameManager.instance.PocongTurnedOnItem(item);
+                UI_InGame.instance.OpenMiniGame();
+                UI_MiniGame.instance.CurrentItem(item);
+            }
+            // GameManager.instance.PocongTurnedOffItem(item);
         }
     }
 
@@ -160,13 +156,6 @@ public class Character : MonoBehaviour
             rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
         }
     }
-
-    // private IEnumerator PositionPocong()
-    // {
-    //     yield return new WaitForSeconds(dashTime);
-    //     PlayerManager.instance.UpdateKidPosition(this, transform.position);
-    // }
-
     private void HandleFlip()
     {
         if (moveInput.x < 0 && facingRight || moveInput.x > 0 && !facingRight)

@@ -4,18 +4,30 @@ using UnityEngine;
 
 public class UI_InGame : MonoBehaviour
 {
+    public static UI_InGame instance;
+
     [Header("UI Prefabs")]
     [SerializeField] private GameObject UI_InGameKid;
     [SerializeField] private GameObject UI_InGamePocong;
     [SerializeField] private GameObject UI_InGameSpirit;
     [SerializeField] private GameObject UI_GameInfo;
     [SerializeField] private GameObject UI_InGameSettings;
+    [SerializeField] private GameObject UI_MiniGames;
 
     private GameObject currentInGameController;
-
-    // [SerializeField] private GameObject[] uiElements;
-
     private Character authorCharacter;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     void Start()
     {
@@ -40,6 +52,16 @@ public class UI_InGame : MonoBehaviour
     public void CloseSettings()
     {
         UI_InGameSettings.SetActive(false);
+    }
+
+    public void OpenMiniGame()
+    {
+        UI_MiniGames.SetActive(true);
+    }
+
+    public void CloseMiniGame()
+    {
+        UI_MiniGames.SetActive(false);
     }
 
     // public void SwitchUI(GameObject uiToEnable)
