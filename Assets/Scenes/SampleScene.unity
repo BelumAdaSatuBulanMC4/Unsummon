@@ -381,7 +381,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 115152053}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a83e073d917e4997b10950b35f617c8, type: 3}
   m_Name: 
@@ -26688,11 +26688,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2220125847470855314, guid: d0745f63bb90d41fabe0cdb7d0be4567, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.89
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2220125847470855314, guid: d0745f63bb90d41fabe0cdb7d0be4567, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.51
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2220125847470855314, guid: d0745f63bb90d41fabe0cdb7d0be4567, type: 3}
       propertyPath: m_LocalPosition.z
@@ -26729,6 +26729,14 @@ PrefabInstance:
     - target: {fileID: 3527622045971319382, guid: d0745f63bb90d41fabe0cdb7d0be4567, type: 3}
       propertyPath: m_Name
       value: PlayerPocong
+      objectReference: {fileID: 0}
+    - target: {fileID: 8389517413287965553, guid: d0745f63bb90d41fabe0cdb7d0be4567, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 8389517413287965553, guid: d0745f63bb90d41fabe0cdb7d0be4567, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 14.69
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27223,11 +27231,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3251251258958118885, guid: 53679de70933245b99d610d10ec6cd7e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.64
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3251251258958118885, guid: 53679de70933245b99d610d10ec6cd7e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.23
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3251251258958118885, guid: 53679de70933245b99d610d10ec6cd7e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -27265,17 +27273,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerKid
       objectReference: {fileID: 0}
-    - target: {fileID: 4057405978394237103, guid: 53679de70933245b99d610d10ec6cd7e, type: 3}
-      propertyPath: m_TagString
-      value: Kids
-      objectReference: {fileID: 0}
     - target: {fileID: 8178781194158529171, guid: 53679de70933245b99d610d10ec6cd7e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.8400006
+      value: -0.09
       objectReference: {fileID: 0}
     - target: {fileID: 8178781194158529171, guid: 53679de70933245b99d610d10ec6cd7e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.51
+      value: 14.69
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

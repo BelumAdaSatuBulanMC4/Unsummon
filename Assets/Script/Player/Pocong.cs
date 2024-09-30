@@ -51,6 +51,8 @@ public class Pocong : Character
         attackCooldownTimer -= Time.deltaTime;
         teleportCooldownTimer -= Time.deltaTime;
 
+        Debug.Log("location of pocong " + transform.position);
+
         HandleAnimations();
         // HandleTeleport();
         HandlePlayerCollision();

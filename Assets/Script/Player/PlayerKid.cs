@@ -42,6 +42,7 @@ public class PlayerKid : Character
         HandleAnimations();
         HandleLocationChanged();
         HandlePlayerCollision();
+        Debug.Log("location of kid " + transform.position);
     }
 
     private void HandleLocationChanged()

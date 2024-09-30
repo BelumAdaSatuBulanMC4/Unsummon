@@ -45,6 +45,7 @@ public class IndicatorScript : MonoBehaviour
             if (players[i] != gameObject)
             {
                 UpdateOffScreenIndicator(players[i], activeIndicators[i]);
+                Debug.Log("location of player " + i + " " + players[i].transform.position);
             }
         }
     }
