@@ -55,7 +55,7 @@ public class Character : NetworkBehaviour
     {
         inputPlayer.Enable();
         // inputPlayer.Kid.Dash.performed += ctx => DashAbility();
-        inputPlayer.Kid.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        inputPlayer.Kid.Move.performed += ctx => {moveInput = ctx.ReadValue<Vector2>(); };
         inputPlayer.Kid.Move.canceled += ctx => moveInput = Vector2.zero;
     }
 
@@ -63,8 +63,8 @@ public class Character : NetworkBehaviour
     {
         inputPlayer.Disable();
         // inputPlayer.Kid.Dash.performed -= ctx => DashAbility();
-        inputPlayer.Kid.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
-        inputPlayer.Kid.Move.canceled -= ctx => moveInput = Vector2.zero;
+        // inputPlayer.Kid.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
+        // inputPlayer.Kid.Move.canceled -= ctx => moveInput = Vector2.zero;
     }
 
     public string GetCurrentLocation() => currentlocation;
@@ -83,9 +83,10 @@ public class Character : NetworkBehaviour
             dashCooldownTimer -= Time.deltaTime;
         }
 
-        // Terapkan input langsung di client tanpa menunggu server
-        HandleMovement();
         SendMovementRequestServerRpc(moveInput);
+        // Terapkan input langsung di client tanpa menunggu server
+        // HandleMovement();
+        // SendMovementRequestServerRpc(moveInput);
 
         HandleItemInteraction();
         HandleFlip();
@@ -182,16 +183,17 @@ public class Character : NetworkBehaviour
     {
         // Proses hanya di server untuk pemilik object
         var clientId = rpcParams.Receive.SenderClientId;
+
         if (NetworkManager.ConnectedClients.TryGetValue(clientId, out var client))
         {
-            var playerObject = client.PlayerObject.GetComponent<Character>();
+            var playerObject = client.PlayerObject.GetComponent<Rigidbody2D>();
             if (playerObject != null)
             {
                 // Update posisi di server
-                playerObject.rb.velocity = new Vector2(movementInput.x * moveSpeed, movementInput.y * moveSpeed);
+                playerObject.velocity = new Vector2(movementInput.x * moveSpeed, movementInput.y * moveSpeed);
 
                 // Kirim update ke semua client
-                MovePlayerClientRpc(playerObject.rb.velocity, clientId);
+                // MovePlayerClientRpc(playerObject.rb.velocity, clientId);
             }
         }
     }
