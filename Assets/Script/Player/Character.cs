@@ -108,7 +108,6 @@ public class Character : MonoBehaviour
             {
                 dashCooldownTimer = dashCooldown;
                 dashTime = dashDuration;
-
             }
         }
     }
@@ -161,6 +160,12 @@ public class Character : MonoBehaviour
             rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
         }
     }
+
+    // private IEnumerator PositionPocong()
+    // {
+    //     yield return new WaitForSeconds(dashTime);
+    //     PlayerManager.instance.UpdateKidPosition(this, transform.position);
+    // }
 
     private void HandleFlip()
     {
