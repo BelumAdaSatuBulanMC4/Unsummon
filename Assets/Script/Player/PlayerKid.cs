@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerKid : Character
 {
     private Animator anim;
+    private Collider2D myCollider;
 
     [Header("KnockBack")]
     [SerializeField] private float knockBackDuration = 1;
@@ -14,12 +15,20 @@ public class PlayerKid : Character
     [Header("Prefabs")]
     [SerializeField] private GameObject spiritPrefab;   // Assign the Spirit prefab in the Inspector
     [SerializeField] private GameObject deadBodyPrefab;
+
+    [Header("Collision Spirit")]
+    [SerializeField] private Transform spiritCheck;
+    [SerializeField] private float spiritCheckRadius;
+    [SerializeField] private LayerMask whatIsPlayerSpirit;
+    private Collider2D[] detectedSpirits;
+
     protected override void Awake()
     {
         base.Awake();
         typeChar = "Player";
         PlayerManager.instance.RegisterKid(this);
         anim = GetComponentInChildren<Animator>();
+        myCollider = GetComponent<Collider2D>();
     }
 
     private void OnDestroy()
@@ -32,14 +41,38 @@ public class PlayerKid : Character
         base.Update();
         HandleAnimations();
         HandleLocationChanged();
+        HandlePlayerCollision();
+        Debug.Log("location of kid " + transform.position);
     }
 
     private void HandleLocationChanged()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.L))
         {
-            CameraManager.instance.CameraShake();
             PlayerManager.instance.UpdateKidPosition(this, transform.position);
+
+        }
+
+        // if (dashTime > 0)
+        // {
+        //     PlayerManager.instance.UpdateKidPosition(this, transform.position);
+        // }
+    }
+
+    private void HandlePlayerCollision()
+    {
+        detectedSpirits = Physics2D.OverlapCircleAll(spiritCheck.position, spiritCheckRadius, whatIsPlayerSpirit);
+
+        if (detectedSpirits.Length > 0)
+        {
+            foreach (Collider2D spirit in detectedSpirits)
+            {
+                PlayerSpirit sprt = spirit.GetComponent<PlayerSpirit>();
+                if (sprt != null)
+                {
+                    Physics2D.IgnoreCollision(myCollider, spirit);
+                }
+            }
         }
     }
 
@@ -51,6 +84,7 @@ public class PlayerKid : Character
         GameObject spirit = Instantiate(spiritPrefab, kidTransform.position, kidTransform.rotation);
         if (isAuthor)
         {
+            CameraManager.instance.CameraShake();
             spirit.GetComponent<PlayerSpirit>().SetAuthor(true);
             CameraManager.instance.ChangeCameraFollow(spirit.transform);
         }
@@ -101,5 +135,6 @@ public class PlayerKid : Character
     private void OnDrawGizmos()
     {
         DrawItemDetector();
+        Gizmos.DrawWireSphere(spiritCheck.position, spiritCheckRadius);
     }
 }
