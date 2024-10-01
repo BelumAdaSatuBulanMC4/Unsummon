@@ -60,7 +60,7 @@ public class Character : NetworkBehaviour
     {
         inputPlayer.Enable();
         // inputPlayer.Kid.Dash.performed += ctx => DashAbility();
-        inputPlayer.Kid.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        inputPlayer.Kid.Move.performed += ctx => { moveInput = ctx.ReadValue<Vector2>(); };
         inputPlayer.Kid.Move.canceled += ctx => moveInput = Vector2.zero;
     }
 
@@ -74,11 +74,17 @@ public class Character : NetworkBehaviour
     {
         currentlocation = loc;
     }
+
+    public string GetTypeChar()
+    {
+        return typeChar;
+    }
     public void DashButton() => DashAbility();
 
     protected virtual void Update()
     {
         if (!IsOwner) { return; }
+        Debug.Log($"PlayerID: {OwnerClientId} adalah {typeChar}");
         if (typeChar == "Player" || typeChar == "Pocong")
         {
             dashTime -= Time.deltaTime;
@@ -93,9 +99,19 @@ public class Character : NetworkBehaviour
         SendPositionToServerServerRpc();
     }
 
+    public Item GetCurrentItem()
+    {
+        return currentItem;
+    }
+
     public float GetDashCooldown()
     {
         return dashCooldownTimer;
+    }
+
+    public bool GetIsAuthor()
+    {
+        return IsOwner;
     }
 
     private void DashAbility()
@@ -194,7 +210,7 @@ public class Character : NetworkBehaviour
         }
         else
         {
-            Debug.Log($"Movement: {moveInput} for {IsOwner}");
+            // Debug.Log($"Movement: {moveInput} for {IsOwner}");
             rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
         }
     }

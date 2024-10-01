@@ -40,6 +40,7 @@ public class PlayerKid : Character
         anim = GetComponentInChildren<Animator>();
         StartCoroutine(RegisterKidWhenReady());
         myCollider = GetComponent<Collider2D>();
+        isAuthor = IsOwner;
     }
 
     private IEnumerator RegisterKidWhenReady()
@@ -67,14 +68,7 @@ public class PlayerKid : Character
         HandleLocationChanged();
         HandlePlayerCollision();
         HandleButtonInteraction();
-        if (isAuthor)
-        {
-            controller_UI.SetActive(true);
-        }
-        else
-        {
-            controller_UI.SetActive(false);
-        }
+        // controller_UI.SetActive(IsOwner);
         // Debug.Log("location of kid " + transform.position);
     }
 
