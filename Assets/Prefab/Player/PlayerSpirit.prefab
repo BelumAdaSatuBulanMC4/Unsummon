@@ -324,6 +324,7 @@ MonoBehaviour:
   dashSpeed: 0
   dashDuration: 0
   dashCooldown: 0
+  mySelf: {fileID: 5544716519150484690}
   playerCheck: {fileID: 8219391307993261388}
   playerCheckRadius: 1.61
   whatIsPlayerKid:
@@ -345,6 +346,10 @@ PrefabInstance:
     - target: {fileID: 6047299681816692976, guid: 781c2bede183a45aa8b362d82a2ee54f, type: 3}
       propertyPath: m_Name
       value: UI_InGameSpirit
+      objectReference: {fileID: 0}
+    - target: {fileID: 6047299681816692976, guid: 781c2bede183a45aa8b362d82a2ee54f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7942697735957843393, guid: 781c2bede183a45aa8b362d82a2ee54f, type: 3}
       propertyPath: m_Pivot.x
@@ -590,6 +595,14 @@ PrefabInstance:
       propertyPath: virtualCamera
       value: 
       objectReference: {fileID: 205105292999540313}
+    - target: {fileID: 7889573254666234468, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
+      propertyPath: shakeVelocity.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7889573254666234468, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
+      propertyPath: shakeVelocity.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

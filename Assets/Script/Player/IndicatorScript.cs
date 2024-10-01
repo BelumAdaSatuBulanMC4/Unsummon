@@ -45,7 +45,7 @@ public class IndicatorScript : MonoBehaviour
             if (players[i] != gameObject && players[i] != null)
             {
                 UpdateOffScreenIndicator(players[i], activeIndicators[i]);
-                Debug.Log("location of player " + i + " " + players[i].transform.position);
+                // Debug.Log("location of player " + i + " " + players[i].transform.position);
             }
         }
     }
@@ -75,7 +75,7 @@ public class IndicatorScript : MonoBehaviour
             Vector3 worldPosition = mainCamera.ViewportToWorldPoint(screenPosition);
             worldPosition.z = 0;
             indicator.transform.position = worldPosition;
-            Debug.Log("world position : " + indicator.transform.position);
+            // Debug.Log("world position : " + indicator.transform.position);
 
             // Adjust the rotation of the indicator to point toward the player
             // Vector3 directionToPlayer = player.transform.position - mainCamera.transform.position;

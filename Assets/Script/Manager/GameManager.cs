@@ -2,12 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : NetworkBehaviour
 {
     public static GameManager instance;
     private int totalItems = 5;
+    private int totalKids;
     private int activeItems = 0;
+    private int killedKids = 0;
+    private bool kidsWin;
+    private bool pocongWin;
 
 
     private void Awake()
@@ -18,8 +23,13 @@ public class GameManager : NetworkBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            // Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        FindAllPlayerKids();
     }
     public void addActivatedItems()
     {
@@ -31,6 +41,13 @@ public class GameManager : NetworkBehaviour
 
         activeItems++;
         Debug.Log("Kid turned on an item!");
+    }
+
+    public void FindAllPlayerKids()
+    {
+        PlayerKid[] allPlayerKids = FindObjectsOfType<PlayerKid>();
+        Debug.Log("total kids : " + allPlayerKids.Length);
+        totalKids = allPlayerKids.Length;
     }
 
     public int GetActiveItems()
@@ -52,6 +69,22 @@ public class GameManager : NetworkBehaviour
         }
     }
 
+    public void UpdateKilledKids()
+    {
+        if (killedKids < totalKids)
+        {
+            killedKids++;
+            Debug.Log("Killed kids " + killedKids + " / " + totalKids);
+            if (killedKids == totalKids)
+            {
+                Debug.Log("Pocong menang");
+                kidsWin = false;
+                pocongWin = true;
+                EndGame(pocongWin);
+            }
+        }
+    }
+
     public void KidTurnedOnItem(Item item)
     {
         if (activeItems < totalItems)
@@ -62,10 +95,15 @@ public class GameManager : NetworkBehaviour
 
             if (activeItems == totalItems)
             {
-                EndGame(true);
+                kidsWin = true;
+                pocongWin = false;
+                EndGame(kidsWin);
             }
         }
     }
+
+    public bool GetPocongWin() => pocongWin;
+    public bool GetKidsWin() => kidsWin;
 
     public void PocongTurnedOffItem(Item item)
     {
@@ -81,15 +119,14 @@ public class GameManager : NetworkBehaviour
     {
         if (kidsWon)
         {
-            Debug.Log("Kids have won the game!");
+            // Debug.Log("Kids have won the game!");
+            SceneManager.LoadScene("WinningCondition");
         }
         else
         {
-            Debug.Log("Pocong has won the game!");
+            // Debug.Log("Pocong has won the game!");
+            SceneManager.LoadScene("WinningCondition");
         }
-
-        // Restart or end the game
-        // Reset all items, notify players, etc.
     }
 }
 

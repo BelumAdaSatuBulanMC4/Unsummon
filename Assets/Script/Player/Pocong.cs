@@ -37,6 +37,8 @@ public class Pocong : Character
 
     [SerializeField] private GameObject controller_UI;
 
+    [SerializeField] private GameObject buttonInteraction;
+
 
     protected override void Awake()
     {
@@ -44,6 +46,11 @@ public class Pocong : Character
         typeChar = "Pocong";
         anim = GetComponentInChildren<Animator>();
         myCollider = GetComponent<Collider2D>();
+    }
+
+    private void Start()
+    {
+        isAuthor = IsOwner;
     }
 
     protected override void Update()
@@ -63,15 +70,8 @@ public class Pocong : Character
         HandleKidInteraction();
         HandleMirrorInteraction();
         GetKidsPosition();
-        controller_UI.SetActive(IsOwner);
-        // if (isAuthor)
-        // {
-        //     controller_UI.SetActive(true);
-        // }
-        // else
-        // {
-        //     controller_UI.SetActive(false);
-        // }
+        // controller_UI.SetActive(IsOwner);
+        HandleButtonInteraction();
     }
     private void HandleLocationChanged()
     {
@@ -95,6 +95,21 @@ public class Pocong : Character
                     Physics2D.IgnoreCollision(myCollider, spirit);
                 }
             }
+        }
+    }
+
+    private void HandleButtonInteraction()
+    {
+        // Debug.Log("POCONG BUTTON ");
+        if (currentItem != null && currentItem.isActivated)
+        {
+            Debug.LogWarning("is item null? " + currentItem == null);
+            buttonInteraction.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("is item null? " + currentItem == null);
+            buttonInteraction.SetActive(false);
         }
     }
 
