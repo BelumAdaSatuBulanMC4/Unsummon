@@ -48,6 +48,7 @@ public class Pocong : Character
 
     protected override void Update()
     {
+        if (!IsOwner) { return; }
         base.Update();
 
         attackCooldownTimer -= Time.deltaTime;
@@ -62,14 +63,15 @@ public class Pocong : Character
         HandleKidInteraction();
         HandleMirrorInteraction();
         GetKidsPosition();
-        if (isAuthor)
-        {
-            controller_UI.SetActive(true);
-        }
-        else
-        {
-            controller_UI.SetActive(false);
-        }
+        controller_UI.SetActive(IsOwner);
+        // if (isAuthor)
+        // {
+        //     controller_UI.SetActive(true);
+        // }
+        // else
+        // {
+        //     controller_UI.SetActive(false);
+        // }
     }
     private void HandleLocationChanged()
     {
