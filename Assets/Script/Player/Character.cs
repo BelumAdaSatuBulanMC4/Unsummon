@@ -2,9 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : NetworkBehaviour
 {
     protected Rigidbody2D rb;
     protected String typeChar;
@@ -66,9 +67,6 @@ public class Character : MonoBehaviour
     private void OnDisable()
     {
         inputPlayer.Disable();
-        // inputPlayer.Kid.Dash.performed -= ctx => DashAbility();
-        inputPlayer.Kid.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
-        inputPlayer.Kid.Move.canceled -= ctx => moveInput = Vector2.zero;
     }
 
     public string GetCurrentLocation() => currentlocation;
@@ -80,16 +78,19 @@ public class Character : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (!IsOwner) { return; }
         if (typeChar == "Player" || typeChar == "Pocong")
         {
             dashTime -= Time.deltaTime;
             dashCooldownTimer -= Time.deltaTime;
         }
 
-        // HandleInput();
+        // isAuthor = IsOwner;
+        // Terapkan input langsung di client tanpa menunggu server
         HandleMovement();
         HandleItemInteraction();
         HandleFlip();
+        SendPositionToServerServerRpc();
     }
 
     public float GetDashCooldown()
@@ -121,6 +122,7 @@ public class Character : MonoBehaviour
                 {
                     // InteractWithItem(item);
                     currentItem = item;
+                    // Debug.Log("item ada " + currentItem.isActivated);
                 }
             }
             if (detectedItems.Length == 0)
@@ -192,6 +194,7 @@ public class Character : MonoBehaviour
         }
         else
         {
+            Debug.Log($"Movement: {moveInput} for {IsOwner}");
             rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
         }
     }
@@ -213,4 +216,22 @@ public class Character : MonoBehaviour
     {
         Gizmos.DrawWireSphere(itemCheck.position, itemCheckRadius);
     }
+
+    [ServerRpc]
+    void SendPositionToServerServerRpc()
+    {
+        // Server memperbarui posisi pemain di server dan mengirimkan ke semua client
+        UpdatePositionClientRpc(transform.position);
+    }
+
+    [ClientRpc]
+    void UpdatePositionClientRpc(Vector2 newPosition)
+    {
+        if (!IsOwner)
+        {
+            // Jika bukan owner (client lain), update posisi berdasarkan data dari server
+            transform.position = newPosition;
+        }
+    }
+
 }

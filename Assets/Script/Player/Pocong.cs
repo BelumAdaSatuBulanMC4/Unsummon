@@ -101,12 +101,15 @@ public class Pocong : Character
 
     private void HandleButtonInteraction()
     {
+        // Debug.Log("POCONG BUTTON ");
         if (currentItem != null && currentItem.isActivated)
         {
+            Debug.LogWarning("is item null? " + currentItem == null);
             buttonInteraction.SetActive(true);
         }
         else
         {
+            Debug.LogWarning("is item null? " + currentItem == null);
             buttonInteraction.SetActive(false);
         }
     }

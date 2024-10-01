@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,18 +32,36 @@ public class PlayerKid : Character
     {
         base.Awake();
         typeChar = "Player";
-        PlayerManager.instance.RegisterKid(this);
-        anim = GetComponentInChildren<Animator>();
         myCollider = GetComponent<Collider2D>();
     }
 
-    private void OnDestroy()
+    void Start()
     {
+        anim = GetComponentInChildren<Animator>();
+        StartCoroutine(RegisterKidWhenReady());
+        myCollider = GetComponent<Collider2D>();
+    }
+
+    private IEnumerator RegisterKidWhenReady()
+    {
+        while (PlayerManager.instance == null)
+        {
+            yield return null; // Wait until PlayerManager is initialized
+        }
+
+        PlayerManager.instance.RegisterKid(this);
+        Debug.Log("Player manager berhasil diintansiasi");
+    }
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
         PlayerManager.instance.UnregisterKid(this); // Unregister when destroyed
     }
 
     protected override void Update()
     {
+        if (!IsOwner) { return; }
         base.Update();
         HandleAnimations();
         HandleLocationChanged();
@@ -66,11 +85,6 @@ public class PlayerKid : Character
             PlayerManager.instance.UpdateKidPosition(this, transform.position);
 
         }
-
-        // if (dashTime > 0)
-        // {
-        //     PlayerManager.instance.UpdateKidPosition(this, transform.position);
-        // }
     }
 
     private void HandlePlayerCollision()
@@ -92,19 +106,22 @@ public class PlayerKid : Character
 
     private void HandleButtonInteraction()
     {
+        // Debug.Log("handle button : " + currentItem != null);
         if (currentItem != null && !currentItem.isActivated)
         {
+            // Debug.Log("ITEM DETECTED");
             buttonInteraction.SetActive(true);
         }
         else
         {
+            // Debug.Log("ITEM NOT DETECTED");
             buttonInteraction.SetActive(false);
         }
     }
 
     private void GettingKilled()
     {
-        Debug.Log("the player has been killed");
+        // Debug.Log("the player has been killed");
         // Transform kidTransform = transform;
         Instantiate(deadBodyPrefab, transform.position, transform.rotation);
         // if (isAuthor)
