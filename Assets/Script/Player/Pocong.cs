@@ -203,6 +203,46 @@ public class Pocong : Character
         }
     }
 
+    public void TeleportAnimation(PlayerKid kid)
+    {
+        StartCoroutine(TeleportRoutine(kid));
+    }
+
+    private IEnumerator TeleportRoutine(PlayerKid kid)
+    {
+        anim.SetBool("isTeleport", true);
+        // anim.SetBool("isTeleport", true);
+        // Debug.Log("Before teleport");
+        // yield return new WaitForSeconds(1f);
+
+        // Debug.Log("After teleport");
+        // anim.SetBool("isTeleport", false);
+
+        // AnimatorStateInfo animationState = anim.GetCurrentAnimatorStateInfo(0);
+        // while (!animationState.IsName("isTeleport"))
+        // {
+        //     animationState = anim.GetCurrentAnimatorStateInfo(0);
+        //     yield return null;
+        // }
+
+        // // Wait for the blink animation to finish
+        // while (animationState.normalizedTime < 1.0f)
+        // {
+        //     animationState = anim.GetCurrentAnimatorStateInfo(0);
+        //     yield return null;
+        // }
+
+        yield return new WaitForSeconds(.4f);
+
+        Vector3 tempPocongPosition = transform.position;
+        transform.position = kid.transform.position;
+        kid.transform.position = tempPocongPosition;
+
+        // Once the blink animation is done, set isBlink to false
+        anim.SetBool("isTeleport", false);
+    }
+
+
     private void TeleportAbility()
     {
         if (teleportCooldownTimer < 0 && isMirrorDetected)
@@ -212,7 +252,7 @@ public class Pocong : Character
 
             if (kidToSwap != null)
             {
-                SwapPositions(kidToSwap);
+                TeleportAnimation(kidToSwap);
             }
             else
             {
@@ -260,9 +300,10 @@ public class Pocong : Character
 
     private void SwapPositions(PlayerKid kid)
     {
-        Vector3 tempPocongPosition = transform.position;
-        transform.position = kid.transform.position;
-        kid.transform.position = tempPocongPosition;
+        TeleportAnimation(kid);
+        // Vector3 tempPocongPosition = transform.position;
+        // transform.position = kid.transform.position;
+        // kid.transform.position = tempPocongPosition;
     }
 
     private void HandleAnimations()

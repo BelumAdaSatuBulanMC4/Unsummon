@@ -61,7 +61,7 @@ public class PlayerKid : Character
 
     protected override void Update()
     {
-        if (!IsOwner) { return; }
+        // if (!IsOwner) { return; }
         base.Update();
         HandleAnimations();
         HandleLocationChanged();

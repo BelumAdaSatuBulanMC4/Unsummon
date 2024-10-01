@@ -78,7 +78,7 @@ public class Character : NetworkBehaviour
 
     protected virtual void Update()
     {
-        if (!IsOwner) { return; }
+        // if (!IsOwner) { return; }
         if (typeChar == "Player" || typeChar == "Pocong")
         {
             dashTime -= Time.deltaTime;
