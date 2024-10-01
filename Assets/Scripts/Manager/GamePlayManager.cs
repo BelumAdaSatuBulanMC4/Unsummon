@@ -3,8 +3,10 @@ using Unity.Netcode;
 
 public class GamePlayManager : NetworkBehaviour
 {
-    public GameObject playerPrefab; // Drag and drop PlayerPrefab di inspector
-    public Vector3 spawnPosition = new(0, 0, 0); // Posisi spawn yang sama untuk semua pemain
+    public GameObject playerKidPrefab;
+    public GameObject playerPocongPrefab;
+    private Vector3 spawnKidPosition = new(0, 0, 0); // Posisi Spawn playerKid
+    private Vector3 spawnPocongPosition = new(1, 1, 0); // Posisi Spawn playerKid
 
     // Fungsi yang dipanggil setelah scene GamePlay di-load
     public override void OnNetworkSpawn()
@@ -22,13 +24,20 @@ public class GamePlayManager : NetworkBehaviour
         foreach (var client in NetworkManager.ConnectedClientsList)
         {
             // Debug.Log($"Player: {client.ClientId}");
-            if (PlayerManager.instance != null) {
-                Debug.Log("PlayerManager sudah diinisialisasi!");
-            } else {
-                Debug.LogError("PlayerManager belum diinisialisasi!");
+            int randomPocongId = Random.Range(0, 5);
+            // if ((int)client.ClientId == randomPocongId)
+            if ((int)client.ClientId == 0)
+            // if (false)
+            {
+                GameObject playerInstance = Instantiate(playerPocongPrefab, spawnPocongPosition, Quaternion.identity);
+                playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(client.ClientId);
             }
-            GameObject playerInstance = Instantiate(playerPrefab, spawnPosition, Quaternion.identity);
-            playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(client.ClientId);
+            else
+            {
+                GameObject playerInstance = Instantiate(playerKidPrefab, spawnKidPosition, Quaternion.identity);
+                playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(client.ClientId);
+            }
+
         }
     }
 }

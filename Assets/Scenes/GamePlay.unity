@@ -27660,8 +27660,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e90668a0125b84ed9af585a88e335ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 4057405978394237103, guid: 53679de70933245b99d610d10ec6cd7e, type: 3}
-  spawnPosition: {x: 0, y: 0, z: 0}
+  playerKidPrefab: {fileID: 4057405978394237103, guid: 53679de70933245b99d610d10ec6cd7e, type: 3}
+  playerPocongPrefab: {fileID: 3527622045971319382, guid: d0745f63bb90d41fabe0cdb7d0be4567, type: 3}
+  spawnKidPosition: {x: 0, y: 0, z: 0}
+  spawnPocongPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &1494755933
 MonoBehaviour:
   m_ObjectHideFlags: 0
