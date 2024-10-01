@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerKid : Character
 {
@@ -24,6 +25,8 @@ public class PlayerKid : Character
     private Collider2D[] detectedSpirits;
 
     [SerializeField] private GameObject controller_UI;
+
+    [SerializeField] private GameObject buttonInteraction;
 
     protected override void Awake()
     {
@@ -63,7 +66,16 @@ public class PlayerKid : Character
         HandleAnimations();
         HandleLocationChanged();
         HandlePlayerCollision();
-        controller_UI.SetActive(true);
+        HandleButtonInteraction();
+        if (isAuthor)
+        {
+            controller_UI.SetActive(true);
+        }
+        else
+        {
+            controller_UI.SetActive(false);
+        }
+        // Debug.Log("location of kid " + transform.position);
     }
 
     private void HandleLocationChanged()
@@ -92,19 +104,35 @@ public class PlayerKid : Character
         }
     }
 
+    private void HandleButtonInteraction()
+    {
+        // Debug.Log("handle button : " + currentItem != null);
+        if (currentItem != null && !currentItem.isActivated)
+        {
+            // Debug.Log("ITEM DETECTED");
+            buttonInteraction.SetActive(true);
+        }
+        else
+        {
+            // Debug.Log("ITEM NOT DETECTED");
+            buttonInteraction.SetActive(false);
+        }
+    }
+
     private void GettingKilled()
     {
-        Debug.Log("the player has been killed");
+        // Debug.Log("the player has been killed");
         // Transform kidTransform = transform;
         Instantiate(deadBodyPrefab, transform.position, transform.rotation);
         // if (isAuthor)
         // {
-        CameraManager.instance.CameraShake();
-        GameObject spirit = Instantiate(spiritPrefab, transform.position, transform.rotation);
+        // CameraManager.instance.CameraShake();
+        GameObject spirit = Instantiate(spiritPrefab, transform.position, Quaternion.identity);
         spirit.GetComponentInChildren<PlayerSpirit>().SetAuthor(isAuthor);
         // CameraManager.instance.ChangeCameraFollow(spirit.transform);
         // }
-        Destroy(gameObject);
+        GameManager.instance.UpdateKilledKids();
+        Destroy(mySelf);
     }
 
     public void Knocked(float sourceOfDamage)

@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System;
 
 public class UserManager : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class UserManager : MonoBehaviour
 
     private string username;
     private bool isFirstTime;
+
+    private string yourRole;
 
     private void Awake()
     {
@@ -18,21 +21,40 @@ public class UserManager : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            // Destroy(gameObject);
         }
     }
     private void Start()
     {
+        FirstTimeUserName();
+        // username = DataPersistence.LoadUsername();
+        // isFirstTime = DataPersistence.GetIsFirstTime();
+
+        // TMP_Text placeholderText = usernameInputField.placeholder.GetComponent<TMP_Text>();
+        // placeholderText.text = username;
+
+        // currentUsernameText.text = $"Current Username: {username}";
+        // Debug.Log("initial isFirst? " + isFirstTime);
+        Debug.Log("Location : " + DataPersistence.GetFilePath());
+    }
+
+    private void FirstTimeUserName()
+    {
         username = DataPersistence.LoadUsername();
         isFirstTime = DataPersistence.GetIsFirstTime();
 
-        TMP_Text placeholderText = usernameInputField.placeholder.GetComponent<TMP_Text>();
-        placeholderText.text = username;
-
-        // currentUsernameText.text = $"Current Username: {username}";
-        Debug.Log("initial isFirst? " + isFirstTime);
-        Debug.Log("Location : " + DataPersistence.GetFilePath());
+        if (isFirstTime)
+        {
+            TMP_Text placeholderText = usernameInputField.placeholder.GetComponent<TMP_Text>();
+            placeholderText.text = username;
+        }
     }
+    public void SetYourRole(string role)
+    {
+        yourRole = role;
+    }
+
+    public string getYourRole() => yourRole;
 
     public void OnSaveButtonClicked()
     {

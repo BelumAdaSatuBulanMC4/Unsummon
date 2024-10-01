@@ -22,7 +22,7 @@ public class PlayerManager : NetworkBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            // Destroy(gameObject);
         }
     }
     public void RegisterKid(PlayerKid kid)
@@ -68,7 +68,7 @@ public class PlayerManager : NetworkBehaviour
     public void UpdatePocongPosition(Pocong pocong, Vector3 position)
     {
         pocongPosition = position;
-        Debug.Log("Pocong position: " + pocongPosition);
+        // Debug.Log("Pocong position: " + pocongPosition);
         StartCoroutine(RemovePocongPositionAfterTime(pocong, 2f));
     }
 

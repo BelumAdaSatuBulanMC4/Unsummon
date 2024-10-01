@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -39,10 +40,20 @@ public class Character : NetworkBehaviour
 
     protected string currentlocation;
 
+    protected Item currentItem;
+
+    [SerializeField] protected GameObject mySelf;
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         inputPlayer = new InputActions();
+        // FindFirstObjectByType<UI_DashButton>().UpdatePlayersRef(this);
+    }
+
+    private void Start()
+    {
+        UserManager.instance.SetYourRole(typeChar);
     }
 
     private void OnEnable()
@@ -109,8 +120,14 @@ public class Character : NetworkBehaviour
                 Item item = itemCollider.GetComponent<Item>();
                 if (item != null)
                 {
-                    InteractWithItem(item);
+                    // InteractWithItem(item);
+                    currentItem = item;
+                    // Debug.Log("item ada " + currentItem.isActivated);
                 }
+            }
+            if (detectedItems.Length == 0)
+            {
+                currentItem = null;
             }
         }
     }
@@ -120,14 +137,47 @@ public class Character : NetworkBehaviour
         if (item == null) return;
         if (Input.GetKeyDown(KeyCode.E) && typeChar == "Player")
         {
-            Debug.Log("cek!");
+            // Debug.Log("cek!");
             if (!item.isActivated)
-                GameManager.instance.KidTurnedOnItem(item); // Notify GameManager when a Kid turns on an item
+            {
+                // GameManager.instance.KidTurnedOnItem(item);
+                UI_InGame.instance.OpenMiniGame();
+                UI_MiniGame.instance.CurrentItem(item);
+            }
         }
         else if (Input.GetKeyDown(KeyCode.R) && typeChar == "Pocong")
         {
             if (item.isActivated)
-                GameManager.instance.PocongTurnedOffItem(item); // Notify GameManager when Pocong turns off an item
+            {
+                // GameManager.instance.PocongTurnedOnItem(item);
+                UI_InGame.instance.OpenMiniGame();
+                UI_MiniGame.instance.CurrentItem(item);
+            }
+            // GameManager.instance.PocongTurnedOffItem(item);
+        }
+    }
+
+    public void interactItemButton()
+    {
+        if (typeChar == "Player")
+        {
+            // Debug.Log("cek!");
+            if (!currentItem.isActivated)
+            {
+                // GameManager.instance.KidTurnedOnItem(item);
+                UI_InGame.instance.OpenMiniGame();
+                UI_MiniGame.instance.CurrentItem(currentItem);
+            }
+        }
+        else if (typeChar == "Pocong")
+        {
+            if (currentItem.isActivated)
+            {
+                // GameManager.instance.PocongTurnedOnItem(item);
+                UI_InGame.instance.OpenMiniGame();
+                UI_MiniGame.instance.CurrentItem(currentItem);
+            }
+            // GameManager.instance.PocongTurnedOffItem(item);
         }
     }
 
@@ -148,13 +198,6 @@ public class Character : NetworkBehaviour
             rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
         }
     }
-
-    // private IEnumerator PositionPocong()
-    // {
-    //     yield return new WaitForSeconds(dashTime);
-    //     PlayerManager.instance.UpdateKidPosition(this, transform.position);
-    // }
-
     private void HandleFlip()
     {
         if (moveInput.x < 0 && facingRight || moveInput.x > 0 && !facingRight)
