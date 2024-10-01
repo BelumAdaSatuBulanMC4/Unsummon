@@ -1,10 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerKid : Character
 {
     private Animator anim;
+    private Collider2D myCollider;
 
     [Header("KnockBack")]
     [SerializeField] private float knockBackDuration = 1;
@@ -14,47 +17,122 @@ public class PlayerKid : Character
     [Header("Prefabs")]
     [SerializeField] private GameObject spiritPrefab;   // Assign the Spirit prefab in the Inspector
     [SerializeField] private GameObject deadBodyPrefab;
+
+    [Header("Collision Spirit")]
+    [SerializeField] private Transform spiritCheck;
+    [SerializeField] private float spiritCheckRadius;
+    [SerializeField] private LayerMask whatIsPlayerSpirit;
+    private Collider2D[] detectedSpirits;
+
+    [SerializeField] private GameObject controller_UI;
+
+    [SerializeField] private GameObject buttonInteraction;
+
     protected override void Awake()
     {
         base.Awake();
         typeChar = "Player";
-        PlayerManager.instance.RegisterKid(this);
-        anim = GetComponentInChildren<Animator>();
+        myCollider = GetComponent<Collider2D>();
     }
 
-    private void OnDestroy()
+    void Start()
     {
+        anim = GetComponentInChildren<Animator>();
+        StartCoroutine(RegisterKidWhenReady());
+        myCollider = GetComponent<Collider2D>();
+    }
+
+    private IEnumerator RegisterKidWhenReady()
+    {
+        while (PlayerManager.instance == null)
+        {
+            yield return null; // Wait until PlayerManager is initialized
+        }
+
+        PlayerManager.instance.RegisterKid(this);
+        Debug.Log("Player manager berhasil diintansiasi");
+    }
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
         PlayerManager.instance.UnregisterKid(this); // Unregister when destroyed
     }
 
     protected override void Update()
     {
+        if (!IsOwner) { return; }
         base.Update();
         HandleAnimations();
         HandleLocationChanged();
+        HandlePlayerCollision();
+        HandleButtonInteraction();
+        if (isAuthor)
+        {
+            controller_UI.SetActive(true);
+        }
+        else
+        {
+            controller_UI.SetActive(false);
+        }
+        // Debug.Log("location of kid " + transform.position);
     }
 
     private void HandleLocationChanged()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.L))
         {
-            CameraManager.instance.CameraShake();
             PlayerManager.instance.UpdateKidPosition(this, transform.position);
+
+        }
+    }
+
+    private void HandlePlayerCollision()
+    {
+        detectedSpirits = Physics2D.OverlapCircleAll(spiritCheck.position, spiritCheckRadius, whatIsPlayerSpirit);
+
+        if (detectedSpirits.Length > 0)
+        {
+            foreach (Collider2D spirit in detectedSpirits)
+            {
+                PlayerSpirit sprt = spirit.GetComponent<PlayerSpirit>();
+                if (sprt != null)
+                {
+                    Physics2D.IgnoreCollision(myCollider, spirit);
+                }
+            }
+        }
+    }
+
+    private void HandleButtonInteraction()
+    {
+        // Debug.Log("handle button : " + currentItem != null);
+        if (currentItem != null && !currentItem.isActivated)
+        {
+            // Debug.Log("ITEM DETECTED");
+            buttonInteraction.SetActive(true);
+        }
+        else
+        {
+            // Debug.Log("ITEM NOT DETECTED");
+            buttonInteraction.SetActive(false);
         }
     }
 
     private void GettingKilled()
     {
-        Debug.Log("the player has been killed");
-        Transform kidTransform = transform;
-        Instantiate(deadBodyPrefab, kidTransform.position, kidTransform.rotation);
-        GameObject spirit = Instantiate(spiritPrefab, kidTransform.position, kidTransform.rotation);
-        if (isAuthor)
-        {
-            spirit.GetComponent<PlayerSpirit>().SetAuthor(true);
-            CameraManager.instance.ChangeCameraFollow(spirit.transform);
-        }
-        Destroy(gameObject);
+        // Debug.Log("the player has been killed");
+        // Transform kidTransform = transform;
+        Instantiate(deadBodyPrefab, transform.position, transform.rotation);
+        // if (isAuthor)
+        // {
+        // CameraManager.instance.CameraShake();
+        GameObject spirit = Instantiate(spiritPrefab, transform.position, Quaternion.identity);
+        spirit.GetComponentInChildren<PlayerSpirit>().SetAuthor(isAuthor);
+        // CameraManager.instance.ChangeCameraFollow(spirit.transform);
+        // }
+        GameManager.instance.UpdateKilledKids();
+        Destroy(mySelf);
     }
 
     public void Knocked(float sourceOfDamage)
@@ -101,5 +179,6 @@ public class PlayerKid : Character
     private void OnDrawGizmos()
     {
         DrawItemDetector();
+        Gizmos.DrawWireSphere(spiritCheck.position, spiritCheckRadius);
     }
 }

@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : NetworkBehaviour
 {
     protected Rigidbody2D rb;
     protected String typeChar;
@@ -38,11 +40,20 @@ public class Character : MonoBehaviour
 
     protected string currentlocation;
 
+    protected Item currentItem;
+
+    [SerializeField] protected GameObject mySelf;
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         inputPlayer = new InputActions();
         // FindFirstObjectByType<UI_DashButton>().UpdatePlayersRef(this);
+    }
+
+    private void Start()
+    {
+        UserManager.instance.SetYourRole(typeChar);
     }
 
     private void OnEnable()
@@ -56,9 +67,6 @@ public class Character : MonoBehaviour
     private void OnDisable()
     {
         inputPlayer.Disable();
-        // inputPlayer.Kid.Dash.performed -= ctx => DashAbility();
-        inputPlayer.Kid.Move.performed -= ctx => moveInput = ctx.ReadValue<Vector2>();
-        inputPlayer.Kid.Move.canceled -= ctx => moveInput = Vector2.zero;
     }
 
     public string GetCurrentLocation() => currentlocation;
@@ -70,34 +78,24 @@ public class Character : MonoBehaviour
 
     protected virtual void Update()
     {
+        if (!IsOwner) { return; }
         if (typeChar == "Player" || typeChar == "Pocong")
         {
             dashTime -= Time.deltaTime;
             dashCooldownTimer -= Time.deltaTime;
         }
 
-        // HandleInput();
+        // isAuthor = IsOwner;
+        // Terapkan input langsung di client tanpa menunggu server
         HandleMovement();
         HandleItemInteraction();
         HandleFlip();
+        SendPositionToServerServerRpc();
     }
 
     public float GetDashCooldown()
     {
         return dashCooldownTimer;
-    }
-    private void HandleInput()
-    {
-        // xInput = Input.GetAxisRaw("Horizontal");
-        // yInput = Input.GetAxisRaw("Vertical");
-
-        // if (typeChar == "Player" || typeChar == "Pocong")
-        // {
-        //     if (Input.GetKeyDown(KeyCode.LeftShift))
-        //     {
-        //         DashAbility();
-        //     }
-        // }
     }
 
     private void DashAbility()
@@ -108,7 +106,6 @@ public class Character : MonoBehaviour
             {
                 dashCooldownTimer = dashCooldown;
                 dashTime = dashDuration;
-
             }
         }
     }
@@ -123,8 +120,14 @@ public class Character : MonoBehaviour
                 Item item = itemCollider.GetComponent<Item>();
                 if (item != null)
                 {
-                    InteractWithItem(item);
+                    // InteractWithItem(item);
+                    currentItem = item;
+                    // Debug.Log("item ada " + currentItem.isActivated);
                 }
+            }
+            if (detectedItems.Length == 0)
+            {
+                currentItem = null;
             }
         }
     }
@@ -134,14 +137,47 @@ public class Character : MonoBehaviour
         if (item == null) return;
         if (Input.GetKeyDown(KeyCode.E) && typeChar == "Player")
         {
-            Debug.Log("cek!");
+            // Debug.Log("cek!");
             if (!item.isActivated)
-                GameManager.instance.KidTurnedOnItem(item); // Notify GameManager when a Kid turns on an item
+            {
+                // GameManager.instance.KidTurnedOnItem(item);
+                UI_InGame.instance.OpenMiniGame();
+                UI_MiniGame.instance.CurrentItem(item);
+            }
         }
         else if (Input.GetKeyDown(KeyCode.R) && typeChar == "Pocong")
         {
             if (item.isActivated)
-                GameManager.instance.PocongTurnedOffItem(item); // Notify GameManager when Pocong turns off an item
+            {
+                // GameManager.instance.PocongTurnedOnItem(item);
+                UI_InGame.instance.OpenMiniGame();
+                UI_MiniGame.instance.CurrentItem(item);
+            }
+            // GameManager.instance.PocongTurnedOffItem(item);
+        }
+    }
+
+    public void interactItemButton()
+    {
+        if (typeChar == "Player")
+        {
+            // Debug.Log("cek!");
+            if (!currentItem.isActivated)
+            {
+                // GameManager.instance.KidTurnedOnItem(item);
+                UI_InGame.instance.OpenMiniGame();
+                UI_MiniGame.instance.CurrentItem(currentItem);
+            }
+        }
+        else if (typeChar == "Pocong")
+        {
+            if (currentItem.isActivated)
+            {
+                // GameManager.instance.PocongTurnedOnItem(item);
+                UI_InGame.instance.OpenMiniGame();
+                UI_MiniGame.instance.CurrentItem(currentItem);
+            }
+            // GameManager.instance.PocongTurnedOffItem(item);
         }
     }
 
@@ -158,10 +194,10 @@ public class Character : MonoBehaviour
         }
         else
         {
+            Debug.Log($"Movement: {moveInput} for {IsOwner}");
             rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
         }
     }
-
     private void HandleFlip()
     {
         if (moveInput.x < 0 && facingRight || moveInput.x > 0 && !facingRight)
@@ -180,4 +216,22 @@ public class Character : MonoBehaviour
     {
         Gizmos.DrawWireSphere(itemCheck.position, itemCheckRadius);
     }
+
+    [ServerRpc]
+    void SendPositionToServerServerRpc()
+    {
+        // Server memperbarui posisi pemain di server dan mengirimkan ke semua client
+        UpdatePositionClientRpc(transform.position);
+    }
+
+    [ClientRpc]
+    void UpdatePositionClientRpc(Vector2 newPosition)
+    {
+        if (!IsOwner)
+        {
+            // Jika bukan owner (client lain), update posisi berdasarkan data dari server
+            transform.position = newPosition;
+        }
+    }
+
 }

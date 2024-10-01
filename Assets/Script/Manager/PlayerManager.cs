@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : NetworkBehaviour
 {
     // Dictionary to store each Kid's position and time
     public static PlayerManager instance;
     private Dictionary<PlayerKid, Vector3> kidPositions = new Dictionary<PlayerKid, Vector3>();
     private Dictionary<PlayerSpirit, Vector3> spiritPositions = new Dictionary<PlayerSpirit, Vector3>();
+    private Vector3 pocongPosition = new Vector3();
     private List<PlayerKid> allKids = new List<PlayerKid>();
 
     // Register a Kid and start tracking its position
@@ -20,7 +22,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            // Destroy(gameObject);
         }
     }
     public void RegisterKid(PlayerKid kid)
@@ -58,9 +60,16 @@ public class PlayerManager : MonoBehaviour
         {
             kidPositions.Add(kid, position);
         }
-
+        Debug.Log("Kid positions: " + kidPositions[kid]);
         // Start coroutine to remove the position after 7 seconds
-        StartCoroutine(RemoveKidPositionAfterTime(kid, 7f));
+        StartCoroutine(RemoveKidPositionAfterTime(kid, 5f));
+    }
+
+    public void UpdatePocongPosition(Pocong pocong, Vector3 position)
+    {
+        pocongPosition = position;
+        // Debug.Log("Pocong position: " + pocongPosition);
+        StartCoroutine(RemovePocongPositionAfterTime(pocong, 2f));
     }
 
     public void UpdateSpiritPosition(PlayerSpirit spirit, Vector3 position)
@@ -73,7 +82,12 @@ public class PlayerManager : MonoBehaviour
         {
             spiritPositions.Add(spirit, position);
         }
-        StartCoroutine(RemoveSpiritPositionAfterTime(spirit, 7f));
+        StartCoroutine(RemoveSpiritPositionAfterTime(spirit, 5f));
+    }
+
+    public Vector3 getPocongPosition()
+    {
+        return pocongPosition;
     }
 
     // Coroutine to remove the Kid's position after a delay
@@ -86,6 +100,12 @@ public class PlayerManager : MonoBehaviour
             Debug.Log($"Kid {kid.gameObject.name}'s position removed from Manager after {delay} seconds.");
             kidPositions.Remove(kid);
         }
+    }
+
+    private IEnumerator RemovePocongPositionAfterTime(Pocong pocong, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        pocongPosition = Vector3.zero;
     }
 
     private IEnumerator RemoveSpiritPositionAfterTime(PlayerSpirit spirit, float delay)
@@ -103,5 +123,10 @@ public class PlayerManager : MonoBehaviour
     public Dictionary<PlayerKid, Vector3> GetKidPositions()
     {
         return new Dictionary<PlayerKid, Vector3>(kidPositions); // Return a copy to avoid direct manipulation
+    }
+
+    public Dictionary<PlayerSpirit, Vector3> GetSpiritPositions()
+    {
+        return new Dictionary<PlayerSpirit, Vector3>(spiritPositions); // Return a copy to avoid direct manipulation
     }
 }

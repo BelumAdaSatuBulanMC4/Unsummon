@@ -5,6 +5,7 @@ using UnityEngine;
 public class Pocong : Character
 {
     private Animator anim;
+    private Collider2D myCollider;
 
     [Header("Kid Check")]
     [SerializeField] private Transform kidCheck;
@@ -12,6 +13,19 @@ public class Pocong : Character
     [SerializeField] private LayerMask whatIsKid;
     private bool isKidDetected;
     private Collider2D[] detectedKids;
+
+    [Header("Mirror Check")]
+    [SerializeField] private Transform mirrorCheck;
+    [SerializeField] private float mirrorCheckRadius;
+    [SerializeField] private LayerMask whatIsMirror;
+    private bool isMirrorDetected;
+    private Collider2D[] detectedMirrors;
+
+    [Header("Collision Spirit")]
+    [SerializeField] private Transform spiritCheck;
+    [SerializeField] private float spiritCheckRadius;
+    [SerializeField] private LayerMask whatIsPlayerSpirit;
+    private Collider2D[] detectedSpirits;
 
     [Header("Attack Info")]
     [SerializeField] protected float attackCooldown; // Attack cooldown duration
@@ -21,12 +35,17 @@ public class Pocong : Character
     [SerializeField] protected float teleportCooldown; // Teleport cooldown duration
     protected float teleportCooldownTimer;
 
+    [SerializeField] private GameObject controller_UI;
+
+    [SerializeField] private GameObject buttonInteraction;
+
 
     protected override void Awake()
     {
         base.Awake();
         typeChar = "Pocong";
         anim = GetComponentInChildren<Animator>();
+        myCollider = GetComponent<Collider2D>();
     }
 
     protected override void Update()
@@ -36,10 +55,63 @@ public class Pocong : Character
         attackCooldownTimer -= Time.deltaTime;
         teleportCooldownTimer -= Time.deltaTime;
 
+        // Debug.Log("location of pocong " + transform.position);
+
         HandleAnimations();
         // HandleTeleport();
+        HandlePlayerCollision();
+        HandleLocationChanged();
         HandleKidInteraction();
+        HandleMirrorInteraction();
         GetKidsPosition();
+        HandleButtonInteraction();
+        if (isAuthor)
+        {
+            controller_UI.SetActive(true);
+        }
+        else
+        {
+            controller_UI.SetActive(false);
+        }
+    }
+    private void HandleLocationChanged()
+    {
+        if (dashTime > 0)
+        {
+            PlayerManager.instance.UpdatePocongPosition(this, transform.position);
+        }
+    }
+
+    private void HandlePlayerCollision()
+    {
+        detectedSpirits = Physics2D.OverlapCircleAll(spiritCheck.position, spiritCheckRadius, whatIsPlayerSpirit);
+
+        if (detectedSpirits.Length > 0)
+        {
+            foreach (Collider2D spirit in detectedSpirits)
+            {
+                PlayerSpirit sprt = spirit.GetComponent<PlayerSpirit>();
+                if (sprt != null)
+                {
+                    Physics2D.IgnoreCollision(myCollider, spirit);
+                }
+            }
+        }
+    }
+
+    private void HandleButtonInteraction()
+    {
+        // Debug.Log("POCONG BUTTON ");
+        if (currentItem != null && currentItem.isActivated)
+        {
+            Debug.LogWarning("is item null? " + currentItem == null);
+            buttonInteraction.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("is item null? " + currentItem == null);
+            buttonInteraction.SetActive(false);
+        }
     }
 
     private void HandleKidInteraction()
@@ -55,6 +127,16 @@ public class Pocong : Character
         //     }
         // }
 
+    }
+
+    private void HandleMirrorInteraction()
+    {
+        // detectedMirrors = Physics2D.OverlapCircleAll(mirrorCheck.position, mirrorCheckRadius, whatIsMirror);
+        // if (detectedMirrors.Length > 0)
+        // {
+        //     isMirrorDetected = true;
+        // }
+        isMirrorDetected = Physics2D.OverlapCircle(mirrorCheck.position, mirrorCheckRadius, whatIsMirror);
     }
 
     void killTheKid(PlayerKid kid)
@@ -90,6 +172,11 @@ public class Pocong : Character
         return teleportCooldownTimer;
     }
 
+    public bool GetIsMirrorDetected()
+    {
+        return isMirrorDetected;
+    }
+
     private void AttackAbility()
     {
         if (attackCooldownTimer < 0)
@@ -118,7 +205,7 @@ public class Pocong : Character
 
     private void TeleportAbility()
     {
-        if (teleportCooldownTimer < 0)
+        if (teleportCooldownTimer < 0 && isMirrorDetected)
         {
             List<PlayerKid> allKids = PlayerManager.instance.GetAllKids();
             PlayerKid kidToSwap = ChooseKidToSwap(allKids);
@@ -194,5 +281,8 @@ public class Pocong : Character
     {
         DrawItemDetector();
         Gizmos.DrawWireSphere(kidCheck.position, kidCheckRadius);
+        Gizmos.DrawWireSphere(mirrorCheck.position, mirrorCheckRadius);
+        Gizmos.DrawWireSphere(spiritCheck.position, spiritCheckRadius);
+
     }
 }
