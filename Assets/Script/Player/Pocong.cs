@@ -55,7 +55,8 @@ public class Pocong : Character
 
     protected override void Update()
     {
-        if (!IsOwner) { return; }
+        if (!IsOwner) { Debug.Log("KEnAPA???"); return; }
+        Debug.Log("COBA POCONG");
         base.Update();
 
         attackCooldownTimer -= Time.deltaTime;

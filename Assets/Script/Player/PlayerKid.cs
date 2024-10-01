@@ -77,7 +77,6 @@ public class PlayerKid : Character
         if (Input.GetKeyDown(KeyCode.L))
         {
             PlayerManager.instance.UpdateKidPosition(this, transform.position);
-
         }
     }
 

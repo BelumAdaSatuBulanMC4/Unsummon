@@ -640,8 +640,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offScreenIndicatorPrefab: {fileID: 7836295474125332828, guid: 1e5bd0b08798d419a910b462c5166480, type: 3}
+  currentCharacter: {fileID: 8731659229672592240}
   mainCamera: {fileID: 8007287213973411665}
   edgeBuffer: 0.1
+  detectionRange: 8
 --- !u!1 &8398988774680608290
 GameObject:
   m_ObjectHideFlags: 0

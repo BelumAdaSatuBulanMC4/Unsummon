@@ -17,38 +17,44 @@ public class UserManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            // DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            // Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
-    private void Start()
+
+    public string GetUsername()
     {
-        FirstTimeUserName();
-        // username = DataPersistence.LoadUsername();
-        // isFirstTime = DataPersistence.GetIsFirstTime();
-
-        // TMP_Text placeholderText = usernameInputField.placeholder.GetComponent<TMP_Text>();
-        // placeholderText.text = username;
-
-        // currentUsernameText.text = $"Current Username: {username}";
-        // Debug.Log("initial isFirst? " + isFirstTime);
-        Debug.Log("Location : " + DataPersistence.GetFilePath());
+        return DataPersistence.LoadUsername();
     }
 
-    private void FirstTimeUserName()
-    {
-        username = DataPersistence.LoadUsername();
-        isFirstTime = DataPersistence.GetIsFirstTime();
+    // private void Start()
+    // {
+    //     FirstTimeUserName();
+    //     username = DataPersistence.LoadUsername();
+    //     isFirstTime = DataPersistence.GetIsFirstTime();
 
-        if (isFirstTime)
-        {
-            TMP_Text placeholderText = usernameInputField.placeholder.GetComponent<TMP_Text>();
-            placeholderText.text = username;
-        }
-    }
+    //     TMP_Text placeholderText = usernameInputField.placeholder.GetComponent<TMP_Text>();
+    //     placeholderText.text = "KOntolllll";
+
+    //     // currentUsernameText.text = $"Current Username: {username}";
+    //     // Debug.Log("initial isFirst? " + isFirstTime);
+    //     Debug.Log("Location : " + DataPersistence.GetFilePath());
+    // }
+
+    // private void FirstTimeUserName()
+    // {
+    //     username = DataPersistence.LoadUsername();
+    //     isFirstTime = DataPersistence.GetIsFirstTime();
+
+    //     if (isFirstTime)
+    //     {
+    //         TMP_Text placeholderText = usernameInputField.placeholder.GetComponent<TMP_Text>();
+    //         placeholderText.text = username;
+    //     }
+    // }
     public void SetYourRole(string role)
     {
         yourRole = role;
@@ -56,21 +62,22 @@ public class UserManager : MonoBehaviour
 
     public string getYourRole() => yourRole;
 
-    public void OnSaveButtonClicked()
-    {
-        string newUsername = usernameInputField.text;
-        DataPersistence.EditUsername(newUsername);
+    // public void OnSaveButtonClicked()
+    // {
+    //     string newUsername = usernameInputField.text;
+    //     Debug.Log("NAMA GW ADALAH " + usernameInputField.text);
+    //     DataPersistence.EditUsername(newUsername);
 
-        // currentUsernameText.text = $"Current Username: {newUsername}";
-        Debug.Log("change the isFirst? " + DataPersistence.GetIsFirstTime());
-        usernameInputField.text = "";
+    //     // currentUsernameText.text = $"Current Username: {newUsername}";
+    //     Debug.Log("change the isFirst? " + DataPersistence.GetIsFirstTime());
+    //     // usernameInputField.text = "";
 
-        username = DataPersistence.LoadUsername();
-        isFirstTime = DataPersistence.GetIsFirstTime();
+    //     username = DataPersistence.LoadUsername();
+    //     isFirstTime = DataPersistence.GetIsFirstTime();
 
-        TMP_Text placeholderText = usernameInputField.placeholder.GetComponent<TMP_Text>();
-        placeholderText.text = username;
-    }
+    //     TMP_Text placeholderText = usernameInputField.placeholder.GetComponent<TMP_Text>();
+    //     placeholderText.text = username;
+    // }
 
     public bool CheckFirstTime()
     {
