@@ -67,7 +67,7 @@ public class PlayerKid : Character
         HandleAnimations();
         HandleLocationChanged();
         HandlePlayerCollision();
-        HandleButtonInteraction();
+        // HandleButtonInteraction();
         // controller_UI.SetActive(IsOwner);
         // Debug.Log("location of kid " + transform.position);
     }
@@ -97,20 +97,30 @@ public class PlayerKid : Character
         }
     }
 
-    private void HandleButtonInteraction()
-    {
-        // Debug.Log("handle button : " + currentItem != null);
-        if (currentItem != null && !currentItem.isActivated)
-        {
-            // Debug.Log("ITEM DETECTED");
-            buttonInteraction.SetActive(true);
-        }
-        else
-        {
-            // Debug.Log("ITEM NOT DETECTED");
-            buttonInteraction.SetActive(false);
-        }
-    }
+    // private void HandleButtonInteraction()
+    // {
+    //     // Debug.Log("handle button : " + currentItem != null);
+    //     if (currentItem != null && !currentItem.isActivated)
+    //     {
+    //         // Debug.Log("ITEM DETECTED");
+    //         buttonInteraction.SetActive(true);
+    //     }
+    //     else
+    //     {
+    //         // Debug.Log("ITEM NOT DETECTED");
+    //         buttonInteraction.SetActive(false);
+    //     }
+    // }
+
+    // public void InteractedWithItem()
+    // {
+    //     if (!currentItem.isActivated)
+    //     {
+    //         // GameManager.instance.KidTurnedOnItem(item);
+    //         UI_InGame.instance.OpenMiniGame();
+    //         UI_MiniGame.instance.CurrentItem(currentItem);
+    //     }
+    // }
 
     private void GettingKilled()
     {
