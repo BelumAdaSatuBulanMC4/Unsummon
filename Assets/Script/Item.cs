@@ -1,31 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class Item : NetworkBehaviour
 {
-    public int itemValue = 0;
     public bool isActivated = false;
 
     public void ChangeVariable()
     {
-        isActivated = true;
-        GetComponent<SpriteRenderer>().color = Color.green;
+        ChangeVariableServerRpc();
     }
     public void ResetValue()
     {
+        ResetValueServerRpc();
+    }
+
+
+    [ServerRpc(RequireOwnership = false)]
+    public void ChangeVariableServerRpc()
+    {
+        ChangeVariableClientRpc();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void ResetValueServerRpc()
+    {
+        ResetValueClientRpc();
+    }
+
+    [ClientRpc(RequireOwnership = false)]
+    public void ChangeVariableClientRpc()
+    {
+        isActivated = true;
+        GetComponent<SpriteRenderer>().color = Color.green;
+    }
+
+    [ClientRpc(RequireOwnership = false)]
+    public void ResetValueClientRpc()
+    {
         isActivated = false;
         GetComponent<SpriteRenderer>().color = Color.white;
-    }
-    public void DisplayInteraction()
-    {
-        if (GetComponent<SpriteRenderer>().color == Color.green)
-        {
-            GetComponent<SpriteRenderer>().color = Color.white;
-        }
-        else
-        {
-            GetComponent<SpriteRenderer>().color = Color.green;
-        }
     }
 }
