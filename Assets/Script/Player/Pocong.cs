@@ -48,8 +48,14 @@ public class Pocong : Character
         myCollider = GetComponent<Collider2D>();
     }
 
+    private void Start()
+    {
+        isAuthor = IsOwner;
+    }
+
     protected override void Update()
     {
+        if (!IsOwner) { return; }
         base.Update();
 
         attackCooldownTimer -= Time.deltaTime;
@@ -64,15 +70,8 @@ public class Pocong : Character
         HandleKidInteraction();
         HandleMirrorInteraction();
         GetKidsPosition();
+        // controller_UI.SetActive(IsOwner);
         HandleButtonInteraction();
-        if (isAuthor)
-        {
-            controller_UI.SetActive(true);
-        }
-        else
-        {
-            controller_UI.SetActive(false);
-        }
     }
     private void HandleLocationChanged()
     {

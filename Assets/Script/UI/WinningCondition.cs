@@ -1,17 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
+// using Microsoft.Unity.VisualStudio.Editor;
 using TMPro;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class WinningCondition : MonoBehaviour
+public class WinningCondition : NetworkBehaviour
 {
     [SerializeField] private TMP_Text victoryText;
     [SerializeField] private TMP_Text secondaryText;
     [SerializeField] private TMP_Text informationText;
-    [SerializeField] private UnityEngine.UI.Image splash;
+    [SerializeField] private Image splash;
 
     [SerializeField] private Button homeButton;
     [SerializeField] private Button playAgainButton;
