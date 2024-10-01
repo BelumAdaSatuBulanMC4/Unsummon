@@ -37,6 +37,8 @@ public class Pocong : Character
 
     [SerializeField] private GameObject controller_UI;
 
+    [SerializeField] private GameObject buttonInteraction;
+
 
     protected override void Awake()
     {
@@ -62,6 +64,7 @@ public class Pocong : Character
         HandleKidInteraction();
         HandleMirrorInteraction();
         GetKidsPosition();
+        HandleButtonInteraction();
         if (isAuthor)
         {
             controller_UI.SetActive(true);
@@ -93,6 +96,18 @@ public class Pocong : Character
                     Physics2D.IgnoreCollision(myCollider, spirit);
                 }
             }
+        }
+    }
+
+    private void HandleButtonInteraction()
+    {
+        if (currentItem != null && currentItem.isActivated)
+        {
+            buttonInteraction.SetActive(true);
+        }
+        else
+        {
+            buttonInteraction.SetActive(false);
         }
     }
 

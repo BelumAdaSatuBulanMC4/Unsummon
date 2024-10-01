@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     private int totalItems = 5;
-    private int totalKids = 4;
+    private int totalKids;
     private int activeItems = 0;
     private int killedKids = 0;
     private bool kidsWin;
@@ -22,8 +22,13 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            // Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        FindAllPlayerKids();
     }
     public void addActivatedItems()
     {
@@ -35,6 +40,13 @@ public class GameManager : MonoBehaviour
 
         activeItems++;
         Debug.Log("Kid turned on an item!");
+    }
+
+    public void FindAllPlayerKids()
+    {
+        PlayerKid[] allPlayerKids = FindObjectsOfType<PlayerKid>();
+        Debug.Log("total kids : " + allPlayerKids.Length);
+        totalKids = allPlayerKids.Length;
     }
 
     public int GetActiveItems()
@@ -56,17 +68,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void updateKilledKids()
+    public void UpdateKilledKids()
     {
         if (killedKids < totalKids)
         {
             killedKids++;
-        }
-        else
-        {
-            kidsWin = false;
-            pocongWin = true;
-            EndGame(kidsWin);
+            Debug.Log("Killed kids " + killedKids + " / " + totalKids);
+            if (killedKids == totalKids)
+            {
+                Debug.Log("Pocong menang");
+                kidsWin = false;
+                pocongWin = true;
+                EndGame(pocongWin);
+            }
         }
     }
 
@@ -87,8 +101,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public bool getPocongWin() => pocongWin;
-    public bool getKidsWin() => kidsWin;
+    public bool GetPocongWin() => pocongWin;
+    public bool GetKidsWin() => kidsWin;
 
     public void PocongTurnedOffItem(Item item)
     {
@@ -105,12 +119,12 @@ public class GameManager : MonoBehaviour
         if (kidsWon)
         {
             // Debug.Log("Kids have won the game!");
-            SceneManager.LoadScene("");
+            SceneManager.LoadScene("WinningCondition");
         }
         else
         {
-            Debug.Log("Pocong has won the game!");
-            SceneManager.LoadScene("MiniGameScene");
+            // Debug.Log("Pocong has won the game!");
+            SceneManager.LoadScene("WinningCondition");
         }
     }
 }

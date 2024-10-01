@@ -7,9 +7,6 @@ public class UI_InGame : MonoBehaviour
     public static UI_InGame instance;
 
     [Header("UI Prefabs")]
-    [SerializeField] private GameObject UI_InGameKid;
-    [SerializeField] private GameObject UI_InGamePocong;
-    [SerializeField] private GameObject UI_InGameSpirit;
     [SerializeField] private GameObject UI_GameInfo;
     [SerializeField] private GameObject UI_InGameSettings;
     [SerializeField] private GameObject UI_MiniGames;
@@ -29,19 +26,19 @@ public class UI_InGame : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        authorCharacter = FindAuthorCharacter();
+    // void Start()
+    // {
+    // authorCharacter = FindAuthorCharacter();
 
-        if (authorCharacter != null)
-        {
-            InstantiateUIForCharacter(authorCharacter);
-        }
-        else
-        {
-            Debug.LogWarning("no one have isAuthor");
-        }
-    }
+    // if (authorCharacter != null)
+    // {
+    //     InstantiateUIForCharacter(authorCharacter);
+    // }
+    // else
+    // {
+    //     Debug.LogWarning("no one have isAuthor");
+    // }
+    // }
 
     public void SwitchToSettings()
     {
@@ -74,39 +71,39 @@ public class UI_InGame : MonoBehaviour
     //     uiToEnable.SetActive(true);
     // }
 
-    private Character FindAuthorCharacter()
-    {
-        Character[] allCharacters = FindObjectsOfType<Character>();
-        foreach (Character character in allCharacters)
-        {
-            if (character.isAuthor)
-            {
-                return character;
-            }
-        }
-        return null;
-    }
+    // private Character FindAuthorCharacter()
+    // {
+    //     Character[] allCharacters = FindObjectsOfType<Character>();
+    //     foreach (Character character in allCharacters)
+    //     {
+    //         if (character.isAuthor)
+    //         {
+    //             return character;
+    //         }
+    //     }
+    //     return null;
+    // }
 
-    private void InstantiateUIForCharacter(Character character)
-    {
-        if (character is PlayerKid)
-        {
-            currentInGameController = UI_InGameKid;
-            Instantiate(currentInGameController, transform);
-        }
-        else if (character is Pocong)
-        {
-            currentInGameController = UI_InGamePocong;
-            Instantiate(currentInGameController, transform);
-        }
-        else if (character is PlayerSpirit)
-        {
-            currentInGameController = UI_InGameSpirit;
-            Instantiate(currentInGameController, transform);
-        }
-        else
-        {
-            Debug.LogWarning("Unknown character type.");
-        }
-    }
+    // private void InstantiateUIForCharacter(Character character)
+    // {
+    //     if (character is PlayerKid)
+    //     {
+    //         currentInGameController = UI_InGameKid;
+    //         Instantiate(currentInGameController, transform);
+    //     }
+    //     else if (character is Pocong)
+    //     {
+    //         currentInGameController = UI_InGamePocong;
+    //         Instantiate(currentInGameController, transform);
+    //     }
+    //     else if (character is PlayerSpirit)
+    //     {
+    //         currentInGameController = UI_InGameSpirit;
+    //         Instantiate(currentInGameController, transform);
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning("Unknown character type.");
+    //     }
+    // }
 }

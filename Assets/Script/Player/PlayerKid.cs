@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerKid : Character
 {
@@ -24,6 +25,8 @@ public class PlayerKid : Character
 
     [SerializeField] private GameObject controller_UI;
 
+    [SerializeField] private GameObject buttonInteraction;
+
     protected override void Awake()
     {
         base.Awake();
@@ -44,6 +47,7 @@ public class PlayerKid : Character
         HandleAnimations();
         HandleLocationChanged();
         HandlePlayerCollision();
+        HandleButtonInteraction();
         if (isAuthor)
         {
             controller_UI.SetActive(true);
@@ -86,6 +90,18 @@ public class PlayerKid : Character
         }
     }
 
+    private void HandleButtonInteraction()
+    {
+        if (currentItem != null && !currentItem.isActivated)
+        {
+            buttonInteraction.SetActive(true);
+        }
+        else
+        {
+            buttonInteraction.SetActive(false);
+        }
+    }
+
     private void GettingKilled()
     {
         Debug.Log("the player has been killed");
@@ -93,12 +109,13 @@ public class PlayerKid : Character
         Instantiate(deadBodyPrefab, transform.position, transform.rotation);
         // if (isAuthor)
         // {
-        CameraManager.instance.CameraShake();
-        GameObject spirit = Instantiate(spiritPrefab, transform.position, transform.rotation);
+        // CameraManager.instance.CameraShake();
+        GameObject spirit = Instantiate(spiritPrefab, transform.position, Quaternion.identity);
         spirit.GetComponentInChildren<PlayerSpirit>().SetAuthor(isAuthor);
         // CameraManager.instance.ChangeCameraFollow(spirit.transform);
         // }
-        Destroy(gameObject);
+        GameManager.instance.UpdateKilledKids();
+        Destroy(mySelf);
     }
 
     public void Knocked(float sourceOfDamage)

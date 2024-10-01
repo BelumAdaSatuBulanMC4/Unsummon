@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Character : MonoBehaviour
@@ -38,11 +39,20 @@ public class Character : MonoBehaviour
 
     protected string currentlocation;
 
+    protected Item currentItem;
+
+    [SerializeField] protected GameObject mySelf;
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         inputPlayer = new InputActions();
         // FindFirstObjectByType<UI_DashButton>().UpdatePlayersRef(this);
+    }
+
+    private void Start()
+    {
+        UserManager.instance.SetYourRole(typeChar);
     }
 
     private void OnEnable()
@@ -109,8 +119,13 @@ public class Character : MonoBehaviour
                 Item item = itemCollider.GetComponent<Item>();
                 if (item != null)
                 {
-                    InteractWithItem(item);
+                    // InteractWithItem(item);
+                    currentItem = item;
                 }
+            }
+            if (detectedItems.Length == 0)
+            {
+                currentItem = null;
             }
         }
     }
@@ -135,6 +150,30 @@ public class Character : MonoBehaviour
                 // GameManager.instance.PocongTurnedOnItem(item);
                 UI_InGame.instance.OpenMiniGame();
                 UI_MiniGame.instance.CurrentItem(item);
+            }
+            // GameManager.instance.PocongTurnedOffItem(item);
+        }
+    }
+
+    public void interactItemButton()
+    {
+        if (typeChar == "Player")
+        {
+            // Debug.Log("cek!");
+            if (!currentItem.isActivated)
+            {
+                // GameManager.instance.KidTurnedOnItem(item);
+                UI_InGame.instance.OpenMiniGame();
+                UI_MiniGame.instance.CurrentItem(currentItem);
+            }
+        }
+        else if (typeChar == "Pocong")
+        {
+            if (currentItem.isActivated)
+            {
+                // GameManager.instance.PocongTurnedOnItem(item);
+                UI_InGame.instance.OpenMiniGame();
+                UI_MiniGame.instance.CurrentItem(currentItem);
             }
             // GameManager.instance.PocongTurnedOffItem(item);
         }
