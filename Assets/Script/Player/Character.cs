@@ -211,6 +211,7 @@ public class Character : NetworkBehaviour
         else
         {
             // Debug.Log($"Movement: {moveInput} for {IsOwner}");
+            // PlayerManager.instance.UpdateKidPosition();
             rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
         }
     }

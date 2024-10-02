@@ -27,6 +27,7 @@ public class GamePlayManager : NetworkBehaviour
             // int randomPocongId = Random.Range(0, 5);
             // if ((int)client.ClientId == randomPocongId)
             if ((int)client.ClientId == 0)
+            // if (false)
             {
                 GameObject playerInstance = Instantiate(playerPocongPrefab, spawnPocongPosition, Quaternion.identity);
                 playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(client.ClientId);

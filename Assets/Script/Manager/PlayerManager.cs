@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerManager : NetworkBehaviour
+public class PlayerManager : MonoBehaviour
 {
     // Dictionary to store each Kid's position and time
     public static PlayerManager instance;
@@ -22,7 +21,7 @@ public class PlayerManager : NetworkBehaviour
         }
         else
         {
-            // Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
     public void RegisterKid(PlayerKid kid)
@@ -60,7 +59,7 @@ public class PlayerManager : NetworkBehaviour
         {
             kidPositions.Add(kid, position);
         }
-        Debug.Log("Kid positions: " + kidPositions[kid]);
+
         // Start coroutine to remove the position after 7 seconds
         StartCoroutine(RemoveKidPositionAfterTime(kid, 5f));
     }
@@ -68,8 +67,9 @@ public class PlayerManager : NetworkBehaviour
     public void UpdatePocongPosition(Pocong pocong, Vector3 position)
     {
         pocongPosition = position;
-        // Debug.Log("Pocong position: " + pocongPosition);
-        StartCoroutine(RemovePocongPositionAfterTime(pocong, 2f));
+
+        // Start coroutine to remove the position after 7 seconds
+        StartCoroutine(RemovePocongPositionAfterTime(pocong, 5f));
     }
 
     public void UpdateSpiritPosition(PlayerSpirit spirit, Vector3 position)
@@ -83,11 +83,6 @@ public class PlayerManager : NetworkBehaviour
             spiritPositions.Add(spirit, position);
         }
         StartCoroutine(RemoveSpiritPositionAfterTime(spirit, 5f));
-    }
-
-    public Vector3 getPocongPosition()
-    {
-        return pocongPosition;
     }
 
     // Coroutine to remove the Kid's position after a delay
@@ -123,10 +118,5 @@ public class PlayerManager : NetworkBehaviour
     public Dictionary<PlayerKid, Vector3> GetKidPositions()
     {
         return new Dictionary<PlayerKid, Vector3>(kidPositions); // Return a copy to avoid direct manipulation
-    }
-
-    public Dictionary<PlayerSpirit, Vector3> GetSpiritPositions()
-    {
-        return new Dictionary<PlayerSpirit, Vector3>(spiritPositions); // Return a copy to avoid direct manipulation
     }
 }

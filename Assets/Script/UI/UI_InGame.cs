@@ -16,8 +16,6 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private GameObject UI_InGameSpirit;
     [SerializeField] private GameObject InteractButton;
 
-    private Button btnInt;
-
     private GameObject currentInGameController;
     private Character authorCharacter;
 
