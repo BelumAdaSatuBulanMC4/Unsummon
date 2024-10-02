@@ -3,6 +3,15 @@ using UnityEngine.SceneManagement;
 
 public class SceneManagerScript : MonoBehaviour
 {
+    public static SceneManagerScript instance;
+
+    private void Awake() {
+        if(instance == null){
+            instance = this;
+        }else{
+            Destroy(gameObject);
+        }
+    }
     public void GoToLobbies()
     {
         SceneManager.LoadScene("LobbyRoom");

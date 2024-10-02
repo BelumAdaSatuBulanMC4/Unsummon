@@ -11,7 +11,6 @@ using UnityEngine;
 public class ClientManager : MonoBehaviour
 {
     public static ClientManager Instance { get; private set; }
-    public TMP_InputField codeRoomInput;
 
     private void Awake() {
         if(Instance != null && Instance != this){
@@ -21,18 +20,18 @@ public class ClientManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
     }
-    public async void StartClient() {
+    public async void StartClient(string codeRoom) {
 
         JoinAllocation allocation;
         try {
-            allocation = await RelayService.Instance.JoinAllocationAsync(codeRoomInput.text);
+            allocation = await RelayService.Instance.JoinAllocationAsync(codeRoom);
         } catch {
             Debug.LogError("Relay get join code request failed");
             throw;
         }
         var relayServerData = new RelayServerData(allocation, "dtls");
 
-        Debug.Log("Trying to connect to: " + codeRoomInput.text);
+        Debug.Log("Trying to connect to: " + codeRoom);
         
         NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
         // Debug. Log($"client: {allocation.ConnectionData[0]} {allocation.ConnectionData[1]}");
@@ -43,7 +42,7 @@ public class ClientManager : MonoBehaviour
             Debug.Log("Client connect successfully!");
             LobbyDisplay lobbyDisplay = FindObjectOfType<LobbyDisplay>();
             if (lobbyDisplay != null) {
-                lobbyDisplay.UpdateRoomCode(codeRoomInput.text); // Memperbarui codeRoomOutput di LobbyDisplay
+                lobbyDisplay.UpdateRoomCode(codeRoom); // Memperbarui codeRoomOutput di LobbyDisplay
             }
         } else {
             Debug.LogError("Failed to start client!");
