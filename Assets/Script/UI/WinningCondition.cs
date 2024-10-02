@@ -27,6 +27,24 @@ public class WinningCondition : NetworkBehaviour
         isPocongWin = GameManager.instance.GetPocongWin();
         whoAreYou = UserManager.instance.getYourRole();
 
+        // if (!isPocongWin && isKidsWin)
+        // {
+        //     victoryText.text = "Victory!";
+        //     secondaryText.text = "Cursed Conquest";
+        //     informationText.text = "The candles are lit, and the pocong is banished back to hell!";
+        //     splash.enabled = false;
+        // }
+        // else if (isPocongWin && !isKidsWin)
+        // {
+        //     victoryText.text = "Defeat";
+        //     secondaryText.text = "Eternal Doom";
+        //     informationText.text = "The pocong has devoured all the children, your family will be in hell forever.";
+        //     splash.enabled = true;
+        // }
+        // else if (isPocongWin && isKidsWin)
+        // {
+
+        // }
         if (isKidsWin)
         {
             SetupSceneKids(isKidsWin);
@@ -37,6 +55,19 @@ public class WinningCondition : NetworkBehaviour
             SetupScenePocong(isPocongWin);
         }
     }
+
+    // private void DetermineOutcome(bool isKidWin, bool isPocongWin)
+    // {
+    //     int outcome = (isKidWin ? 1 : 0) + (isPocongWin ? 2 : 0);
+    //     switch (outcome)
+    //     {
+    //         case 1:
+    //             SetupSceneKids(true);
+    //             break;
+    //         case 2:
+    //             SetupSceneKids(false);
+    //     }
+    // }
 
     public void HomeButton()
     {
@@ -50,7 +81,7 @@ public class WinningCondition : NetworkBehaviour
 
     private void SetupSceneKids(bool isWin)
     {
-        if (isWin)
+        if (GameManager.instance.GetKidsWin())
         {
             victoryText.text = "Victory!";
             secondaryText.text = "Cursed Conquest";
@@ -68,7 +99,7 @@ public class WinningCondition : NetworkBehaviour
 
     private void SetupScenePocong(bool isWin)
     {
-        if (isWin)
+        if (GameManager.instance.GetPocongWin())
         {
             victoryText.text = "Victory!";
             secondaryText.text = "Occult Ascendancy";

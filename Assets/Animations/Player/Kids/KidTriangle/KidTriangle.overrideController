@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: KidTriangle
+  m_Controller: {fileID: 9100000, guid: c476ff0193adc4ad3b3f6f3785731ae4, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: dd45874b6482149c184c461ece6640d2, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b8aefce0b025f429a85a6651503ce8f6, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 64b9c933c9dbc475fbac24ac74413afd, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: e96682124d65a48c3a562f83fecfb44e, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: e1d22a1eaa0aa457cbca92bd176e656c, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: af36a420ba6ba414fbc2ac707e6125f0, type: 2}

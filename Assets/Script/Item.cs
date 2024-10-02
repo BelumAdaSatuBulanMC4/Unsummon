@@ -6,6 +6,36 @@ using UnityEngine;
 public class Item : NetworkBehaviour
 {
     public bool isActivated = false;
+    private Animator anim;
+
+    private void Awake()
+    {
+        anim = GetComponentInChildren<Animator>();
+    }
+
+    private void Start()
+    {
+        if (isActivated)
+        {
+            anim.SetFloat("isCandleActive", 1);
+        }
+        else
+        {
+            anim.SetFloat("isCandleActive", 0);
+        }
+    }
+
+    private void Update()
+    {
+        if (isActivated)
+        {
+            anim.SetFloat("isCandleActive", 1);
+        }
+        else
+        {
+            anim.SetFloat("isCandleActive", 0);
+        }
+    }
 
     public void ChangeVariable()
     {
@@ -33,13 +63,15 @@ public class Item : NetworkBehaviour
     public void ChangeVariableClientRpc()
     {
         isActivated = true;
-        GetComponent<SpriteRenderer>().color = Color.green;
+        anim.SetFloat("isCandleActive", 1);
+        // GetComponent<SpriteRenderer>().color = Color.green;
     }
 
     [ClientRpc(RequireOwnership = false)]
     public void ResetValueClientRpc()
     {
         isActivated = false;
-        GetComponent<SpriteRenderer>().color = Color.white;
+        anim.SetFloat("isCandleActive", 0);
+        // GetComponent<SpriteRenderer>().color = Color.white;
     }
 }

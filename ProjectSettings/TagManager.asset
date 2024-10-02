@@ -20,7 +20,7 @@ TagManager:
   - Mirror
   - CamBox
   - Indicator
-  - 
+  - Candle
   - 
   - 
   - 
@@ -63,4 +63,7 @@ TagManager:
     locked: 0
   - name: Indicator
     uniqueID: 316288467
+    locked: 0
+  - name: Candle
+    uniqueID: 2556904013
     locked: 0
