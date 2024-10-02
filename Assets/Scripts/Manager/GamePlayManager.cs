@@ -6,7 +6,7 @@ public class GamePlayManager : NetworkBehaviour
     public GameObject playerKidPrefab;
     public GameObject playerPocongPrefab;
     private Vector3 spawnKidPosition = new(0, 0, 0); // Posisi Spawn playerKid
-    private Vector3 spawnPocongPosition = new(1, 1, 0); // Posisi Spawn playerKid
+    private Vector3 spawnPocongPosition = new(0, 0, 0); // Posisi Spawn playerKid
 
     // Fungsi yang dipanggil setelah scene GamePlay di-load
     public override void OnNetworkSpawn()
