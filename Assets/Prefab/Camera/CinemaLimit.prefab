@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2699317040020431408
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1540127034409270788}
+  - component: {fileID: 7563757579954533960}
+  m_Layer: 0
+  m_Name: CinemaLimit
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1540127034409270788
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2699317040020431408}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 65.220436, y: -0.39583206, z: 0.16656402}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!60 &7563757579954533960
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2699317040020431408}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -57.876526, y: 30.571232}
+      - {x: -36.01207, y: 30.561247}
+      - {x: -35.95151, y: 14.436895}
+      - {x: -20.916817, y: 14.5541525}
+      - {x: -20.80834, y: 17.457329}
+      - {x: -1.0015411, y: 17.50177}
+      - {x: -0.8911371, y: 3.6559062}
+      - {x: 2.2943516, y: 3.535862}
+      - {x: 2.102559, y: -0.51106024}
+      - {x: 9.1923895, y: -0.47589275}
+      - {x: 9.116814, y: 3.6351323}
+      - {x: 6.113102, y: 3.6730828}
+      - {x: 6.0475483, y: 17.732597}
+      - {x: 56.28681, y: 17.60965}
+      - {x: 56.12094, y: 3.8981504}
+      - {x: 50.982353, y: 3.5947003}
+      - {x: 51.09056, y: 0.47788692}
+      - {x: 66.211754, y: 0.54169965}
+      - {x: 66.15016, y: -16.118767}
+      - {x: 6.537919, y: -16.00324}
+      - {x: -24.100822, y: -16.201693}
+      - {x: -24.193926, y: -16.386627}
+      - {x: -23.985886, y: -21.896381}
+      - {x: -40.44722, y: -21.598192}
+      - {x: -40.224556, y: -28.1624}
+      - {x: -57.57116, y: -28.217663}
+      - {x: -57.90466, y: 16.760977}
+  m_UseDelaunayMesh: 0
