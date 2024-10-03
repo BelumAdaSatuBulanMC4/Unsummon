@@ -1,4 +1,6 @@
+// Di client baru masih belum update player yang lamanya!
 using System.Collections.Generic;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -8,42 +10,55 @@ public class LobbyManager : NetworkBehaviour
 {
     public Image[] playerProfile;
     public Sprite[] newPlayerProfile;
+    public TextMeshProUGUI[] playerName;
     public Button startButton;
+
     void Start()
     {
         Debug.Log("LobbyManager Active");
-        NetworkManager.Singleton.OnClientConnectedCallback += OnPlayerJoined;
         startButton.onClick.AddListener(OnStartButtonPressed);
+        NetworkManager.Singleton.OnClientConnectedCallback += OnPlayerJoined;
     }
 
     // Callback saat pemain bergabung
     private void OnPlayerJoined(ulong clientId)
     {
+        Debug.Log($"{DataPersistence.LoadUsername()}");
         Debug.Log("Player Joined dengan Client ID: " + clientId);
-        SendImageToAllClientRpc(clientId);
+        SendProfileToAllClientRpc(clientId);
+        // SendPlayerNameServerRpc();
     }
+
+    // [ServerRpc(RequireOwnership = false)]
+    // private void SendPlayerNameServerRpc()
+    // {
+    //     // SendPlayerNameClientRpc(OwnerClientId, DataPersistence.LoadUsername());
+    //     SendPlayerNameClientRpc(OwnerClientId);
+    // }
+
+    // [ClientRpc]
+    // private void SendPlayerNameClientRpc(ulong clientId)
+    // {
+    //     playerName[clientId].text = $"Player {clientId}";
+    //     // Debug.Log($"Player yang join bernama {playerNameJoin}");
+    // }
+
 
     // Server ke semua Client (dieksekusi di client)
     [ClientRpc]
-    private void SendImageToAllClientRpc(ulong clientId) {
-        // if (playerProfile[clientId] != null) {
-        //     playerProfile[clientId].sprite = newPlayerProfile[clientId];
-        // } else {
-        //     Debug.Log($"Player Profile dengan clientID {clientId} tidak ada!");
-        // }
-        // if (OwnerClientId == clientId) {
-        //     int totalPlayer = (int)clientId;
-        //     for (int i = 0; i < totalPlayer-1; i++) {
-        //         playerProfile[clientId].sprite = newPlayerProfile[clientId];
-        //         Debug.Log($"Profile player {clientId} telah diubah");
-        //     }
-        // }
+    private void SendProfileToAllClientRpc(ulong clientId)
+    {
         int totalPlayer = (int)clientId;
-        for (int i = 0; i <= totalPlayer; i++) {            
-            if (playerProfile[i] != null) {
+        for (int i = 0; i <= totalPlayer; i++)
+        {
+            playerName[i].text = $"Player {i}";
+            if (playerProfile[i] != null)
+            {
                 playerProfile[i].sprite = newPlayerProfile[i];
                 Debug.Log($"Profile player {clientId} telah diubah");
-            } else {
+            }
+            else
+            {
                 Debug.Log($"Player Profile dengan clientID {clientId} tidak ada!");
             }
         }
@@ -63,16 +78,19 @@ public class LobbyManager : NetworkBehaviour
     {
         NetworkManager.SceneManager.LoadScene("GamePlay", LoadSceneMode.Single);
     }
-    
-    public void OnBackButtonPressed() {
+
+    public void OnBackButtonPressed()
+    {
         // Shutdown NetworkManager ketika kembali ke Main Menu
-        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsHost) {
+        if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsHost)
+        {
             NetworkManager.Singleton.Shutdown();
             Debug.Log("NetworkManager shut down successfully.");
         }
 
         // Kembali ke Main Menu (implementasi LoadScene sesuai dengan logika kamu)
         SceneManager.LoadScene("MainMenu");
+
     }
 
 
