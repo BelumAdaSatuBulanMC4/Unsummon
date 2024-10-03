@@ -9,22 +9,29 @@ using UnityEngine;
 public class MainMenuDisplay : MonoBehaviour
 {
     public TMP_InputField codeRoomInput;
-    private async void Start() {
-        try {
+    private async void Start()
+    {
+        Debug.Log($"{DataPersistence.LoadUsername()}");
+        try
+        {
             await UnityServices.InitializeAsync();
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
             Debug.Log($"Player ID: {AuthenticationService.Instance.PlayerId}");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Debug.Log(e);
             return;
         }
     }
 
-    public void StartHost() {
+    public void StartHost()
+    {
         HostManager.Instance.StartHost();
     }
 
-    public void StartClient() {
+    public void StartClient()
+    {
         ClientManager.Instance.StartClient(codeRoomInput.text);
     }
 

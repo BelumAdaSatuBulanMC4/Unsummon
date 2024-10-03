@@ -3,7 +3,7 @@ using TMPro;
 using System;
 using Unity.Netcode;
 
-public class UserManager : NetworkBehaviour
+public class UserManager : MonoBehaviour
 {
     public static UserManager instance;
     // public TMP_InputField usernameInputField;
