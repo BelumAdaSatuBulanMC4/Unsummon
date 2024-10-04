@@ -8,9 +8,14 @@ public class Item : NetworkBehaviour
     public bool isActivated = false;
     private Animator anim;
 
+    public AudioClip onCandle;
+    public AudioClip offCandle;
+    private AudioSource audioSource;
+
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -39,10 +44,12 @@ public class Item : NetworkBehaviour
 
     public void ChangeVariable()
     {
+        audioSource.PlayOneShot(onCandle);
         ChangeVariableServerRpc();
     }
     public void ResetValue()
     {
+        audioSource.PlayOneShot(offCandle);
         ResetValueServerRpc();
     }
 

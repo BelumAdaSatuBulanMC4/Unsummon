@@ -12,6 +12,8 @@ public class MainMenuDisplay : MonoBehaviour
     private async void Start()
     {
         Debug.Log($"{DataPersistence.LoadUsername()}");
+        // int randomNumber = UnityEngine.Random.Range(1, 4); 
+        // Debug.Log("Angka acak: " + randomNumber);
         try
         {
             await UnityServices.InitializeAsync();

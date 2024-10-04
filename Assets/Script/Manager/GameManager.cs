@@ -15,6 +15,7 @@ public class GameManager : NetworkBehaviour
     private int killedKids = 0;
     private bool kidsWin;
     private bool pocongWin;
+    // private bool isGamePlaying = true;
 
     [SerializeField] private TMP_Text victoryText;
     [SerializeField] private TMP_Text secondaryText;
@@ -25,6 +26,12 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private Button playAgainButton;
     [SerializeField] private GameObject result;
     Character currentChar;
+
+    [Header("Audio in GamePlay")]
+    public AudioClip pocongWinSound;
+    public AudioClip kidsWinSound;
+    public AudioClip environmentGamePlay;
+    private AudioSource audioSource;
 
 
     private void Awake()
@@ -44,26 +51,21 @@ public class GameManager : NetworkBehaviour
         FindAllPlayerKids();
         currentChar = FindAuthorCharacter();
         result.SetActive(false);
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = environmentGamePlay;
+        audioSource.Play();
+        // audioSource.PlayOneShot(environmentGamePlay);
     }
-    // public void addActivatedItems()
-    // {
-    //     if (activeItems >= totalItems)
-    //     {
-    //         EndGame(true);
-    //         return;
-    //     }
-
-    //     activeItems++;
-    //     Debug.Log("Kid turned on an item!");
-    // }
 
     private void Update()
     {
         Debug.Log($"Achive items : {activeItems}/{totalItems}");
         kidsWin = activeItems == totalItems;
         pocongWin = killedKids == totalKids;
+        // if ((kidsWin || pocongWin) && isGamePlaying)
         if (kidsWin || pocongWin)
         {
+            // isGamePlaying = false;
             EndGame();
         }
     }
@@ -85,30 +87,12 @@ public class GameManager : NetworkBehaviour
         return totalItems;
     }
 
-    // public void subActivatedItems()
-    // {
-    //     if (activeItems > 0)
-    //     {
-    //         activeItems--;
-    //         Debug.Log("Pocong turned off an item!");
-    //     }
-    // }
-
     public void UpdateKilledKids()
     {
         if (killedKids < totalKids)
         {
             // killedKids++;
             AddKillKidsServerRpc();
-            // Debug.Log("Killed kids " + killedKids + " / " + totalKids);
-            // if (killedKids == totalKids)
-            // {
-            //     Debug.Log("Pocong menang");
-            //     // kidsWin = false;
-            //     // pocongWin = true;
-            //     PocongWinServerRpc();
-            //     EndGame();
-            // }
         }
     }
 
@@ -120,16 +104,6 @@ public class GameManager : NetworkBehaviour
             item.ChangeVariable();
             // activeItems++;
             AddActiveItemsServerRpc();
-            // Debug.Log("Kid turned on an item. Active items: " + activeItems);
-
-            // if (activeItems == totalItems)
-            // {
-            //     Debug.Log($"is win {kidsWin}");
-            //     // kidsWin = true;
-            //     // pocongWin = false;
-            //     KidWinServerRpc();
-            //     EndGame();
-            // }
         }
     }
 
@@ -172,6 +146,8 @@ public class GameManager : NetworkBehaviour
                 secondaryText.text = "Cursed Conquest";
                 informationText.text = "The candles are lit, and the pocong is banished back to hell!";
                 splash.enabled = false;
+                // audioSource.Play();
+                // audioSource.PlayOneShot(kidsWinSound);
             }
             else
             {
@@ -179,6 +155,9 @@ public class GameManager : NetworkBehaviour
                 secondaryText.text = "Eternal Doom";
                 informationText.text = "The pocong has devoured all the children, your family will be in hell forever.";
                 splash.enabled = true;
+                // audioSource.clip = pocongWinSound;
+                // audioSource.Play();
+                // audioSource.PlayOneShot(pocongWinSound);
             }
         }
         else
@@ -189,6 +168,9 @@ public class GameManager : NetworkBehaviour
                 secondaryText.text = "Occult Ascendancy";
                 informationText.text = "The pocong reigns supreme! All the children have been eaten.";
                 splash.enabled = false;
+                // audioSource.clip = pocongWinSound;
+                // audioSource.Play();
+                // audioSource.PlayOneShot(pocongWinSound);
             }
             else
             {
@@ -196,19 +178,11 @@ public class GameManager : NetworkBehaviour
                 secondaryText.text = "Ritual Collapse";
                 informationText.text = "The light prevails! The pocong is dragged back to hell.";
                 splash.enabled = true;
+                // audioSource.clip = kidsWinSound;
+                // audioSource.Play();
+                // audioSource.PlayOneShot(kidsWinSound);
             }
         }
-        // LoadGamePlaySceneServerRpc();
-        // if (kidsWon)
-        // {
-        //     // Debug.Log("Kids have won the game!");
-        // SceneManager.LoadScene("WinningCondition");
-        // }
-        // else
-        // {
-        //     // Debug.Log("Pocong has won the game!");
-        //     SceneManager.LoadScene("WinningCondition");
-        // }
     }
 
     // TAMBAH ITEMS
@@ -249,33 +223,13 @@ public class GameManager : NetworkBehaviour
         killedKids++;
     }
 
-    // [ServerRpc]
-    // public void KidWinServerRpc()
-    // {
-    //     KidWinClientRpc();
-    // }
-    // [ClientRpc]
-    // public void KidWinClientRpc()
-    // {
-    //     kidsWin = true;
-    //     pocongWin = false;
-    // }
-    // [ServerRpc]
-    // public void PocongWinServerRpc()
-    // {
-    //     PocongWinClientRpc();
-    // }
-    // [ClientRpc]
-    // public void PocongWinClientRpc()
-    // {
-    //     pocongWin = true;
-    //     kidsWin = false;
-    // }
+    // PLAY SOUND WIN AND LOSE
+    private void PlayResultSound()
+    {
+        audioSource.Stop();
+        if (kidsWin) { audioSource.clip = kidsWinSound; audioSource.Play(); }
+        else if (pocongWin) { audioSource.clip = pocongWinSound; audioSource.Play(); }
+    }
 
-    // [ServerRpc(RequireOwnership = false)]
-    // private void LoadGamePlaySceneServerRpc()
-    // {
-    //     NetworkManager.SceneManager.LoadScene("WinningCondition", LoadSceneMode.Single);
-    // }
 }
 

@@ -143,6 +143,8 @@ public class Pocong : Character
     {
         // if (Input.GetKeyDown(KeyCode.R))
         // {
+        sfxPocongKill.loop = false;
+        sfxPocongKill.Play();
         kid.Knocked(transform.position.x);
         // }
     }
