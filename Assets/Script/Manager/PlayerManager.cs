@@ -14,8 +14,6 @@ public class PlayerManager : NetworkBehaviour
 
     private Dictionary<ulong, Vector3> kidPositionsNET = new Dictionary<ulong, Vector3>();
 
-    // Register a Kid and start tracking its position
-
     private void Awake()
     {
         if (instance == null)
