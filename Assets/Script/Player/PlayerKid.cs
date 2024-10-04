@@ -126,6 +126,8 @@ public class PlayerKid : Character
     {
         // Debug.Log("the player has been killed");
         // Transform kidTransform = transform;
+        sfxPocongKill.loop = false;
+        sfxPocongKill.Play();
         Instantiate(deadBodyPrefab, transform.position, transform.rotation);
         // if (isAuthor)
         // {

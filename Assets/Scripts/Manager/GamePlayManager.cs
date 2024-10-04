@@ -21,10 +21,10 @@ public class GamePlayManager : NetworkBehaviour
     private void SpawnPlayers()
     {
         if (!IsServer) return;
+        int randomPocongId = Random.Range(0, 3);
         foreach (var client in NetworkManager.ConnectedClientsList)
         {
             // Debug.Log($"Player: {client.ClientId}");
-            int randomPocongId = Random.Range(0, 3);
             if ((int)client.ClientId == randomPocongId)
             // if ((int)client.ClientId == 0)
             // if (false)
@@ -37,8 +37,6 @@ public class GamePlayManager : NetworkBehaviour
                 GameObject playerInstance = Instantiate(playerKidPrefab, spawnKidPosition, Quaternion.identity);
                 playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(client.ClientId);
             }
-            // GameObject playerInstance = Instantiate(playerKidPrefab, spawnKidPosition, Quaternion.identity);
-            // playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(client.ClientId);
 
         }
     }

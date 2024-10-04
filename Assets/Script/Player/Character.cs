@@ -44,13 +44,21 @@ public class Character : NetworkBehaviour
 
     [SerializeField] protected GameObject mySelf;
 
-    private AudioSource audioSource;
+    protected AudioSource sfxMovement;
+    protected AudioSource sfxPocongKill;
+
+    public AudioClip sfxMovementClip;  // AudioClip untuk AudioSource pertama
+    public AudioClip sfxPocongKillClip;  // AudioClip untuk AudioSource kedua
 
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         inputPlayer = new InputActions();
-        audioSource = GetComponent<AudioSource>();
+        AudioSource[] audioSources = GetComponents<AudioSource>();
+        sfxMovement = audioSources[0];
+        sfxPocongKill = audioSources[1];
+        sfxMovement.clip = sfxMovementClip;
+        sfxPocongKill.clip = sfxPocongKillClip;
     }
 
     private void Start()
@@ -228,16 +236,16 @@ public class Character : NetworkBehaviour
     {
         if (moveInput != Vector2.zero)
         {
-            if (!audioSource.isPlaying)
+            if (!sfxMovement.isPlaying)
             {
-                audioSource.Play();  // Mainkan sound effect saat bergerak
+                sfxMovement.Play();  // Mainkan sound effect saat bergerak
             }
         }
         else
         {
-            if (audioSource.isPlaying)
+            if (sfxMovement.isPlaying)
             {
-                audioSource.Stop();  // Hentikan sound effect saat berhenti
+                sfxMovement.Stop();  // Hentikan sound effect saat berhenti
             }
         }
     }
