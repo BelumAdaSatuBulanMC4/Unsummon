@@ -26,6 +26,10 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private GameObject result;
     Character currentChar;
 
+    public AudioClip pocongWinSound;
+    public AudioClip kidsWinSound;
+    private AudioSource audioSource;
+
 
     private void Awake()
     {
@@ -44,18 +48,8 @@ public class GameManager : NetworkBehaviour
         FindAllPlayerKids();
         currentChar = FindAuthorCharacter();
         result.SetActive(false);
+        audioSource = GetComponent<AudioSource>();
     }
-    // public void addActivatedItems()
-    // {
-    //     if (activeItems >= totalItems)
-    //     {
-    //         EndGame(true);
-    //         return;
-    //     }
-
-    //     activeItems++;
-    //     Debug.Log("Kid turned on an item!");
-    // }
 
     private void Update()
     {
@@ -85,30 +79,12 @@ public class GameManager : NetworkBehaviour
         return totalItems;
     }
 
-    // public void subActivatedItems()
-    // {
-    //     if (activeItems > 0)
-    //     {
-    //         activeItems--;
-    //         Debug.Log("Pocong turned off an item!");
-    //     }
-    // }
-
     public void UpdateKilledKids()
     {
         if (killedKids < totalKids)
         {
             // killedKids++;
             AddKillKidsServerRpc();
-            // Debug.Log("Killed kids " + killedKids + " / " + totalKids);
-            // if (killedKids == totalKids)
-            // {
-            //     Debug.Log("Pocong menang");
-            //     // kidsWin = false;
-            //     // pocongWin = true;
-            //     PocongWinServerRpc();
-            //     EndGame();
-            // }
         }
     }
 
@@ -120,16 +96,6 @@ public class GameManager : NetworkBehaviour
             item.ChangeVariable();
             // activeItems++;
             AddActiveItemsServerRpc();
-            // Debug.Log("Kid turned on an item. Active items: " + activeItems);
-
-            // if (activeItems == totalItems)
-            // {
-            //     Debug.Log($"is win {kidsWin}");
-            //     // kidsWin = true;
-            //     // pocongWin = false;
-            //     KidWinServerRpc();
-            //     EndGame();
-            // }
         }
     }
 
@@ -172,6 +138,7 @@ public class GameManager : NetworkBehaviour
                 secondaryText.text = "Cursed Conquest";
                 informationText.text = "The candles are lit, and the pocong is banished back to hell!";
                 splash.enabled = false;
+                audioSource.PlayOneShot(kidsWinSound);
             }
             else
             {
@@ -179,6 +146,7 @@ public class GameManager : NetworkBehaviour
                 secondaryText.text = "Eternal Doom";
                 informationText.text = "The pocong has devoured all the children, your family will be in hell forever.";
                 splash.enabled = true;
+                audioSource.PlayOneShot(pocongWinSound);
             }
         }
         else
@@ -189,6 +157,7 @@ public class GameManager : NetworkBehaviour
                 secondaryText.text = "Occult Ascendancy";
                 informationText.text = "The pocong reigns supreme! All the children have been eaten.";
                 splash.enabled = false;
+                audioSource.PlayOneShot(pocongWinSound);
             }
             else
             {
@@ -196,19 +165,9 @@ public class GameManager : NetworkBehaviour
                 secondaryText.text = "Ritual Collapse";
                 informationText.text = "The light prevails! The pocong is dragged back to hell.";
                 splash.enabled = true;
+                audioSource.PlayOneShot(kidsWinSound);
             }
         }
-        // LoadGamePlaySceneServerRpc();
-        // if (kidsWon)
-        // {
-        //     // Debug.Log("Kids have won the game!");
-        // SceneManager.LoadScene("WinningCondition");
-        // }
-        // else
-        // {
-        //     // Debug.Log("Pocong has won the game!");
-        //     SceneManager.LoadScene("WinningCondition");
-        // }
     }
 
     // TAMBAH ITEMS
@@ -249,33 +208,6 @@ public class GameManager : NetworkBehaviour
         killedKids++;
     }
 
-    // [ServerRpc]
-    // public void KidWinServerRpc()
-    // {
-    //     KidWinClientRpc();
-    // }
-    // [ClientRpc]
-    // public void KidWinClientRpc()
-    // {
-    //     kidsWin = true;
-    //     pocongWin = false;
-    // }
-    // [ServerRpc]
-    // public void PocongWinServerRpc()
-    // {
-    //     PocongWinClientRpc();
-    // }
-    // [ClientRpc]
-    // public void PocongWinClientRpc()
-    // {
-    //     pocongWin = true;
-    //     kidsWin = false;
-    // }
 
-    // [ServerRpc(RequireOwnership = false)]
-    // private void LoadGamePlaySceneServerRpc()
-    // {
-    //     NetworkManager.SceneManager.LoadScene("WinningCondition", LoadSceneMode.Single);
-    // }
 }
 

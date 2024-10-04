@@ -44,11 +44,13 @@ public class Character : NetworkBehaviour
 
     [SerializeField] protected GameObject mySelf;
 
+    private AudioSource audioSource;
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         inputPlayer = new InputActions();
-        // FindFirstObjectByType<UI_DashButton>().UpdatePlayersRef(this);
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -59,7 +61,6 @@ public class Character : NetworkBehaviour
     private void OnEnable()
     {
         inputPlayer.Enable();
-        // inputPlayer.Kid.Dash.performed += ctx => DashAbility();
         inputPlayer.Kid.Move.performed += ctx => { moveInput = ctx.ReadValue<Vector2>(); };
         inputPlayer.Kid.Move.canceled += ctx => moveInput = Vector2.zero;
     }
@@ -91,12 +92,11 @@ public class Character : NetworkBehaviour
             dashCooldownTimer -= Time.deltaTime;
         }
 
-        // isAuthor = IsOwner;
-        // Terapkan input langsung di client tanpa menunggu server
         HandleMovement();
         HandleItemInteraction();
         HandleFlip();
         SendPositionToServerServerRpc();
+        HandleMovementSound();
     }
 
     public Item GetCurrentItem()
@@ -148,31 +148,6 @@ public class Character : NetworkBehaviour
         }
     }
 
-    void InteractWithItem(Item item)
-    {
-        if (item == null) return;
-        if (Input.GetKeyDown(KeyCode.E) && typeChar == "Player")
-        {
-            // Debug.Log("cek!");
-            if (!item.isActivated)
-            {
-                // GameManager.instance.KidTurnedOnItem(item);
-                UI_InGame.instance.OpenMiniGame();
-                UI_MiniGame.instance.CurrentItem(item);
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.R) && typeChar == "Pocong")
-        {
-            if (item.isActivated)
-            {
-                // GameManager.instance.PocongTurnedOnItem(item);
-                UI_InGame.instance.OpenMiniGame();
-                UI_MiniGame.instance.CurrentItem(item);
-            }
-            // GameManager.instance.PocongTurnedOffItem(item);
-        }
-    }
-
     public void interactItemButton()
     {
         if (typeChar == "Player")
@@ -210,8 +185,6 @@ public class Character : NetworkBehaviour
         }
         else
         {
-            // Debug.Log($"Movement: {moveInput} for {IsOwner}");
-            // PlayerManager.instance.UpdateKidPosition();
             rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
         }
     }
@@ -248,6 +221,24 @@ public class Character : NetworkBehaviour
         {
             // Jika bukan owner (client lain), update posisi berdasarkan data dari server
             transform.position = newPosition;
+        }
+    }
+
+    private void HandleMovementSound()
+    {
+        if (moveInput != Vector2.zero)
+        {
+            if (!audioSource.isPlaying)
+            {
+                audioSource.Play();  // Mainkan sound effect saat bergerak
+            }
+        }
+        else
+        {
+            if (audioSource.isPlaying)
+            {
+                audioSource.Stop();  // Hentikan sound effect saat berhenti
+            }
         }
     }
 
