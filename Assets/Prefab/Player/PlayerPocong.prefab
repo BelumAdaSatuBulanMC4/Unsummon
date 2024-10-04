@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8399580634329649872}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: ItemCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 4729913193324183008}
   - component: {fileID: 4682173889002502609}
   - component: {fileID: 2875561632293130097}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 3083760627346955094}
   - component: {fileID: 7647553588157580433}
   - component: {fileID: 4172258024306915728}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Interact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,7 +365,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8755744105393276333}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: KidCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -399,7 +399,7 @@ GameObject:
   - component: {fileID: 1676570863989843794}
   - component: {fileID: 5258665430469895694}
   - component: {fileID: 6609689199502516636}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: PocongButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -500,7 +500,7 @@ GameObject:
   - component: {fileID: 4901084137552417568}
   - component: {fileID: 5573928905906744794}
   - component: {fileID: 3642028333157225499}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Animator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -653,7 +653,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1551439908100313034}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: SpiritCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -690,7 +690,7 @@ GameObject:
   - component: {fileID: 7307612335329235897}
   - component: {fileID: 1146384695542933532}
   - component: {fileID: 1908432413259721003}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: PocongObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -778,8 +778,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.016851366, y: -0.23591864}
-  m_Size: {x: 1.1628193, y: 1.5447834}
+  m_Offset: {x: 0.016851366, y: -0.20388317}
+  m_Size: {x: 1.1628193, y: 2.5912724}
   m_Direction: 0
 --- !u!114 &1239598840888064577
 MonoBehaviour:
@@ -794,31 +794,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAuthor: 1
-  moveSpeed: 5
+  moveSpeed: 6
   itemCheck: {fileID: 8399580634329649872}
-  itemCheckRadius: 0.9
+  itemCheckRadius: 2
   whatIsItem:
     serializedVersion: 2
-    m_Bits: 8
-  dashSpeed: 2
+    m_Bits: 520
+  dashSpeed: 1.5
   dashDuration: 0.5
   dashCooldown: 2
   mySelf: {fileID: 3527622045971319382}
   kidCheck: {fileID: 8755744105393276333}
-  kidCheckRadius: 1.3
+  kidCheckRadius: 2
   whatIsKid:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 256
   mirrorCheck: {fileID: 7333197228307879733}
-  mirrorCheckRadius: 1.14
+  mirrorCheckRadius: 2
   whatIsMirror:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 128
   spiritCheck: {fileID: 1551439908100313034}
-  spiritCheckRadius: 1.2
+  spiritCheckRadius: 2
   whatIsPlayerSpirit:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 2048
   attackCooldown: 5
   teleportCooldown: 5
   controller_UI: {fileID: 5797229610900672768}
@@ -890,7 +890,7 @@ GameObject:
   m_Component:
   - component: {fileID: 383266063127704693}
   - component: {fileID: 9079729212256917164}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spot Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -971,7 +971,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7333197228307879733}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: MirrorCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}

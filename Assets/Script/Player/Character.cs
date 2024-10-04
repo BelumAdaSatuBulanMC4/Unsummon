@@ -202,7 +202,7 @@ public class Character : NetworkBehaviour
         rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
     }
 
-    private void HandleMovement()
+    protected virtual void HandleMovement()
     {
         if (dashTime > 0)
         {

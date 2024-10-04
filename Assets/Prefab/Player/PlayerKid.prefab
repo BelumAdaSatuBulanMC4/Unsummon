@@ -196,8 +196,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.016851366, y: -0.23591864}
-  m_Size: {x: 1.1628193, y: 1.5447834}
+  m_Offset: {x: 0.016851366, y: 0.043567896}
+  m_Size: {x: 1.1628193, y: 2.1037564}
   m_Direction: 0
 --- !u!114 &8728672590940703489
 MonoBehaviour:
@@ -212,25 +212,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAuthor: 1
-  moveSpeed: 5
+  moveSpeed: 4
   itemCheck: {fileID: 2023791975658744652}
-  itemCheckRadius: 0.9
+  itemCheckRadius: 1.5
   whatIsItem:
     serializedVersion: 2
-    m_Bits: 8
-  dashSpeed: 3
-  dashDuration: 0.6
-  dashCooldown: 5
+    m_Bits: 520
+  dashSpeed: 1.5
+  dashDuration: 1
+  dashCooldown: 6
   mySelf: {fileID: 4057405978394237103}
   knockBackDuration: 1
   knockBackPower: {x: 0, y: 0}
   spiritPrefab: {fileID: 5544716519150484690, guid: 8e4fb9c8fda97466b80758ab8e3daddd, type: 3}
   deadBodyPrefab: {fileID: 6560456698916702422, guid: 2d67efaf74ddf48708547a93aebfbb8c, type: 3}
   spiritCheck: {fileID: 2595255624578999491}
-  spiritCheckRadius: 1.2
+  spiritCheckRadius: 2
   whatIsPlayerSpirit:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 2048
   controller_UI: {fileID: 6363562436477985309}
   buttonInteraction: {fileID: 6535000313946925059}
 --- !u!114 &8815068478096702067
@@ -502,7 +502,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2089060487
-  m_SortingLayer: 9
+  m_SortingLayer: 10
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 61452036459dc49ed9df033c85cdc0d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

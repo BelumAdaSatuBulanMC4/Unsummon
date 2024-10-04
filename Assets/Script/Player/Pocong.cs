@@ -117,6 +117,8 @@ public class Pocong : Character
     private void HandleKidInteraction()
     {
         detectedKids = Physics2D.OverlapCircleAll(kidCheck.position, kidCheckRadius, whatIsKid);
+        isKidDetected = detectedKids.Length > 0 ? true : false;
+
         // Debug.Log("Detected kids " + detectedKids.Length);
         // foreach (Collider2D kidCollider in detectedKids)
         // {
@@ -149,7 +151,20 @@ public class Pocong : Character
 
     private void GetKidsPosition()
     {
-        Dictionary<PlayerKid, Vector3> kidPositions = PlayerManager.instance.GetKidPositions();
+        // Dictionary<PlayerKid, Vector3> kidPositions = PlayerManager.instance.GetKidPositions();
+        // foreach (KeyValuePair<PlayerKid, Vector3> entry in kidPositions)
+        // {
+        //     Debug.Log("Kid: " + entry.Key.name + ", Position: " + entry.Value);
+        // }
+        Dictionary<ulong, Vector3> kidPositions = PlayerManager.instance.GetKidPositionsNET();
+
+        foreach (var kidPosition in kidPositions)
+        {
+            ulong kidId = kidPosition.Key;
+            Vector3 position = kidPosition.Value;
+
+            Debug.Log($"Kid {kidId} is at position {position}");
+        }
     }
 
     public void AttackButton()
@@ -172,11 +187,15 @@ public class Pocong : Character
         return teleportCooldownTimer;
     }
 
+    public bool GetIsKidDetected()
+    {
+        return isKidDetected;
+    }
+
     public bool GetIsMirrorDetected()
     {
         return isMirrorDetected;
     }
-
     private void AttackAbility()
     {
         if (attackCooldownTimer < 0)

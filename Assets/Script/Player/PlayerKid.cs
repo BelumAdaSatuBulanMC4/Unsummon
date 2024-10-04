@@ -67,6 +67,9 @@ public class PlayerKid : Character
         HandleAnimations();
         HandleLocationChanged();
         HandlePlayerCollision();
+        HandleMovement();
+        // PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
+
         // HandleButtonInteraction();
         // controller_UI.SetActive(IsOwner);
         // Debug.Log("location of kid " + transform.position);
@@ -95,6 +98,32 @@ public class PlayerKid : Character
                 }
             }
         }
+    }
+
+    protected override void HandleMovement()
+    {
+        base.HandleMovement();
+        if (dashTime > 0)
+        {
+            PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
+        }
+        else
+        {
+            PlayerManager.instance.RemoveKidPositionServerRpc(NetworkObjectId);
+
+        }
+        // if (dashTime > 0)
+        // {
+        //     if (PlayerManager.instance.IsContainingKid(this))
+        //     {
+        //         PlayerManager.instance.RemoveKidPosition(this);
+        //     }
+        // }
+        // else
+        // {
+        //     PlayerManager.instance.UpdateKidPosition(this, transform.position);
+        //     PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
+        // }
     }
 
     // private void HandleButtonInteraction()

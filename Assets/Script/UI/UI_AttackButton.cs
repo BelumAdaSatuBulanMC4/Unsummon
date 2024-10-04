@@ -35,7 +35,7 @@ public class UI_AttackButton : MonoBehaviour
     {
         if (chara != null)
         {
-            if (chara.GetAttackCooldown() <= 0)
+            if (chara.GetAttackCooldown() <= 0 && chara.GetIsKidDetected())
             {
                 EnableButton();
                 buttonText.text = "";
@@ -43,7 +43,8 @@ public class UI_AttackButton : MonoBehaviour
             else
             {
                 DisableButton();
-                buttonText.text = Mathf.CeilToInt(chara.GetAttackCooldown()).ToString();
+                buttonText.text = "";
+                // buttonText.text = Mathf.CeilToInt(chara.GetAttackCooldown()).ToString();
             }
         }
     }
