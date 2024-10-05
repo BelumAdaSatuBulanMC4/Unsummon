@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Item : NetworkBehaviour
 {
     public bool isActivated = false;
     private Animator anim;
+    private Light2D light;
 
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
+        light = GetComponentInChildren<Light2D>();
     }
 
     private void Start()
@@ -30,10 +33,12 @@ public class Item : NetworkBehaviour
         if (isActivated)
         {
             anim.SetFloat("isCandleActive", 1);
+            light.enabled = true;
         }
         else
         {
             anim.SetFloat("isCandleActive", 0);
+            light.enabled = false;
         }
     }
 
