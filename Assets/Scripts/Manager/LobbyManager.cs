@@ -1,4 +1,5 @@
 // Di client baru masih belum update player yang lamanya!
+using System;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
@@ -8,7 +9,7 @@ using UnityEngine.UI;
 
 public class LobbyManager : NetworkBehaviour
 {
-    private List<string> playerNames = new();
+    // private List<string> playerNames = new();
     public Image[] playerProfile;
     public Sprite[] newPlayerProfile;
     public TextMeshProUGUI[] playerName;
@@ -96,7 +97,15 @@ public class LobbyManager : NetworkBehaviour
         {
             NetworkManager.Singleton.Shutdown();
             Debug.Log("NetworkManager in Host shut down successfully.");
-            ReturnToMainMenuClientRpc();
+            try
+            {
+                ReturnToMainMenuClientRpc();
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e);
+                return;
+            }
         }
         else if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsClient)
         {

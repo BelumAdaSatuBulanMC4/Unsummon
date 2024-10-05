@@ -99638,6 +99638,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerKidPrefab: {fileID: 4057405978394237103, guid: 53679de70933245b99d610d10ec6cd7e, type: 3}
   playerPocongPrefab: {fileID: 3527622045971319382, guid: d0745f63bb90d41fabe0cdb7d0be4567, type: 3}
+  homeButton: {fileID: 485802098}
+  playAgainButton: {fileID: 412252454}
 --- !u!114 &1494755933
 MonoBehaviour:
   m_ObjectHideFlags: 0
