@@ -9367,7 +9367,7 @@ GameObject:
   - component: {fileID: 412252455}
   - component: {fileID: 412252454}
   m_Layer: 5
-  m_Name: PlayAgain
+  m_Name: PlayAgainButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57740,7 +57740,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1120053241
 MonoBehaviour:
   m_ObjectHideFlags: 0
