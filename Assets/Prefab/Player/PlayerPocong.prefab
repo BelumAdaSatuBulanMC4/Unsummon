@@ -308,7 +308,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2220125847470855314}
   - component: {fileID: 4659617182120196800}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: PlayerPocong
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -561,7 +561,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -559038823
-  m_SortingLayer: 11
+  m_SortingLayer: 12
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: defd0f5aae6164a0da8d86a6f1fc454a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -605,13 +605,13 @@ GameObject:
   m_Component:
   - component: {fileID: 2561020808510665384}
   - component: {fileID: 2849709559375894969}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: IndicatorObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2561020808510665384
 Transform:
   m_ObjectHideFlags: 0
@@ -1215,7 +1215,7 @@ PrefabInstance:
     - target: {fileID: 5298427744701122900, guid: a03ffc571ebfa4376a72137fee46d71b, type: 3}
       propertyPath: m_BoundingShape2D
       value: 
-      objectReference: {fileID: 2109163020427322063}
+      objectReference: {fileID: 7563757579954533960, guid: aecce8e5943da4154a043d4029367e82, type: 3}
     - target: {fileID: 5772308043381835828, guid: a03ffc571ebfa4376a72137fee46d71b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.5
@@ -1422,7 +1422,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 358945059510094986, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
       propertyPath: m_CullingMask.m_Bits
-      value: 7679
+      value: 14327
       objectReference: {fileID: 0}
     - target: {fileID: 514414178820581068, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1466,11 +1466,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2272398380357986474, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -35.12644
+      value: -34.97906
       objectReference: {fileID: 0}
     - target: {fileID: 2272398380357986474, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 22.999619
+      value: 22.99956
+      objectReference: {fileID: 0}
+    - target: {fileID: 3944334889190067606, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3633470587
       objectReference: {fileID: 0}
     - target: {fileID: 7213264796729370318, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
       propertyPath: m_Name
@@ -1547,16 +1551,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: CinemaLimit
       objectReference: {fileID: 0}
+    - target: {fileID: 2699317040020431408, guid: aecce8e5943da4154a043d4029367e82, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aecce8e5943da4154a043d4029367e82, type: 3}
---- !u!60 &2109163020427322063 stripped
-PolygonCollider2D:
-  m_CorrespondingSourceObject: {fileID: 7563757579954533960, guid: aecce8e5943da4154a043d4029367e82, type: 3}
-  m_PrefabInstance: {fileID: 8481014660897592455}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6984305147360766595 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1540127034409270788, guid: aecce8e5943da4154a043d4029367e82, type: 3}

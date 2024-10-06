@@ -1,6 +1,7 @@
 using UnityEngine;
 using Unity.Netcode; // For network-related components
 using System.Collections.Generic;
+using TMPro;
 
 public class CandleLocator : MonoBehaviour
 {
@@ -8,19 +9,15 @@ public class CandleLocator : MonoBehaviour
     private bool isFirstRender = true;
     [SerializeField] private GameObject[] candleLocs;
 
+    // [SerializeField] private TMP_Text text;
+    // int koontool = 5;
     void Start()
     {
         randomIndexNumbers = GameManager.instance.GetRandomIndexNumbers();
+        // text.text = "Random Index Numbers: " + randomIndexNumbers[0] + ", " + randomIndexNumbers[1] + ", " + randomIndexNumbers[2] + ", " + randomIndexNumbers[3];
+        ActivateObjectsAtRandomIndices();
     }
 
-    private void Update()
-    {
-        if (isFirstRender)
-        {
-            ActivateObjectsAtRandomIndices();
-            isFirstRender = false;
-        }
-    }
 
     private void ActivateObjectsAtRandomIndices()
     {

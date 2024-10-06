@@ -198,18 +198,22 @@ public class PlayerManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void RemoveKidPositionServerRpc(ulong kidId)
     {
-        if (IsServer)
+        // if (IsServer)
+        // {
+        Debug.Log("masuk ke IsServer 1");
+        // Remove from the server's kidPositions dictionary
+        if (kidPositionsNET.ContainsKey(kidId))
         {
-            // Remove from the server's kidPositions dictionary
-            if (kidPositionsNET.ContainsKey(kidId))
-            {
-                kidPositionsNET.Remove(kidId);
-                Debug.Log($"Kid {kidId}'s position removed from server.");
+            Debug.Log("masuk ke IsServer -> containskid");
+            kidPositionsNET.Remove(kidId);
+            Debug.Log($"Kid {kidId}'s position removed from server.");
 
-                // Notify all clients to remove this position
-                RemoveKidPositionClientRpc(kidId);
-            }
+            // Notify all clients to remove this position
+            RemoveKidPositionClientRpc(kidId);
         }
+        Debug.Log("masuk ke IsServer -> not containt");
+
+        // }
     }
 
     [ClientRpc]

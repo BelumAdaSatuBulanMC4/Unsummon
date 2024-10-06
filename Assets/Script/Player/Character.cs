@@ -66,6 +66,10 @@ public class Character : NetworkBehaviour
         UserManager.instance.SetYourRole(typeChar);
     }
 
+    public void MakeANoise(){
+        Debug.Log("Berhasil Membuat Suara! dengan posisi = " + transform.position.x + "dan " + transform.position.x);
+    }
+
     private void OnEnable()
     {
         inputPlayer.Enable();
@@ -99,8 +103,10 @@ public class Character : NetworkBehaviour
             dashTime -= Time.deltaTime;
             dashCooldownTimer -= Time.deltaTime;
         }
-
-        HandleMovement();
+        if (typeChar != "Player")
+        {
+            HandleMovement();
+        }
         HandleItemInteraction();
         HandleFlip();
         SendPositionToServerServerRpc();

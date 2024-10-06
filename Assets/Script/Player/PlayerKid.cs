@@ -104,27 +104,28 @@ public class PlayerKid : Character
     protected override void HandleMovement()
     {
         base.HandleMovement();
-        // if (dashTime > 0)
-        // {
-        //     PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
-        // }
-        // else
-        // {
-        //     PlayerManager.instance.RemoveKidPositionServerRpc(NetworkObjectId);
 
-        // }
-        // if (dashTime > 0)
-        // {
-        //     if (PlayerManager.instance.IsContainingKid(this))
-        //     {
-        //         PlayerManager.instance.RemoveKidPosition(this);
-        //     }
-        // }
-        // else
-        // {
-        //     PlayerManager.instance.UpdateKidPosition(this, transform.position);
-        //     PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
-        // }
+        // Check if the character is dashing
+        if (dashTime > 0)
+        {
+            // If the character is dashing, send its position to the PlayerManager
+            if (PlayerManager.instance != null)
+            {
+                Debug.Log("Di sini update position!");
+                // Update position on the server (if this is the host or owner)
+                PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
+            }
+        }
+        else
+        {
+            // If the character is no longer dashing, remove its position from the PlayerManager
+            if (PlayerManager.instance != null)
+            {
+                Debug.Log("Di sini remove position!");
+
+                PlayerManager.instance.RemoveKidPositionServerRpc(NetworkObjectId);
+            }
+        }
     }
 
     // private void HandleButtonInteraction()
@@ -233,8 +234,15 @@ public class PlayerKid : Character
                 deadBody.GetComponent<NetworkObject>().Spawn();
 
                 GameObject spirit = Instantiate(spiritPrefab, transform.position, Quaternion.identity);
+                PlayerSpirit newSpirit = spiritPrefab.GetComponent<PlayerSpirit>();
                 spirit.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
-                CameraManager.instance.ChangeCameraFollow(spirit.transform);
+                // UI_NoiseButton uiNoiseButton = FindObjectOfType<UI_NoiseButton>();  // Assuming you have only one UI_NoiseButton
+
+                // if (uiNoiseButton != null)
+                // {
+                //     uiNoiseButton.AssignPlayerSpirit(newSpirit); // Call a method to assign the spirit
+                // }
+                // CameraManager.instance.ChangeCameraFollow(spirit.transform);
             }
         }
     }

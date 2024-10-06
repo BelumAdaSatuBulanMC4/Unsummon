@@ -27,28 +27,28 @@ public class IndicatorScript : MonoBehaviour
         srHeight = bounds.size.y / 2f;
         srWidth = bounds.size.x / 2f;
 
-        Debug.Log("PlayerManager.instance: " + GameManager.instance);
-        Debug.Log("offScreenIndicatorPrefab: " + offScreenIndicatorPrefab);
+        // Debug.Log("PlayerManager.instance: " + GameManager.instance);
+        // Debug.Log("offScreenIndicatorPrefab: " + offScreenIndicatorPrefab);
 
-        if (GameManager.instance == null)
-        {
-            Debug.LogError("PlayerManager instance is null!");
-            return;
-        }
+        // if (GameManager.instance == null)
+        // {
+        //     Debug.LogError("PlayerManager instance is null!");
+        //     return;
+        // }
 
-        if (offScreenIndicatorPrefab == null)
-        {
-            Debug.LogError("offScreenIndicatorPrefab is null!");
-            return;
-        }
+        // if (offScreenIndicatorPrefab == null)
+        // {
+        //     Debug.LogError("offScreenIndicatorPrefab is null!");
+        //     return;
+        // }
 
-        InitializeIndicators();
+        // InitializeIndicators();
 
         // Initialize indicators based on the initial state of kidPositions
         // InitializeIndicators();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // if (isFirstRender)
         // {
@@ -66,24 +66,27 @@ public class IndicatorScript : MonoBehaviour
     // Method to initialize indicators based on kidPositions in PlayerManager
     void InitializeIndicators()
     {
-        Dictionary<ulong, Vector3> kidPositions = PlayerManager.instance.GetKidPositionsNET();
-
-        if (kidPositions == null)
+        if (PlayerManager.instance != null)
         {
-            Debug.LogError("kidPositionsNET is null!");
-            return;
-        }
+            Dictionary<ulong, Vector3> kidPositions = PlayerManager.instance.GetKidPositionsNET();
 
-        foreach (var entry in kidPositions)
-        {
-            ulong networkId = entry.Key;
-
-            // Instantiate an indicator for each kid
-            if (!kidIndicators.ContainsKey(networkId))
+            if (kidPositions == null)
             {
-                GameObject indicator = Instantiate(offScreenIndicatorPrefab);
-                indicator.SetActive(false); // Start with indicators hidden
-                kidIndicators.Add(networkId, indicator);
+                Debug.LogError("kidPositionsNET is null!");
+                return;
+            }
+
+            foreach (var entry in kidPositions)
+            {
+                ulong networkId = entry.Key;
+
+                // Instantiate an indicator for each kid
+                if (!kidIndicators.ContainsKey(networkId))
+                {
+                    GameObject indicator = Instantiate(offScreenIndicatorPrefab);
+                    indicator.SetActive(false); // Start with indicators hidden
+                    kidIndicators.Add(networkId, indicator);
+                }
             }
         }
     }
@@ -92,59 +95,65 @@ public class IndicatorScript : MonoBehaviour
     // Synchronize indicators with changes in kidPositions
     void SyncIndicatorsWithKidPositions()
     {
-        Dictionary<ulong, Vector3> kidPositions = PlayerManager.instance.GetKidPositionsNET();
-
-        // Add indicators for new kids
-        foreach (var entry in kidPositions)
+        if (PlayerManager.instance != null)
         {
-            ulong networkId = entry.Key;
+            Dictionary<ulong, Vector3> kidPositions = PlayerManager.instance.GetKidPositionsNET();
 
-            if (!kidIndicators.ContainsKey(networkId))
+            // Add indicators for new kids
+            foreach (var entry in kidPositions)
             {
-                // Create a new indicator for the new kid
-                GameObject indicator = Instantiate(offScreenIndicatorPrefab);
-                indicator.SetActive(false);
-                kidIndicators.Add(networkId, indicator);
+                ulong networkId = entry.Key;
+
+                if (!kidIndicators.ContainsKey(networkId))
+                {
+                    // Create a new indicator for the new kid
+                    GameObject indicator = Instantiate(offScreenIndicatorPrefab);
+                    indicator.SetActive(false);
+                    kidIndicators.Add(networkId, indicator);
+                }
             }
-        }
 
-        // Remove indicators for kids who have been removed
-        List<ulong> idsToRemove = new List<ulong>();
+            // Remove indicators for kids who have been removed
+            List<ulong> idsToRemove = new List<ulong>();
 
-        foreach (var networkId in kidIndicators.Keys)
-        {
-            if (!kidPositions.ContainsKey(networkId))
+            foreach (var networkId in kidIndicators.Keys)
             {
-                // Kid has been removed from the game, so remove their indicator
-                Destroy(kidIndicators[networkId]);
-                idsToRemove.Add(networkId);
+                if (!kidPositions.ContainsKey(networkId))
+                {
+                    // Kid has been removed from the game, so remove their indicator
+                    Destroy(kidIndicators[networkId]);
+                    idsToRemove.Add(networkId);
+                }
             }
-        }
 
-        // Remove the entries from the dictionary
-        foreach (ulong id in idsToRemove)
-        {
-            kidIndicators.Remove(id);
+            // Remove the entries from the dictionary
+            foreach (ulong id in idsToRemove)
+            {
+                kidIndicators.Remove(id);
+            }
         }
     }
 
     // Update all indicators for the current kids
     void UpdateIndicators()
     {
-        Dictionary<ulong, Vector3> kidPositions = PlayerManager.instance.GetKidPositionsNET();
-
-        foreach (KeyValuePair<ulong, Vector3> entry in kidPositions)
+        if (PlayerManager.instance != null)
         {
-            ulong networkId = entry.Key;
-            Vector3 kidPosition = entry.Value;
+            Dictionary<ulong, Vector3> kidPositions = PlayerManager.instance.GetKidPositionsNET();
 
-            // Ensure the indicator for this NetworkId exists
-            if (kidIndicators.ContainsKey(networkId))
+            foreach (KeyValuePair<ulong, Vector3> entry in kidPositions)
             {
-                GameObject indicator = kidIndicators[networkId];
+                ulong networkId = entry.Key;
+                Vector3 kidPosition = entry.Value;
 
-                // Update the indicator for this kid's position
-                UpdateOffScreenIndicator(kidPosition, indicator);
+                // Ensure the indicator for this NetworkId exists
+                if (kidIndicators.ContainsKey(networkId))
+                {
+                    GameObject indicator = kidIndicators[networkId];
+
+                    // Update the indicator for this kid's position
+                    UpdateOffScreenIndicator(kidPosition, indicator);
+                }
             }
         }
     }

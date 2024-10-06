@@ -13,14 +13,14 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - DeadBody
   - Mirror
   - Kids
   - Items
   - Pocong
   - Spirit
   - Teleport
-  - 
+  - Indicator
   - 
   - 
   - 
@@ -67,6 +67,9 @@ TagManager:
   - name: Foreground 3
     uniqueID: 1335738019
     locked: 0
+  - name: DeadBody
+    uniqueID: 3615557949
+    locked: 0
   - name: Items
     uniqueID: 4199967269
     locked: 0
@@ -78,4 +81,7 @@ TagManager:
     locked: 0
   - name: Indicator
     uniqueID: 354072313
+    locked: 0
+  - name: Spirit
+    uniqueID: 581648279
     locked: 0

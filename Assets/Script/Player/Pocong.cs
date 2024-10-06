@@ -70,7 +70,7 @@ public class Pocong : Character
         // HandleLocationChanged();
         HandleKidInteraction();
         HandleMirrorInteraction();
-        // GetKidsPosition();
+        GetKidsPosition();
         // controller_UI.SetActive(IsOwner);
         HandleButtonInteraction();
     }
@@ -158,14 +158,18 @@ public class Pocong : Character
         // {
         //     Debug.Log("Kid: " + entry.Key.name + ", Position: " + entry.Value);
         // }
-        Dictionary<ulong, Vector3> kidPositions = PlayerManager.instance.GetKidPositionsNET();
-
-        foreach (var kidPosition in kidPositions)
+        if (PlayerManager.instance != null)
         {
-            ulong kidId = kidPosition.Key;
-            Vector3 position = kidPosition.Value;
+            Dictionary<ulong, Vector3> kidPositions = PlayerManager.instance.GetKidPositionsNET();
+            Debug.Log("isi dari kid positions: " + kidPositions.Count);
 
-            Debug.Log($"Kid {kidId} is at position {position}");
+            foreach (var kidPosition in kidPositions)
+            {
+                ulong kidId = kidPosition.Key;
+                Vector3 position = kidPosition.Value;
+
+                Debug.Log($"Kid {kidId} is at position {position}");
+            }
         }
     }
 

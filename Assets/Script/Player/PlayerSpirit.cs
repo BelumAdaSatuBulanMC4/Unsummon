@@ -15,8 +15,11 @@ public class PlayerSpirit : Character
     [SerializeField] private LayerMask whatIsPlayerPocong;
 
     [Header("Noise Info")]
-    [SerializeField] protected float noiseCooldown; // Teleport cooldown duration
-    protected float noiseCooldownTimer;
+    [SerializeField] private float noiseCooldown = 7f; // Cooldown duration
+    private float noiseCooldownTimer;
+
+    [SerializeField] private float noiseTime = 5f; // Duration of noise
+    private bool isMakingNoise = false;
 
     private Collider2D[] detectedKids;
     private Collider2D[] detectedPocong;
@@ -24,11 +27,14 @@ public class PlayerSpirit : Character
     private bool isKidDetected = false;
     private bool isPocongDetected = false;
 
+    // private float noiseTime = 5f;
+
     [SerializeField] private GameObject controller_UI;
     protected override void Awake()
     {
         // if (!IsOwner) { return; };
         base.Awake();
+
         typeChar = "Spirit";
         anim = GetComponentInChildren<Animator>();
         spiritCollider = GetComponent<Collider2D>();
@@ -38,7 +44,12 @@ public class PlayerSpirit : Character
     {
         if (!IsOwner) { return; };
         base.Update();
-        noiseCooldownTimer -= Time.deltaTime;
+
+        if (noiseCooldownTimer > 0)
+        {
+            noiseCooldownTimer -= Time.deltaTime;
+        }
+
         HandleAnimations();
         // HandleLocationChanged();
         HandlePlayerCollision();
@@ -73,14 +84,30 @@ public class PlayerSpirit : Character
 
     private void MakeNoise()
     {
-        // if (Input.GetKeyDown(KeyCode.Y))
-        // {
-        if (noiseCooldownTimer < 0)
+        if (noiseCooldownTimer <= 0 && !isMakingNoise)
         {
-            PlayerManager.instance.UpdateSpiritPosition(this, transform.position);
-            noiseCooldownTimer = noiseCooldown;
+            StartCoroutine(NoiseCoroutine());
         }
-        // }
+    }
+
+    private IEnumerator NoiseCoroutine()
+    {
+        isMakingNoise = true;
+        Debug.Log("Making noise at position " + transform.position.x + " " + transform.position.y);
+        if (PlayerManager.instance != null)
+            PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
+
+        // Noise lasts for 'noiseTime' seconds
+        yield return new WaitForSeconds(noiseTime);
+
+        Debug.Log("Noise ended");
+
+        if (PlayerManager.instance != null)
+            PlayerManager.instance.RemoveKidPositionServerRpc(NetworkObjectId);
+
+        // Start cooldown after noise finishes
+        noiseCooldownTimer = noiseCooldown;
+        isMakingNoise = false;
     }
 
     private void HandleAnimations()
@@ -109,20 +136,6 @@ public class PlayerSpirit : Character
     {
         return noiseCooldownTimer;
     }
-
-    // private void OnDrawGizmos()
-    // {
-    //     DrawItemDetector();
-    // }
-
-    // private void OnCollisionEnter2D(Collision2D collision)
-    // {
-    //     // Disable collision with Pocong or Kid
-    //     if (collision.gameObject.CompareTag("Pocong") || collision.gameObject.CompareTag("Kid"))
-    //     {
-    //         Physics2D.IgnoreCollision(spiritCollider, collision.collider);
-    //     }
-    // }
 
     private void OnDrawGizmos()
     {
