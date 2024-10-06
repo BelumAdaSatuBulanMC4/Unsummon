@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -62,7 +63,7 @@ public class PlayerKid : Character
 
     protected override void Update()
     {
-        // if (!IsOwner) { return; }
+        if (!IsOwner) { return; }
         base.Update();
         HandleAnimations();
         // HandleLocationChanged();
@@ -155,16 +156,17 @@ public class PlayerKid : Character
     {
         // Debug.Log("the player has been killed");
         // Transform kidTransform = transform;
-        Instantiate(deadBodyPrefab, transform.position, transform.rotation);
+        sfxPocongKill.loop = false;
+        sfxPocongKill.Play();
         // if (isAuthor)
         // {
         // CameraManager.instance.CameraShake();
-        GameObject spirit = Instantiate(spiritPrefab, transform.position, Quaternion.identity);
-        spirit.GetComponentInChildren<PlayerSpirit>().SetAuthor(isAuthor);
-        // CameraManager.instance.ChangeCameraFollow(spirit.transform);
-        // }
         GameManager.instance.UpdateKilledKids();
-        Destroy(mySelf);
+
+        KidKilledServerRpc(OwnerClientId);
+        // spirit.GetComponentInChildren<PlayerSpirit>().SetAuthor(isAuthor);
+        // }
+
     }
 
     public void Knocked(float sourceOfDamage)
@@ -212,5 +214,34 @@ public class PlayerKid : Character
     {
         DrawItemDetector();
         Gizmos.DrawWireSphere(spiritCheck.position, spiritCheckRadius);
+    }
+
+    // Client meminta Server untuk mendestroy object PlayerKid dan menspawn object PlayerSpirit
+    [ServerRpc(RequireOwnership = false)]
+    private void KidKilledServerRpc(ulong clientId)
+    {
+        // Cari NetworkObject berdasarkan Client ID
+        if (NetworkManager.Singleton.ConnectedClients.ContainsKey(clientId))
+        {
+            NetworkObject mySelfNetworkObject = NetworkManager.Singleton.ConnectedClients[clientId].PlayerObject;
+            if (mySelfNetworkObject != null)
+            {
+                mySelfNetworkObject.Despawn();
+                Destroy(mySelfNetworkObject.gameObject);
+
+                GameObject deadBody = Instantiate(deadBodyPrefab, transform.position, transform.rotation);
+                deadBody.GetComponent<NetworkObject>().Spawn();
+
+                GameObject spirit = Instantiate(spiritPrefab, transform.position, Quaternion.identity);
+                spirit.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
+                CameraManager.instance.ChangeCameraFollow(spirit.transform);
+            }
+        }
+    }
+
+    [ClientRpc]
+    private void KidKilledClientRpc()
+    {
+
     }
 }

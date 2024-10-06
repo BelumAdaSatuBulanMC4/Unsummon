@@ -33,6 +33,12 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private GameObject[] candleLocs;
     Character currentChar;
 
+    [Header("Audio in GamePlay")]
+    public AudioClip pocongWinSound;
+    public AudioClip kidsWinSound;
+    public AudioClip environmentGamePlay;
+    private AudioSource audioSource;
+
 
     private void Awake()
     {
@@ -52,6 +58,10 @@ public class GameManager : NetworkBehaviour
         currentChar = FindAuthorCharacter();
         result.SetActive(false);
         UploadNumbersServerRpc();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.clip = environmentGamePlay;
+        audioSource.Play();
+        // audioSource.PlayOneShot(environmentGamePlay);
     }
 
     private void Update()
@@ -59,8 +69,10 @@ public class GameManager : NetworkBehaviour
         Debug.Log($"Achive items : {activeItems}/{totalItems}");
         kidsWin = activeItems == totalItems;
         pocongWin = killedKids == totalKids;
+        // if ((kidsWin || pocongWin) && isGamePlaying)
         if (kidsWin || pocongWin)
         {
+            // isGamePlaying = false;
             EndGame();
         }
     }
@@ -189,6 +201,8 @@ public class GameManager : NetworkBehaviour
                 secondaryText.text = "Cursed Conquest";
                 informationText.text = "The candles are lit, and the pocong is banished back to hell!";
                 splash.enabled = false;
+                // audioSource.Play();
+                // audioSource.PlayOneShot(kidsWinSound);
             }
             else
             {
@@ -196,6 +210,9 @@ public class GameManager : NetworkBehaviour
                 secondaryText.text = "Eternal Doom";
                 informationText.text = "The pocong has devoured all the children, your family will be in hell forever.";
                 splash.enabled = true;
+                // audioSource.clip = pocongWinSound;
+                // audioSource.Play();
+                // audioSource.PlayOneShot(pocongWinSound);
             }
         }
         else
@@ -206,6 +223,9 @@ public class GameManager : NetworkBehaviour
                 secondaryText.text = "Occult Ascendancy";
                 informationText.text = "The pocong reigns supreme! All the children have been eaten.";
                 splash.enabled = false;
+                // audioSource.clip = pocongWinSound;
+                // audioSource.Play();
+                // audioSource.PlayOneShot(pocongWinSound);
             }
             else
             {
@@ -266,5 +286,13 @@ public class GameManager : NetworkBehaviour
         randomIndexNumbers = receivedRandomNumbers;
         // ActivateObjectsAtRandomIndices();
     }
+    // PLAY SOUND WIN AND LOSE
+    private void PlayResultSound()
+    {
+        audioSource.Stop();
+        if (kidsWin) { audioSource.clip = kidsWinSound; audioSource.Play(); }
+        else if (pocongWin) { audioSource.clip = pocongWinSound; audioSource.Play(); }
+    }
+
 }
 

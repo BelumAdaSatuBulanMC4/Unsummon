@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class WinningCondition : NetworkBehaviour
+public class WinningCondition : MonoBehaviour
 {
     [SerializeField] private TMP_Text victoryText;
     [SerializeField] private TMP_Text secondaryText;

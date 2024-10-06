@@ -5,6 +5,7 @@ public class GamePlayManager : NetworkBehaviour
 {
     public GameObject playerKidPrefab;
     public GameObject playerPocongPrefab;
+    public GameObject playerSpiritPrefab;
     private Vector3 spawnKidPosition = new(0, 0, 0); // Posisi Spawn playerKid
     private Vector3 spawnPocongPosition = new(0, 0, 0); // Posisi Spawn playerKid
 
@@ -21,13 +22,13 @@ public class GamePlayManager : NetworkBehaviour
     private void SpawnPlayers()
     {
         if (!IsServer) return;
-        int randomPocongId = Random.Range(0, 2);
+        int randomPocongId = Random.Range(0, 3);
         foreach (var client in NetworkManager.ConnectedClientsList)
         {
             // Debug.Log($"Player: {client.ClientId}");
-            // if ((int)client.ClientId == randomPocongId)
+            if ((int)client.ClientId == randomPocongId)
             // if ((int)client.ClientId == 0)
-            if (false)
+            // if (false)
             {
                 GameObject playerInstance = Instantiate(playerPocongPrefab, spawnPocongPosition, Quaternion.identity);
                 playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(client.ClientId);
@@ -35,10 +36,9 @@ public class GamePlayManager : NetworkBehaviour
             else
             {
                 GameObject playerInstance = Instantiate(playerKidPrefab, spawnKidPosition, Quaternion.identity);
+                // GameObject playerInstance = Instantiate(playerSpiritPrefab, spawnKidPosition, Quaternion.identity);
                 playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(client.ClientId);
             }
-            // GameObject playerInstance = Instantiate(playerKidPrefab, spawnKidPosition, Quaternion.identity);
-            // playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(client.ClientId);
 
         }
     }

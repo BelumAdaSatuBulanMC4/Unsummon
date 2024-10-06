@@ -6216,6 +6216,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActivated: 0
+  onCandle: {fileID: 0}
+  offCandle: {fileID: 0}
 --- !u!61 &70664625
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -6810,6 +6812,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActivated: 0
+  onCandle: {fileID: 0}
+  offCandle: {fileID: 0}
 --- !u!61 &234141489
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -9082,7 +9086,7 @@ GameObject:
   - component: {fileID: 412252455}
   - component: {fileID: 412252454}
   m_Layer: 5
-  m_Name: PlayAgain
+  m_Name: PlayAgainButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9454,7 +9458,7 @@ GameObject:
   - component: {fileID: 485802099}
   - component: {fileID: 485802098}
   m_Layer: 5
-  m_Name: Home
+  m_Name: HomeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9680,6 +9684,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActivated: 0
+  onCandle: {fileID: 0}
+  offCandle: {fileID: 0}
 --- !u!61 &539306351
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -11104,6 +11110,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActivated: 0
+  onCandle: {fileID: 0}
+  offCandle: {fileID: 0}
 --- !u!61 &696304389
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12161,6 +12169,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActivated: 0
+  onCandle: {fileID: 0}
+  offCandle: {fileID: 0}
 --- !u!61 &854908038
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -12563,6 +12573,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2019111615763061229, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
+      propertyPath: onCandle
+      value: 
+      objectReference: {fileID: 8300000, guid: 05dfd28b65ac74d20957b1ad1d1d40e1, type: 3}
+    - target: {fileID: 2019111615763061229, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
+      propertyPath: offCandle
+      value: 
+      objectReference: {fileID: 8300000, guid: 552281b7c88654ea7a026e818b311c11, type: 3}
     - target: {fileID: 5114084766020054922, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
       propertyPath: m_Name
       value: Item (12)
@@ -58241,6 +58259,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2019111615763061229, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
+      propertyPath: onCandle
+      value: 
+      objectReference: {fileID: 8300000, guid: 05dfd28b65ac74d20957b1ad1d1d40e1, type: 3}
+    - target: {fileID: 2019111615763061229, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
+      propertyPath: offCandle
+      value: 
+      objectReference: {fileID: 8300000, guid: 552281b7c88654ea7a026e818b311c11, type: 3}
     - target: {fileID: 5114084766020054922, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
       propertyPath: m_Name
       value: Item (14)
@@ -58252,7 +58278,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5114084766020054922, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1231894690}
   m_SourcePrefab: {fileID: 100100000, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
 --- !u!4 &1208528515 stripped
 Transform:
@@ -99023,6 +99052,7 @@ GameObject:
   - component: {fileID: 1494755934}
   - component: {fileID: 1494755932}
   - component: {fileID: 1494755935}
+  - component: {fileID: 1494755935}
   m_Layer: 0
   m_Name: '**Manager**'
   m_TagString: Untagged
@@ -104666,6 +104696,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2019111615763061229, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
+      propertyPath: onCandle
+      value: 
+      objectReference: {fileID: 8300000, guid: 05dfd28b65ac74d20957b1ad1d1d40e1, type: 3}
+    - target: {fileID: 2019111615763061229, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
+      propertyPath: offCandle
+      value: 
+      objectReference: {fileID: 8300000, guid: 552281b7c88654ea7a026e818b311c11, type: 3}
     - target: {fileID: 5114084766020054922, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
       propertyPath: m_Name
       value: Item (15)
@@ -104677,7 +104715,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5114084766020054922, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1676731805}
   m_SourcePrefab: {fileID: 100100000, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
 --- !u!4 &1681358217 stripped
 Transform:
@@ -105591,6 +105632,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2019111615763061229, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
+      propertyPath: onCandle
+      value: 
+      objectReference: {fileID: 8300000, guid: 05dfd28b65ac74d20957b1ad1d1d40e1, type: 3}
+    - target: {fileID: 2019111615763061229, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
+      propertyPath: offCandle
+      value: 
+      objectReference: {fileID: 8300000, guid: 552281b7c88654ea7a026e818b311c11, type: 3}
     - target: {fileID: 5114084766020054922, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
       propertyPath: m_Name
       value: Item (11)
@@ -105602,7 +105651,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5114084766020054922, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1843448321}
   m_SourcePrefab: {fileID: 100100000, guid: 71c1ef4214dae4ba098ed82b294a2140, type: 3}
 --- !u!4 &1849777087 stripped
 Transform:
