@@ -27,6 +27,7 @@ public class PlayerSpirit : Character
     [SerializeField] private GameObject controller_UI;
     protected override void Awake()
     {
+        // if (!IsOwner) { return; };
         base.Awake();
         typeChar = "Spirit";
         anim = GetComponentInChildren<Animator>();
@@ -35,22 +36,13 @@ public class PlayerSpirit : Character
 
     protected override void Update()
     {
+        if (!IsOwner) { return; };
         base.Update();
-
         noiseCooldownTimer -= Time.deltaTime;
-
         HandleAnimations();
         // HandleLocationChanged();
         HandlePlayerCollision();
-
-        if (isAuthor)
-        {
-            controller_UI.SetActive(true);
-        }
-        else
-        {
-            controller_UI.SetActive(false);
-        }
+        // controller_UI.SetActive(IsOwner);
     }
 
     private void HandlePlayerCollision()

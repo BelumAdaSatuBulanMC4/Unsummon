@@ -9367,7 +9367,7 @@ GameObject:
   - component: {fileID: 412252455}
   - component: {fileID: 412252454}
   m_Layer: 5
-  m_Name: PlayAgain
+  m_Name: PlayAgainButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9664,7 +9664,7 @@ GameObject:
   - component: {fileID: 485802099}
   - component: {fileID: 485802098}
   m_Layer: 5
-  m_Name: Home
+  m_Name: HomeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99638,6 +99638,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerKidPrefab: {fileID: 4057405978394237103, guid: 53679de70933245b99d610d10ec6cd7e, type: 3}
   playerPocongPrefab: {fileID: 3527622045971319382, guid: d0745f63bb90d41fabe0cdb7d0be4567, type: 3}
+  playerSpiritPrefab: {fileID: 5544716519150484690, guid: 8e4fb9c8fda97466b80758ab8e3daddd, type: 3}
 --- !u!114 &1494755933
 MonoBehaviour:
   m_ObjectHideFlags: 0
