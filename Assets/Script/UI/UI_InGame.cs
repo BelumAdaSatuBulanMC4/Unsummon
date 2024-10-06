@@ -31,7 +31,22 @@ public class UI_InGame : MonoBehaviour
         }
     }
 
-    void Start()
+    // void Start()
+    // {
+    //     authorCharacter = FindAuthorCharacter();
+
+    //     if (authorCharacter != null)
+    //     {
+    //         InstantiateUIForCharacter(authorCharacter);
+    //         InteractButton.GetComponentInChildren<Button>().onClick.AddListener(InteractedWithItem);
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning("no one have isAuthor");
+    //     }
+    // }
+
+    private void Update()
     {
         authorCharacter = FindAuthorCharacter();
 
@@ -43,15 +58,6 @@ public class UI_InGame : MonoBehaviour
         else
         {
             Debug.LogWarning("no one have isAuthor");
-        }
-    }
-
-    private void Update()
-    {
-        if (authorCharacter.GetCurrentItem() != null)
-        {
-            Debug.Log("ada item");
-            Debug.Log("Item active : " + authorCharacter.GetCurrentItem().isActivated);
         }
 
         HandleButtonInteraction();
@@ -174,6 +180,7 @@ public class UI_InGame : MonoBehaviour
         {
             currentInGameController = UI_InGameSpirit;
             UI_InGameSpirit.SetActive(true);
+            UI_InGameKid.SetActive(false);
             // Instantiate(currentInGameController, transform);
         }
         else
