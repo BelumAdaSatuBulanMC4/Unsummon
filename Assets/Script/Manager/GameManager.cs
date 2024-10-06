@@ -16,6 +16,13 @@ public class GameManager : NetworkBehaviour
     private bool kidsWin;
     private bool pocongWin;
 
+    private bool isFirstUpdate = true;
+
+    public Vector3[] spawnPoints; // All possible spawn points (20 in your case)
+    public Vector3[] randomSelectedPoints; // The random points selected and shared across players
+
+    private const int numberOfPointsToSelect = 10;
+
     [SerializeField] private TMP_Text victoryText;
     [SerializeField] private TMP_Text secondaryText;
     [SerializeField] private TMP_Text informationText;
@@ -24,6 +31,7 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private Button homeButton;
     [SerializeField] private Button playAgainButton;
     [SerializeField] private GameObject result;
+    [SerializeField] private GameObject candlePrefab;
     Character currentChar;
 
 
@@ -41,9 +49,32 @@ public class GameManager : NetworkBehaviour
 
     private void Start()
     {
+        spawnPoints = new Vector3[20];
+        spawnPoints[0] = new Vector3((float)-29.74, (float)10.46, 0);
+        spawnPoints[1] = new Vector3((float)-21.39, (float)4.75, 0);
+        spawnPoints[2] = new Vector3((float)-12.6, (float)9.33, 0);
+        spawnPoints[3] = new Vector3((float)-3.34, (float)10.34, 0);
+        spawnPoints[4] = new Vector3((float)5.21, (float)10.34, 0);
+        spawnPoints[5] = new Vector3((float)-2.53, (float)0.4, 0);
+        spawnPoints[6] = new Vector3((float)0.32, (float)-7.4, 0);
+        spawnPoints[7] = new Vector3((float)-28.35, (float)-8.49, 0);
+        spawnPoints[8] = new Vector3((float)-41.32, (float)-19.35, 0);
+        spawnPoints[9] = new Vector3((float)19.56, (float)-4.62, 0);
+        spawnPoints[10] = new Vector3((float)22.21, (float)9.29, 0);
+        spawnPoints[11] = new Vector3((float)28.98, (float)14.07, 0);
+        spawnPoints[12] = new Vector3((float)42.03, (float)14.17, 0);
+        spawnPoints[13] = new Vector3((float)43.58, (float)8.68, 0);
+        spawnPoints[14] = new Vector3((float)61.59, (float)8.68, 0);
+        spawnPoints[15] = new Vector3((float)57.24, (float)13.41, 0);
+        spawnPoints[16] = new Vector3((float)71.99, (float)-2.57, 0);
+        spawnPoints[17] = new Vector3((float)50.35, (float)-7.41, 0);
+        spawnPoints[18] = new Vector3((float)17.25, (float)-7.41, 0);
+        spawnPoints[19] = new Vector3((float)-26.5, (float)19.68, 0);
+
         FindAllPlayerKids();
         currentChar = FindAuthorCharacter();
         result.SetActive(false);
+        GenerateRandomPoints();
     }
     // public void addActivatedItems()
     // {
@@ -59,6 +90,11 @@ public class GameManager : NetworkBehaviour
 
     private void Update()
     {
+        if (IsHost && isFirstUpdate)
+        {
+            ShareRandomPointsClientRpc(randomSelectedPoints);
+            isFirstUpdate = false;
+        }
         Debug.Log($"Achive items : {activeItems}/{totalItems}");
         kidsWin = activeItems == totalItems;
         pocongWin = killedKids == totalKids;
@@ -66,6 +102,80 @@ public class GameManager : NetworkBehaviour
         {
             EndGame();
         }
+    }
+
+    private void GenerateRandomPoints()
+    {
+        if (spawnPoints.Length == 0)
+        {
+            Debug.LogError("SpawnPoints array is empty!");
+            return;
+        }
+
+        randomSelectedPoints = GetRandomPoints(spawnPoints, numberOfPointsToSelect);
+        Debug.Log("Random spawn points generated on the server.");
+    }
+
+    private Vector3[] GetRandomPoints(Vector3[] points, int numberOfPoints)
+    {
+        List<Vector3> pointsList = new List<Vector3>(points);
+
+        // Fisher-Yates shuffle algorithm to randomly shuffle the list
+        for (int i = pointsList.Count - 1; i > 0; i--)
+        {
+            int randomIndex = Random.Range(0, i + 1);
+            Vector3 temp = pointsList[i];
+            pointsList[i] = pointsList[randomIndex];
+            pointsList[randomIndex] = temp;
+        }
+
+        // Select the first 'numberOfPoints' from the shuffled list
+        Vector3[] selectedPoints = new Vector3[numberOfPoints];
+        for (int i = 0; i < numberOfPoints; i++)
+        {
+            selectedPoints[i] = pointsList[i];
+        }
+
+        return selectedPoints;
+    }
+
+    // Public method for clients to access the random array
+    public Vector3[] GetRandomSelectedPoints()
+    {
+        return randomSelectedPoints;
+    }
+
+    [ClientRpc]
+    private void ShareRandomPointsClientRpc(Vector3[] points)
+    {
+        randomSelectedPoints = points; // Sync the random points on all clients
+        Debug.Log("Random points received by the client : " + randomSelectedPoints.Length);
+
+        // Instead of spawning candles here, request the server to spawn them
+        SpawnCandlesServerRpc(randomSelectedPoints);
+    }
+
+    // ServerRpc to spawn the candles on the server
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnCandlesServerRpc(Vector3[] points)
+    {
+        for (int i = 0; i < points.Length; i++)
+        {
+            GameObject candleInstance = Instantiate(candlePrefab, points[i], Quaternion.identity);
+            NetworkObject networkObject = candleInstance.GetComponent<NetworkObject>();
+
+            // Ensure the object is spawned on the network by the server
+            if (networkObject != null)
+            {
+                networkObject.Spawn();
+            }
+            else
+            {
+                Debug.LogError("NetworkObject component is missing from the candlePrefab.");
+            }
+        }
+
+        Debug.Log("Candles spawned on the server.");
     }
 
     public void FindAllPlayerKids()

@@ -69,6 +69,7 @@ public class Item : NetworkBehaviour
     {
         isActivated = true;
         anim.SetFloat("isCandleActive", 1);
+        Debug.Log("change isactivated: " + isActivated);
         // GetComponent<SpriteRenderer>().color = Color.green;
     }
 
@@ -76,6 +77,8 @@ public class Item : NetworkBehaviour
     public void ResetValueClientRpc()
     {
         isActivated = false;
+        Debug.Log("reset isactivated: " + isActivated);
+
         anim.SetFloat("isCandleActive", 0);
         // GetComponent<SpriteRenderer>().color = Color.white;
     }

@@ -17,6 +17,8 @@ public class IndicatorScript : MonoBehaviour
     private float srWidth;
     private float srHeight;
 
+    private bool isFirstRender = true;
+
     void Start()
     {
         sr = offScreenIndicatorPrefab.GetComponent<SpriteRenderer>();
@@ -25,12 +27,35 @@ public class IndicatorScript : MonoBehaviour
         srHeight = bounds.size.y / 2f;
         srWidth = bounds.size.x / 2f;
 
-        // Initialize indicators based on the initial state of kidPositions
+        Debug.Log("PlayerManager.instance: " + GameManager.instance);
+        Debug.Log("offScreenIndicatorPrefab: " + offScreenIndicatorPrefab);
+
+        if (GameManager.instance == null)
+        {
+            Debug.LogError("PlayerManager instance is null!");
+            return;
+        }
+
+        if (offScreenIndicatorPrefab == null)
+        {
+            Debug.LogError("offScreenIndicatorPrefab is null!");
+            return;
+        }
+
         InitializeIndicators();
+
+        // Initialize indicators based on the initial state of kidPositions
+        // InitializeIndicators();
     }
 
     void Update()
     {
+        // if (isFirstRender)
+        // {
+        //     InitializeIndicators();
+        //     isFirstRender = false;
+        // }
+        InitializeIndicators();
         // Dynamically handle additions and removals in kidPositions
         SyncIndicatorsWithKidPositions();
 
@@ -42,6 +67,12 @@ public class IndicatorScript : MonoBehaviour
     void InitializeIndicators()
     {
         Dictionary<ulong, Vector3> kidPositions = PlayerManager.instance.GetKidPositionsNET();
+
+        if (kidPositions == null)
+        {
+            Debug.LogError("kidPositionsNET is null!");
+            return;
+        }
 
         foreach (var entry in kidPositions)
         {
@@ -56,6 +87,7 @@ public class IndicatorScript : MonoBehaviour
             }
         }
     }
+
 
     // Synchronize indicators with changes in kidPositions
     void SyncIndicatorsWithKidPositions()

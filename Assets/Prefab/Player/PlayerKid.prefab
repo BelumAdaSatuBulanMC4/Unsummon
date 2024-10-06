@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1488551731140259940}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2023791975658744652}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: ItemCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2595255624578999491}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: SpiritCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 8815068478096702067}
   - component: {fileID: 674174689880832360}
   - component: {fileID: 6030668997143344752}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: KidObject
   m_TagString: Kids
   m_Icon: {fileID: 0}
@@ -300,7 +300,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3619322817569047651}
   - component: {fileID: 1244721411804776356}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Spot Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -382,7 +382,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3251251258958118885}
   - component: {fileID: 452217133954437642}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: PlayerKid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -440,7 +440,7 @@ GameObject:
   - component: {fileID: 3174912958544155440}
   - component: {fileID: 1771687662211924944}
   - component: {fileID: 8015977596145541475}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Animator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -545,7 +545,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6060655090696418310}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -575,6 +575,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5712358460163206507}
     m_Modifications:
+    - target: {fileID: 742697601262029382, guid: 130f09bd207564538b04d93757e38228, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5147945498288835619, guid: 130f09bd207564538b04d93757e38228, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5599092441974070092, guid: 130f09bd207564538b04d93757e38228, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -660,6 +668,10 @@ PrefabInstance:
       value: UI_InteractionItem
       objectReference: {fileID: 0}
     - target: {fileID: 6269052629278428766, guid: 130f09bd207564538b04d93757e38228, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6269052629278428766, guid: 130f09bd207564538b04d93757e38228, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -694,6 +706,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5712358460163206507}
     m_Modifications:
+    - target: {fileID: 742697601262029382, guid: 130f09bd207564538b04d93757e38228, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5147945498288835619, guid: 130f09bd207564538b04d93757e38228, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5599092441974070092, guid: 130f09bd207564538b04d93757e38228, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -777,6 +797,10 @@ PrefabInstance:
     - target: {fileID: 6269052629278428766, guid: 130f09bd207564538b04d93757e38228, type: 3}
       propertyPath: m_Name
       value: KidButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 6269052629278428766, guid: 130f09bd207564538b04d93757e38228, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6269052629278428766, guid: 130f09bd207564538b04d93757e38228, type: 3}
       propertyPath: m_IsActive
