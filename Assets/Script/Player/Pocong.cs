@@ -67,20 +67,20 @@ public class Pocong : Character
         HandleAnimations();
         // HandleTeleport();
         HandlePlayerCollision();
-        HandleLocationChanged();
+        // HandleLocationChanged();
         HandleKidInteraction();
         HandleMirrorInteraction();
-        GetKidsPosition();
+        // GetKidsPosition();
         // controller_UI.SetActive(IsOwner);
         HandleButtonInteraction();
     }
-    private void HandleLocationChanged()
-    {
-        if (dashTime > 0)
-        {
-            PlayerManager.instance.UpdatePocongPosition(this, transform.position);
-        }
-    }
+    // private void HandleLocationChanged()
+    // {
+    //     if (dashTime > 0)
+    //     {
+    //         PlayerManager.instance.UpdatePocongPosition(this, transform.position);
+    //     }
+    // }
 
     private void HandlePlayerCollision()
     {

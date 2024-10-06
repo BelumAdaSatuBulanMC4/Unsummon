@@ -45,7 +45,7 @@ public class PlayerKid : Character
 
     private IEnumerator RegisterKidWhenReady()
     {
-        while (PlayerManager.instance == null)
+        while (GameManager.instance == null)
         {
             yield return null; // Wait until PlayerManager is initialized
         }
@@ -65,7 +65,7 @@ public class PlayerKid : Character
         // if (!IsOwner) { return; }
         base.Update();
         HandleAnimations();
-        HandleLocationChanged();
+        // HandleLocationChanged();
         HandlePlayerCollision();
         HandleMovement();
         // PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
@@ -75,13 +75,13 @@ public class PlayerKid : Character
         // Debug.Log("location of kid " + transform.position);
     }
 
-    private void HandleLocationChanged()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            PlayerManager.instance.UpdateKidPosition(this, transform.position);
-        }
-    }
+    // private void HandleLocationChanged()
+    // {
+    //     if (Input.GetKeyDown(KeyCode.L))
+    //     {
+    //         PlayerManager.instance.UpdateKidPosition(this, transform.position);
+    //     }
+    // }
 
     private void HandlePlayerCollision()
     {
@@ -103,15 +103,15 @@ public class PlayerKid : Character
     protected override void HandleMovement()
     {
         base.HandleMovement();
-        if (dashTime > 0)
-        {
-            PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
-        }
-        else
-        {
-            PlayerManager.instance.RemoveKidPositionServerRpc(NetworkObjectId);
+        // if (dashTime > 0)
+        // {
+        //     PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
+        // }
+        // else
+        // {
+        //     PlayerManager.instance.RemoveKidPositionServerRpc(NetworkObjectId);
 
-        }
+        // }
         // if (dashTime > 0)
         // {
         //     if (PlayerManager.instance.IsContainingKid(this))

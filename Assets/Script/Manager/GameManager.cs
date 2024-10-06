@@ -15,11 +15,10 @@ public class GameManager : NetworkBehaviour
     private int killedKids = 0;
     private bool kidsWin;
     private bool pocongWin;
+    public Vector3[] spawnPoints;
+    public Vector3[] randomSelectedPoints;
 
-    private bool isFirstUpdate = true;
-
-    public Vector3[] spawnPoints; // All possible spawn points (20 in your case)
-    public Vector3[] randomSelectedPoints; // The random points selected and shared across players
+    public int[] randomIndexNumbers;
 
     private const int numberOfPointsToSelect = 10;
 
@@ -31,7 +30,7 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private Button homeButton;
     [SerializeField] private Button playAgainButton;
     [SerializeField] private GameObject result;
-    [SerializeField] private GameObject candlePrefab;
+    [SerializeField] private GameObject[] candleLocs;
     Character currentChar;
 
 
@@ -43,58 +42,20 @@ public class GameManager : NetworkBehaviour
         }
         else
         {
-            // Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
 
     private void Start()
     {
-        spawnPoints = new Vector3[20];
-        spawnPoints[0] = new Vector3((float)-29.74, (float)10.46, 0);
-        spawnPoints[1] = new Vector3((float)-21.39, (float)4.75, 0);
-        spawnPoints[2] = new Vector3((float)-12.6, (float)9.33, 0);
-        spawnPoints[3] = new Vector3((float)-3.34, (float)10.34, 0);
-        spawnPoints[4] = new Vector3((float)5.21, (float)10.34, 0);
-        spawnPoints[5] = new Vector3((float)-2.53, (float)0.4, 0);
-        spawnPoints[6] = new Vector3((float)0.32, (float)-7.4, 0);
-        spawnPoints[7] = new Vector3((float)-28.35, (float)-8.49, 0);
-        spawnPoints[8] = new Vector3((float)-41.32, (float)-19.35, 0);
-        spawnPoints[9] = new Vector3((float)19.56, (float)-4.62, 0);
-        spawnPoints[10] = new Vector3((float)22.21, (float)9.29, 0);
-        spawnPoints[11] = new Vector3((float)28.98, (float)14.07, 0);
-        spawnPoints[12] = new Vector3((float)42.03, (float)14.17, 0);
-        spawnPoints[13] = new Vector3((float)43.58, (float)8.68, 0);
-        spawnPoints[14] = new Vector3((float)61.59, (float)8.68, 0);
-        spawnPoints[15] = new Vector3((float)57.24, (float)13.41, 0);
-        spawnPoints[16] = new Vector3((float)71.99, (float)-2.57, 0);
-        spawnPoints[17] = new Vector3((float)50.35, (float)-7.41, 0);
-        spawnPoints[18] = new Vector3((float)17.25, (float)-7.41, 0);
-        spawnPoints[19] = new Vector3((float)-26.5, (float)19.68, 0);
-
         FindAllPlayerKids();
         currentChar = FindAuthorCharacter();
         result.SetActive(false);
-        GenerateRandomPoints();
+        UploadNumbersServerRpc();
     }
-    // public void addActivatedItems()
-    // {
-    //     if (activeItems >= totalItems)
-    //     {
-    //         EndGame(true);
-    //         return;
-    //     }
-
-    //     activeItems++;
-    //     Debug.Log("Kid turned on an item!");
-    // }
 
     private void Update()
     {
-        if (IsHost && isFirstUpdate)
-        {
-            ShareRandomPointsClientRpc(randomSelectedPoints);
-            isFirstUpdate = false;
-        }
         Debug.Log($"Achive items : {activeItems}/{totalItems}");
         kidsWin = activeItems == totalItems;
         pocongWin = killedKids == totalKids;
@@ -103,79 +64,55 @@ public class GameManager : NetworkBehaviour
             EndGame();
         }
     }
-
-    private void GenerateRandomPoints()
+    public int[] GetRandomIndexNumbers()
     {
-        if (spawnPoints.Length == 0)
-        {
-            Debug.LogError("SpawnPoints array is empty!");
-            return;
-        }
-
-        randomSelectedPoints = GetRandomPoints(spawnPoints, numberOfPointsToSelect);
-        Debug.Log("Random spawn points generated on the server.");
+        return randomIndexNumbers;
     }
 
-    private Vector3[] GetRandomPoints(Vector3[] points, int numberOfPoints)
+    int[] GenerateUniqueRandomNumbers(int min, int max, int length)
     {
-        List<Vector3> pointsList = new List<Vector3>(points);
-
-        // Fisher-Yates shuffle algorithm to randomly shuffle the list
-        for (int i = pointsList.Count - 1; i > 0; i--)
+        List<int> numbers = new List<int>();
+        for (int i = min; i < max; i++)
         {
-            int randomIndex = Random.Range(0, i + 1);
-            Vector3 temp = pointsList[i];
-            pointsList[i] = pointsList[randomIndex];
-            pointsList[randomIndex] = temp;
+            numbers.Add(i);
         }
 
-        // Select the first 'numberOfPoints' from the shuffled list
-        Vector3[] selectedPoints = new Vector3[numberOfPoints];
-        for (int i = 0; i < numberOfPoints; i++)
-        {
-            selectedPoints[i] = pointsList[i];
-        }
 
-        return selectedPoints;
+        for (int i = 0; i < numbers.Count; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(i, numbers.Count);
+            int temp = numbers[i];
+            numbers[i] = numbers[randomIndex];
+            numbers[randomIndex] = temp;
+        }
+        return numbers.GetRange(0, length).ToArray();
     }
 
-    // Public method for clients to access the random array
     public Vector3[] GetRandomSelectedPoints()
     {
         return randomSelectedPoints;
     }
 
-    [ClientRpc]
-    private void ShareRandomPointsClientRpc(Vector3[] points)
+    public int[] getRandomGeneratedUniquePoints()
     {
-        randomSelectedPoints = points; // Sync the random points on all clients
-        Debug.Log("Random points received by the client : " + randomSelectedPoints.Length);
-
-        // Instead of spawning candles here, request the server to spawn them
-        SpawnCandlesServerRpc(randomSelectedPoints);
+        return randomIndexNumbers;
     }
 
-    // ServerRpc to spawn the candles on the server
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnCandlesServerRpc(Vector3[] points)
+    public void RequestRandomNumbersServerRpc()
     {
-        for (int i = 0; i < points.Length; i++)
+        if (IsServer)
         {
-            GameObject candleInstance = Instantiate(candlePrefab, points[i], Quaternion.identity);
-            NetworkObject networkObject = candleInstance.GetComponent<NetworkObject>();
-
-            // Ensure the object is spawned on the network by the server
-            if (networkObject != null)
-            {
-                networkObject.Spawn();
-            }
-            else
-            {
-                Debug.LogError("NetworkObject component is missing from the candlePrefab.");
-            }
+            // Server responds with the random numbers
+            ShareRandomNumbersClientRpc(randomIndexNumbers);
         }
+    }
 
-        Debug.Log("Candles spawned on the server.");
+    [ClientRpc]
+    private void ShareRandomNumbersClientRpc(int[] receivedRandomNumbers)
+    {
+        randomIndexNumbers = receivedRandomNumbers;
+        Debug.Log("Client received random numbers: " + string.Join(", ", randomIndexNumbers));
     }
 
     public void FindAllPlayerKids()
@@ -194,31 +131,11 @@ public class GameManager : NetworkBehaviour
     {
         return totalItems;
     }
-
-    // public void subActivatedItems()
-    // {
-    //     if (activeItems > 0)
-    //     {
-    //         activeItems--;
-    //         Debug.Log("Pocong turned off an item!");
-    //     }
-    // }
-
     public void UpdateKilledKids()
     {
         if (killedKids < totalKids)
         {
-            // killedKids++;
             AddKillKidsServerRpc();
-            // Debug.Log("Killed kids " + killedKids + " / " + totalKids);
-            // if (killedKids == totalKids)
-            // {
-            //     Debug.Log("Pocong menang");
-            //     // kidsWin = false;
-            //     // pocongWin = true;
-            //     PocongWinServerRpc();
-            //     EndGame();
-            // }
         }
     }
 
@@ -228,18 +145,7 @@ public class GameManager : NetworkBehaviour
         if (activeItems < totalItems)
         {
             item.ChangeVariable();
-            // activeItems++;
             AddActiveItemsServerRpc();
-            // Debug.Log("Kid turned on an item. Active items: " + activeItems);
-
-            // if (activeItems == totalItems)
-            // {
-            //     Debug.Log($"is win {kidsWin}");
-            //     // kidsWin = true;
-            //     // pocongWin = false;
-            //     KidWinServerRpc();
-            //     EndGame();
-            // }
         }
     }
 
@@ -265,6 +171,7 @@ public class GameManager : NetworkBehaviour
         if (activeItems > 0)
         {
             item.ResetValue();
+            item.DeActivatedCandle();
             // activeItems--;
             DecActiveItemsServerRpc();
             Debug.Log("Pocong turned off an item. Active items: " + activeItems);
@@ -308,17 +215,6 @@ public class GameManager : NetworkBehaviour
                 splash.enabled = true;
             }
         }
-        // LoadGamePlaySceneServerRpc();
-        // if (kidsWon)
-        // {
-        //     // Debug.Log("Kids have won the game!");
-        // SceneManager.LoadScene("WinningCondition");
-        // }
-        // else
-        // {
-        //     // Debug.Log("Pocong has won the game!");
-        //     SceneManager.LoadScene("WinningCondition");
-        // }
     }
 
     // TAMBAH ITEMS
@@ -345,8 +241,6 @@ public class GameManager : NetworkBehaviour
         activeItems--;
     }
 
-
-
     [ServerRpc(RequireOwnership = false)]
     public void AddKillKidsServerRpc()
     {
@@ -359,33 +253,18 @@ public class GameManager : NetworkBehaviour
         killedKids++;
     }
 
-    // [ServerRpc]
-    // public void KidWinServerRpc()
-    // {
-    //     KidWinClientRpc();
-    // }
-    // [ClientRpc]
-    // public void KidWinClientRpc()
-    // {
-    //     kidsWin = true;
-    //     pocongWin = false;
-    // }
-    // [ServerRpc]
-    // public void PocongWinServerRpc()
-    // {
-    //     PocongWinClientRpc();
-    // }
-    // [ClientRpc]
-    // public void PocongWinClientRpc()
-    // {
-    //     pocongWin = true;
-    //     kidsWin = false;
-    // }
+    [ServerRpc(RequireOwnership = false)]
+    public void UploadNumbersServerRpc()
+    {
+        randomIndexNumbers = GenerateUniqueRandomNumbers(0, candleLocs.Length, 10);
+        UploadNumbersClientRpc(randomIndexNumbers);
+    }
 
-    // [ServerRpc(RequireOwnership = false)]
-    // private void LoadGamePlaySceneServerRpc()
-    // {
-    //     NetworkManager.SceneManager.LoadScene("WinningCondition", LoadSceneMode.Single);
-    // }
+    [ClientRpc]
+    public void UploadNumbersClientRpc(int[] receivedRandomNumbers)
+    {
+        randomIndexNumbers = receivedRandomNumbers;
+        // ActivateObjectsAtRandomIndices();
+    }
 }
 
