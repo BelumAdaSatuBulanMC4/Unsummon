@@ -40,12 +40,12 @@ public class UI_NoiseButton : MonoBehaviour
         if (chara != null)
         {
             button.onClick.AddListener(TriggerNoise);
-            Debug.Log("Masuk ke button noise 2");
+            // Debug.Log("Masuk ke button noise 2");
         }
 
         if (chara != null)
         {
-            if (chara.GetNoiseCooldown() <= 0)
+            if (!chara.IsMakingNoise())
             {
                 EnableButton();
                 buttonText.text = "";
@@ -53,7 +53,7 @@ public class UI_NoiseButton : MonoBehaviour
             else
             {
                 DisableButton();
-                buttonText.text = Mathf.CeilToInt(chara.GetNoiseCooldown()).ToString();
+                // buttonText.text = Mathf.CeilToInt(chara.GetNoiseCooldown()).ToString();
             }
         }
     }
@@ -63,7 +63,7 @@ public class UI_NoiseButton : MonoBehaviour
         PlayerSpirit[] spirits = FindObjectsOfType<PlayerSpirit>();
         foreach (PlayerSpirit spirit in spirits)
         {
-            Debug.Log("Spirit found: " + spirit.name + " | isAuthor: " + spirit.GetIsAuthor());
+            // Debug.Log("Spirit found: " + spirit.name + " | isAuthor: " + spirit.GetIsAuthor());
             if (spirit.GetIsAuthor())
             {
                 return spirit;
@@ -75,7 +75,7 @@ public class UI_NoiseButton : MonoBehaviour
 
     public void TriggerNoise()
     {
-        Debug.Log("Halooooooo DI SiNI SUWARA");
+        // Debug.Log("Halooooooo DI SiNI SUWARA");
         if (chara != null && chara.GetNoiseCooldown() <= 0)
         {
             chara.NoiseButton();

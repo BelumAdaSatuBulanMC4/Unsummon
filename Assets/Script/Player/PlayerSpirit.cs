@@ -50,6 +50,11 @@ public class PlayerSpirit : Character
             noiseCooldownTimer -= Time.deltaTime;
         }
 
+        // if (isMakingNoise)
+        // {
+        //     noiseCooldownTimer = noiseCooldown;
+        // }
+
         HandleAnimations();
         // HandleLocationChanged();
         // HandlePlayerCollision();
@@ -93,20 +98,20 @@ public class PlayerSpirit : Character
     private IEnumerator NoiseCoroutine()
     {
         isMakingNoise = true;
-        Debug.Log("Making noise at position " + transform.position.x + " " + transform.position.y);
+        // Debug.Log("Making noise at position " + transform.position.x + " " + transform.position.y);
         if (PlayerManager.instance != null)
             PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
 
         // Noise lasts for 'noiseTime' seconds
         yield return new WaitForSeconds(noiseTime);
 
-        Debug.Log("Noise ended");
+        // Debug.Log("Noise ended");
 
         if (PlayerManager.instance != null)
             PlayerManager.instance.RemoveKidPositionServerRpc(NetworkObjectId);
 
         // Start cooldown after noise finishes
-        noiseCooldownTimer = noiseCooldown;
+        // noiseCooldownTimer = noiseCooldown;
         isMakingNoise = false;
     }
 
@@ -135,6 +140,11 @@ public class PlayerSpirit : Character
     public float GetNoiseCooldown()
     {
         return noiseCooldownTimer;
+    }
+
+    public bool IsMakingNoise()
+    {
+        return isMakingNoise;
     }
 
     // private void OnDrawGizmos()
