@@ -806,7 +806,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 697680657}
-  - component: {fileID: 697680656}
   m_Layer: 0
   m_Name: Settings
   m_TagString: Untagged
@@ -814,18 +813,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &697680656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 697680655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bb08943641cb42369202c2b6eb29a09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &697680657
 Transform:
   m_ObjectHideFlags: 0
@@ -1312,6 +1299,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6c36b326f3724bc194826e26185b386, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  JoinCode: 
   lostConnection: 0
 --- !u!1 &1547577849
 GameObject:
@@ -2082,6 +2070,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7378926325914213107, guid: 17420d671d18b4f11812fdc5f2581ec5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7560795973550718976, guid: 17420d671d18b4f11812fdc5f2581ec5, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7560795973550718976, guid: 17420d671d18b4f11812fdc5f2581ec5, type: 3}

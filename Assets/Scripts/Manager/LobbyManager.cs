@@ -1,6 +1,7 @@
-// Di client baru masih belum update player yang lamanya!
 using System;
-using System.Collections.Generic;
+using System.Linq;
+
+// using System.Collections.Generic;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -10,10 +11,15 @@ using UnityEngine.UI;
 public class LobbyManager : NetworkBehaviour
 {
     // private List<string> playerNames = new();
-    public Image[] playerProfile;
-    public Sprite[] newPlayerProfile;
+    private readonly NetworkList<ulong> connectedClients = new();
+
+    // public Image[] playerProfile;
+    // public Sprite[] newPlayerProfile;
     public TextMeshProUGUI[] playerName;
+    // [SerializeField] private GameObject[] playerWaiting;
+    [SerializeField] private GameObject[] playerJoin;
     public Button startButton;
+    public GameObject startButtonObject;
     public Button backButton;
 
     public TextMeshProUGUI codeRoomOutput;
@@ -23,13 +29,25 @@ public class LobbyManager : NetworkBehaviour
         Debug.Log("LobbyManager Active");
         startButton.onClick.AddListener(OnStartButtonPressed);
         backButton.onClick.AddListener(OnBackButtonPressed);
+
+        // if (IsServer)
+        // {
+        //     NetworkManager.Singleton.OnClientConnectedCallback += OnPlayerJoined;
+        //     NetworkManager.Singleton.OnClientDisconnectCallback += OnPlayerLeave;
+        // }
         NetworkManager.Singleton.OnClientConnectedCallback += OnPlayerJoined;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnPlayerLeave;
-        // if (IsClient)
-        // {
-        //     string roomCode = PlayerPrefs.GetString("RoomCode", "NoCode");
-        //     UpdateRoomCode(roomCode);
-        // }
+        connectedClients.OnListChanged += OnConnectedClientsChanged;
+    }
+    override public void OnDestroy()
+    {
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnPlayerJoined;
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnPlayerLeave;
+        }
+        connectedClients.OnListChanged -= OnConnectedClientsChanged;
+        connectedClients?.Dispose(); // Ini hanya jika Anda secara manual menginisialisasi connectedClients
     }
 
     public void UpdateRoomCode(string roomCode)
@@ -40,57 +58,88 @@ public class LobbyManager : NetworkBehaviour
     // Callback saat pemain bergabung
     private void OnPlayerJoined(ulong clientId)
     {
+        if (!IsServer) { startButtonObject.SetActive(false); }
         string roomCode = PlayerPrefs.GetString("RoomCode", "NoCode");
         UpdateRoomCode(roomCode);
 
-        Debug.Log($"ROOM CODE: {roomCode}");
-        Debug.Log("PLAYER JOIN");
-        Debug.Log($"{DataPersistence.LoadUsername()}");
+        // Debug.Log($"ROOM CODE: {roomCode}");
+        // Debug.Log("PLAYER JOIN");
+        // Debug.Log($"{DataPersistence.LoadUsername()}");
+        if (IsServer)
+        {
+            Debug.Log($"Client {clientId} connected.");
+            connectedClients.Add(clientId);
+        }
         // Debug.Log("Player Joined dengan Client ID: " + clientId);
-        SendProfileToAllClientRpc(clientId);
+        // SendProfileToAllClientRpc(clientId);
         // SendPlayerNameServerRpc();
         NotifyPlayerJoinClientRpc(clientId);
     }
 
     private void OnPlayerLeave(ulong clientId)
     {
+        if (IsServer)
+        {
+            Debug.Log($"Client {clientId} disconnected.");
+            connectedClients.Remove(clientId);
+        }
         NotifyPlayerLeaveClientRpc(clientId);
     }
 
-    // [ServerRpc(RequireOwnership = false)]
-    // private void SendPlayerNameServerRpc()
-    // {
-    //     // SendPlayerNameClientRpc(OwnerClientId, DataPersistence.LoadUsername());
-    //     SendPlayerNameClientRpc(OwnerClientId);
-    // }
+    // Callback untuk merespon perubahan pada NetworkList
+    private void OnConnectedClientsChanged(NetworkListEvent<ulong> changeEvent)
+    {
+        // Di sini kita bisa bereaksi terhadap perubahan di NetworkList
+        switch (changeEvent.Type)
+        {
+            case NetworkListEvent<ulong>.EventType.Add:
+                Debug.Log($"Client {changeEvent.Value} has joined.");
+                break;
 
-    // [ClientRpc]
-    // private void SendPlayerNameClientRpc(ulong clientId)
-    // {
-    //     playerName[clientId].text = $"Player {clientId}";
-    //     // Debug.Log($"Player yang join bernama {playerNameJoin}");
-    // }
+            case NetworkListEvent<ulong>.EventType.Remove:
+                Debug.Log($"Client {changeEvent.Value} has left.");
+                break;
+        }
+
+        // Debug: cetak seluruh daftar client yang terhubung
+        Debug.Log("Current connected clients:");
+        foreach (var client in connectedClients)
+        {
+            Debug.Log($"- ClientID: {client}");
+        }
+        Debug.Log(connectedClients.Count);
+        for (int i = 0; i <= 4; i++)
+        {
+            playerJoin[i].SetActive(false);
+            playerName[i].text = "Waiting";
+        }
+        for (int i = 1; i <= connectedClients.Count; i++)
+        {
+            playerJoin[i - 1].SetActive(true);
+            playerName[i - 1].text = $"Player {i}";
+        }
+    }
 
 
     // Server ke semua Client (dieksekusi di client)
-    [ClientRpc]
-    private void SendProfileToAllClientRpc(ulong clientId)
-    {
-        int totalPlayer = (int)clientId;
-        for (int i = 0; i <= totalPlayer; i++)
-        {
-            playerName[i].text = $"Player {i + 1}";
-            if (playerProfile[i] != null)
-            {
-                playerProfile[i].sprite = newPlayerProfile[i];
-                Debug.Log($"Profile player {clientId} telah diubah");
-            }
-            else
-            {
-                Debug.Log($"Player Profile dengan clientID {clientId} tidak ada!");
-            }
-        }
-    }
+    // [ClientRpc]
+    // private void SendProfileToAllClientRpc(ulong clientId)
+    // {
+    //     int totalPlayer = (int)clientId;
+    //     for (int i = 0; i <= totalPlayer; i++)
+    //     {
+    //         playerName[i].text = $"Player {i + 1}";
+    //         if (playerProfile[i] != null)
+    //         {
+    //             playerProfile[i].sprite = newPlayerProfile[i];
+    //             Debug.Log($"Profile player {clientId} telah diubah");
+    //         }
+    //         else
+    //         {
+    //             Debug.Log($"Player Profile dengan clientID {clientId} tidak ada!");
+    //         }
+    //     }
+    // }
 
     public void OnStartButtonPressed()
     {
@@ -99,12 +148,6 @@ public class LobbyManager : NetworkBehaviour
         {
             LoadGamePlaySceneServerRpc();
         }
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void LoadGamePlaySceneServerRpc()
-    {
-        NetworkManager.SceneManager.LoadScene("GamePlay", LoadSceneMode.Single);
     }
 
     public void OnBackButtonPressed()
@@ -130,6 +173,12 @@ public class LobbyManager : NetworkBehaviour
             Debug.Log("NetworkManager in Client shut down successfully.");
             SceneManager.LoadScene("MainMenu");
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void LoadGamePlaySceneServerRpc()
+    {
+        NetworkManager.SceneManager.LoadScene("GamePlay", LoadSceneMode.Single);
     }
 
     // Server membuat semua client berpindah ke MainMenu
