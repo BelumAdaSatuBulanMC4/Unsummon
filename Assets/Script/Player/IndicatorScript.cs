@@ -21,7 +21,7 @@ public class IndicatorScript : MonoBehaviour
 
     void Start()
     {
-        sr = offScreenIndicatorPrefab.GetComponent<SpriteRenderer>();
+        sr = offScreenIndicatorPrefab.GetComponentInChildren<SpriteRenderer>();
 
         var bounds = sr.bounds;
         srHeight = bounds.size.y / 2f;

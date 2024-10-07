@@ -52,7 +52,7 @@ public class PlayerSpirit : Character
 
         HandleAnimations();
         // HandleLocationChanged();
-        HandlePlayerCollision();
+        // HandlePlayerCollision();
         // controller_UI.SetActive(IsOwner);
     }
 
@@ -137,8 +137,8 @@ public class PlayerSpirit : Character
         return noiseCooldownTimer;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawWireSphere(playerCheck.position, playerCheckRadius);
-    }
+    // private void OnDrawGizmos()
+    // {
+    //     Gizmos.DrawWireSphere(playerCheck.position, playerCheckRadius);
+    // }
 }

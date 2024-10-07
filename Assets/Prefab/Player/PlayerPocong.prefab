@@ -707,7 +707,7 @@ Transform:
   m_GameObject: {fileID: 8731659229672592240}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -36, y: 23, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -779,8 +779,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.016851366, y: -0.20388317}
-  m_Size: {x: 1.1628193, y: 2.5912724}
+  m_Offset: {x: 0.016851366, y: -0.6161375}
+  m_Size: {x: 1.1628193, y: 1.7667637}
   m_Direction: 0
 --- !u!82 &3009238770074262308
 AudioSource:
@@ -1198,11 +1198,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2369072349961959245, guid: a03ffc571ebfa4376a72137fee46d71b, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 17.267723
+      value: 53.267723
       objectReference: {fileID: 0}
     - target: {fileID: 2369072349961959245, guid: a03ffc571ebfa4376a72137fee46d71b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 20.15928
+      value: -2.8407192
       objectReference: {fileID: 0}
     - target: {fileID: 3788898378746213380, guid: a03ffc571ebfa4376a72137fee46d71b, type: 3}
       propertyPath: m_Name
@@ -1466,11 +1466,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2272398380357986474, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -34.97906
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2272398380357986474, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 22.99956
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3944334889190067606, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
       propertyPath: GlobalObjectIdHash
@@ -1484,6 +1484,10 @@ PrefabInstance:
       propertyPath: virtualCamera
       value: 
       objectReference: {fileID: 975033387950042736}
+    - target: {fileID: 8898774463739647931, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
