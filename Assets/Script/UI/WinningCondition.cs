@@ -7,12 +7,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class WinningCondition : MonoBehaviour
+public class WinningCondition : NetworkBehaviour
 {
     [SerializeField] private TMP_Text victoryText;
     [SerializeField] private TMP_Text secondaryText;
     [SerializeField] private TMP_Text informationText;
     [SerializeField] private Image splash;
+
 
     [SerializeField] private Button homeButton;
     [SerializeField] private Button playAgainButton;
@@ -27,24 +28,6 @@ public class WinningCondition : MonoBehaviour
         isPocongWin = GameManager.instance.GetPocongWin();
         whoAreYou = UserManager.instance.getYourRole();
 
-        // if (!isPocongWin && isKidsWin)
-        // {
-        //     victoryText.text = "Victory!";
-        //     secondaryText.text = "Cursed Conquest";
-        //     informationText.text = "The candles are lit, and the pocong is banished back to hell!";
-        //     splash.enabled = false;
-        // }
-        // else if (isPocongWin && !isKidsWin)
-        // {
-        //     victoryText.text = "Defeat";
-        //     secondaryText.text = "Eternal Doom";
-        //     informationText.text = "The pocong has devoured all the children, your family will be in hell forever.";
-        //     splash.enabled = true;
-        // }
-        // else if (isPocongWin && isKidsWin)
-        // {
-
-        // }
         if (isKidsWin)
         {
             SetupSceneKids(isKidsWin);
@@ -54,29 +37,28 @@ public class WinningCondition : MonoBehaviour
         {
             SetupScenePocong(isPocongWin);
         }
+        homeButton.onClick.AddListener(OnHomeButtonPressed);
+        playAgainButton.onClick.AddListener(OnHomeButtonPressed);
     }
 
-    // private void DetermineOutcome(bool isKidWin, bool isPocongWin)
-    // {
-    //     int outcome = (isKidWin ? 1 : 0) + (isPocongWin ? 2 : 0);
-    //     switch (outcome)
-    //     {
-    //         case 1:
-    //             SetupSceneKids(true);
-    //             break;
-    //         case 2:
-    //             SetupSceneKids(false);
-    //     }
-    // }
 
-    public void HomeButton()
+    private void OnHomeButtonPressed()
     {
-        SceneManager.LoadScene("MainMenu");
+        if (IsHost)
+        {
+            NetworkManager.Singleton.Shutdown();
+            ReturnToMainMenuClientRpc();
+        }
+        else if (IsClient)
+        {
+            NetworkManager.Singleton.Shutdown();
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
-    public void PlayAgainButton()
+    private void OnPlayAgainButtonPressed()
     {
-        // SceneManager.LoadScene("Lobby");
+        SceneManager.LoadScene("LobbyRoom");
     }
 
     private void SetupSceneKids(bool isWin)
@@ -113,5 +95,13 @@ public class WinningCondition : MonoBehaviour
             informationText.text = "The light prevails! The pocong is dragged back to hell.";
             splash.enabled = true;
         }
+    }
+
+    // Server membuat semua client berpindah ke MainMenu
+    [ClientRpc]
+    private void ReturnToMainMenuClientRpc()
+    {
+        NetworkManager.Singleton.Shutdown();
+        SceneManager.LoadScene("MainMenu");
     }
 }

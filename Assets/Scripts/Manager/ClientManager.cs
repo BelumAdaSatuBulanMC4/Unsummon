@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -12,39 +13,72 @@ public class ClientManager : MonoBehaviour
 {
     public static ClientManager Instance { get; private set; }
 
-    private void Awake() {
-        if(Instance != null && Instance != this){
+    public bool roomNotFound = false;
+    public bool roomFull = false;
+    public bool lostConnection = false;
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
             Destroy(gameObject);
-        } else {
+        }
+        else
+        {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
     }
-    public async void StartClient(string codeRoom) {
+    public async Task StartClient(string codeRoom)
+    {
+        // Reset semua status sebelum mencoba
+        roomNotFound = false;
+        roomFull = false;
+        lostConnection = false;
 
         JoinAllocation allocation;
-        try {
+        try
+        {
             allocation = await RelayService.Instance.JoinAllocationAsync(codeRoom);
-        } catch {
-            Debug.LogError("Relay get join code request failed");
-            throw;
+        }
+        catch (RelayServiceException ex)
+        {
+            Debug.LogError($"JOIN RELAY FAILED: {ex}");
+            Debug.LogError(ex.ErrorCode);
+            if (
+                ex.ErrorCode == (int)RelayExceptionReason.AllocationNotFound ||
+                ex.ErrorCode == (int)RelayExceptionReason.JoinCodeNotFound ||
+                ex.ErrorCode == (int)RelayExceptionReason.InvalidRequest
+                )
+            {
+                roomNotFound = true;
+            }
+            else if (ex.ErrorCode == (int)RelayExceptionReason.Max)
+            {
+                roomFull = true;
+            }
+            else
+            {
+                lostConnection = true;
+            }
+            return;
         }
         var relayServerData = new RelayServerData(allocation, "dtls");
 
         Debug.Log("Trying to connect to: " + codeRoom);
-        
-        NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
-        // Debug. Log($"client: {allocation.ConnectionData[0]} {allocation.ConnectionData[1]}");
-        // Debug. Log($"host: {allocation. HostConnectionData[0]} {allocation.HostConnectionData[1]}");
-        // Debug. Log($"client: {allocation.AllocationId}");
 
-        if (NetworkManager.Singleton.StartClient()) {
+        NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+
+        if (NetworkManager.Singleton.StartClient())
+        {
             Debug.Log("Client connect successfully!");
-            LobbyDisplay lobbyDisplay = FindObjectOfType<LobbyDisplay>();
-            if (lobbyDisplay != null) {
-                lobbyDisplay.UpdateRoomCode(codeRoom); // Memperbarui codeRoomOutput di LobbyDisplay
-            }
-        } else {
+            // LobbyManager lobbyManager = FindObjectOfType<LobbyManager>();
+            // if (lobbyManager != null)
+            // {
+            //     lobbyManager.UpdateRoomCode(codeRoom);
+            // }
+        }
+        else
+        {
             Debug.LogError("Failed to start client!");
         }
     }

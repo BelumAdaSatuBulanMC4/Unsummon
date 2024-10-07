@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
@@ -9,30 +10,46 @@ using UnityEngine;
 public class HostManager : MonoBehaviour
 {
     public static HostManager Instance { get; private set; }
-    public string JoinCode { get; private set; }
+    public string JoinCode;
+    public bool lostConnection = false;
 
-    private void Awake() {
-        if(Instance != null && Instance != this){
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
             Destroy(gameObject);
-        } else {
+        }
+        else
+        {
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
     }
-    public async void StartHost() {
+    // public async Task StartHost()
+    public async void StartHost()
+    {
+        JoinCode = "...";
         Allocation allocation;
-        try {
+        try
+        {
             allocation = await RelayService.Instance.CreateAllocationAsync(5);
-        } catch(Exception e) {
-            Debug.Log($"Relay create allocation failed {e.Message}");
+        }
+        catch (RelayServiceException ex)
+        {
+            Debug.Log($"Relay create allocation failed {ex.Message}");
+            lostConnection = true;
             throw;
         }
 
-        try {
+        try
+        {
             JoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
             Debug.Log($"Room Code: {JoinCode}");
-        } catch {
-            Debug.Log($"Relay join code request failed");
+        }
+        catch (RelayServiceException ex)
+        {
+            Debug.Log($"Relay join code request failed: {ex.Message}");
+            lostConnection = true;
             throw;
         }
 
@@ -44,14 +61,19 @@ public class HostManager : MonoBehaviour
 
         // codeRoomOutput.text = JoinCode;
 
-        if (NetworkManager.Singleton.StartHost()) {
+        if (NetworkManager.Singleton.StartHost())
+        {
             Debug.Log("Host started successfully!");
-            LobbyDisplay lobbyDisplay = FindObjectOfType<LobbyDisplay>();
-            if (lobbyDisplay != null) {
-                lobbyDisplay.UpdateRoomCode(JoinCode); // Memperbarui codeRoomOutput di LobbyDisplay
+            LobbyManager lobbyManager = FindObjectOfType<LobbyManager>();
+            if (lobbyManager != null)
+            {
+                lobbyManager.UpdateRoomCode(JoinCode);
             }
-        } else {
+        }
+        else
+        {
             Debug.LogError("Failed to start host!");
+            lostConnection = true;
         }
     }
 }
