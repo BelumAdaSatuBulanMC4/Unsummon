@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -54,8 +55,10 @@ public class GameManager : NetworkBehaviour
         // audioSource.PlayOneShot(environmentGamePlay);
     }
 
+
     private void Update()
     {
+        // FindAllPlayerKids();
         Debug.Log($"Achive items : {activeItems}/{totalItems}");
         kidsWin = activeItems == totalItems;
         pocongWin = killedKids == totalKids;
@@ -66,6 +69,7 @@ public class GameManager : NetworkBehaviour
             EndGame();
         }
     }
+
 
     public void FindAllPlayerKids()
     {
