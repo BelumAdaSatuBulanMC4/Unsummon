@@ -75,6 +75,8 @@ public class Pocong : Character
         // controller_UI.SetActive(IsOwner);
         HandleButtonInteraction();
     }
+
+
     private void HandleLocationChanged()
     {
         if (dashTime > 0)
@@ -142,12 +144,18 @@ public class Pocong : Character
 
     void killTheKid(PlayerKid kid)
     {
-        // if (Input.GetKeyDown(KeyCode.R))
-        // {
+        Debug.Log("BERHASIL NGEKILLL");
         sfxPocongKill.loop = false;
         sfxPocongKill.Play();
         kid.Knocked(transform.position.x);
         // }
+    }
+
+    private IEnumerator SetPocongAnimKill()
+    {
+        anim.SetBool("isKilling", true);
+        yield return new WaitForSeconds(0.7f);
+        anim.SetBool("isKilling", false);
     }
 
     private void GetKidsPosition()
@@ -157,6 +165,7 @@ public class Pocong : Character
 
     public void AttackButton()
     {
+        RequestPlayAnimationKillServerRpc();
         AttackAbility();
     }
 
@@ -214,27 +223,6 @@ public class Pocong : Character
     private IEnumerator TeleportRoutine(PlayerKid kid)
     {
         anim.SetBool("isTeleport", true);
-        // anim.SetBool("isTeleport", true);
-        // Debug.Log("Before teleport");
-        // yield return new WaitForSeconds(1f);
-
-        // Debug.Log("After teleport");
-        // anim.SetBool("isTeleport", false);
-
-        // AnimatorStateInfo animationState = anim.GetCurrentAnimatorStateInfo(0);
-        // while (!animationState.IsName("isTeleport"))
-        // {
-        //     animationState = anim.GetCurrentAnimatorStateInfo(0);
-        //     yield return null;
-        // }
-
-        // // Wait for the blink animation to finish
-        // while (animationState.normalizedTime < 1.0f)
-        // {
-        //     animationState = anim.GetCurrentAnimatorStateInfo(0);
-        //     yield return null;
-        // }
-
         yield return new WaitForSeconds(.4f);
 
         Vector3 tempPocongPosition = transform.position;
@@ -332,7 +320,6 @@ public class Pocong : Character
 
     }
 
-    // Client mengirimkan permintaan animasi ke server
     [ServerRpc]
     private void RequestPlayAnimationServerRpc(string animationTrigger, ServerRpcParams rpcParams = default)
     {
@@ -340,7 +327,6 @@ public class Pocong : Character
         PlayAnimationClientRpc(animationTrigger);
     }
 
-    // Server mengirimkan perintah animasi ke semua client
     [ClientRpc]
     private void PlayAnimationClientRpc(string animationTrigger)
     {
@@ -348,7 +334,6 @@ public class Pocong : Character
         anim.SetFloat(animationTrigger, 1);
     }
 
-    // Client mengirimkan permintaan animasi ke server
     [ServerRpc]
     private void RequestStopAnimationServerRpc(string animationTrigger, ServerRpcParams rpcParams = default)
     {
@@ -356,11 +341,23 @@ public class Pocong : Character
         StopAnimationClientRpc(animationTrigger);
     }
 
-    // Server mengirimkan perintah animasi ke semua client
     [ClientRpc]
     private void StopAnimationClientRpc(string animationTrigger)
     {
         Debug.Log($"Client: Playing animation '{animationTrigger}'");
         anim.SetFloat(animationTrigger, 0);
     }
+
+    [ServerRpc]
+    private void RequestPlayAnimationKillServerRpc()
+    {
+        PlayAnimationKillClientRpc();
+    }
+
+    [ClientRpc]
+    private void PlayAnimationKillClientRpc()
+    {
+        StartCoroutine(SetPocongAnimKill());
+    }
+
 }
