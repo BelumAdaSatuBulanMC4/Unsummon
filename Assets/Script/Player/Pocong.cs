@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Pocong : Character
@@ -312,11 +313,13 @@ public class Pocong : Character
     {
         if (rb.velocity.x != 0 || rb.velocity.y != 0)
         {
-            anim.SetFloat("moving", 1);
+            RequestPlayAnimationServerRpc("moving");
+            // anim.SetFloat("moving", 1);
         }
         else
         {
-            anim.SetFloat("moving", 0);
+            RequestStopAnimationServerRpc("moving");
+            // anim.SetFloat("moving", 0);
         }
     }
 
@@ -327,5 +330,37 @@ public class Pocong : Character
         Gizmos.DrawWireSphere(mirrorCheck.position, mirrorCheckRadius);
         Gizmos.DrawWireSphere(spiritCheck.position, spiritCheckRadius);
 
+    }
+
+    // Client mengirimkan permintaan animasi ke server
+    [ServerRpc]
+    private void RequestPlayAnimationServerRpc(string animationTrigger, ServerRpcParams rpcParams = default)
+    {
+        Debug.Log($"Server: Playing animation '{animationTrigger}'");
+        PlayAnimationClientRpc(animationTrigger);
+    }
+
+    // Server mengirimkan perintah animasi ke semua client
+    [ClientRpc]
+    private void PlayAnimationClientRpc(string animationTrigger)
+    {
+        Debug.Log($"Client: Playing animation '{animationTrigger}'");
+        anim.SetFloat(animationTrigger, 1);
+    }
+
+    // Client mengirimkan permintaan animasi ke server
+    [ServerRpc]
+    private void RequestStopAnimationServerRpc(string animationTrigger, ServerRpcParams rpcParams = default)
+    {
+        Debug.Log($"Server: Playing animation '{animationTrigger}'");
+        StopAnimationClientRpc(animationTrigger);
+    }
+
+    // Server mengirimkan perintah animasi ke semua client
+    [ClientRpc]
+    private void StopAnimationClientRpc(string animationTrigger)
+    {
+        Debug.Log($"Client: Playing animation '{animationTrigger}'");
+        anim.SetFloat(animationTrigger, 0);
     }
 }
