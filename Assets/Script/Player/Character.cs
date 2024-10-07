@@ -223,7 +223,7 @@ public class Character : NetworkBehaviour
     }
 
     [ServerRpc]
-    void SendPositionToServerServerRpc()
+    public void SendPositionToServerServerRpc()
     {
         // Server memperbarui posisi pemain di server dan mengirimkan ke semua client
         UpdatePositionClientRpc(transform.position);
@@ -255,12 +255,6 @@ public class Character : NetworkBehaviour
                 sfxMovement.Stop();  // Hentikan sound effect saat berhenti
             }
         }
-    }
-
-    public void ChangeLocation(Vector3 loc)
-    {
-        transform.position = loc;
-        // currentlocation = loc.ToString();
     }
 
 }

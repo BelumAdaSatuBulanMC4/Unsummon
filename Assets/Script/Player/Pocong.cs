@@ -39,6 +39,8 @@ public class Pocong : Character
 
     [SerializeField] private GameObject buttonInteraction;
 
+    private bool isTeleported = false;
+
 
     protected override void Awake()
     {
@@ -193,6 +195,11 @@ public class Pocong : Character
         return teleportCooldownTimer;
     }
 
+    public bool GetIsTeleported()
+    {
+        return isTeleported;
+    }
+
     public bool GetIsKidDetected()
     {
         return isKidDetected;
@@ -261,15 +268,19 @@ public class Pocong : Character
 
         Vector3 tempPocongPosition = transform.position;
         transform.position = kid.transform.position;
+        kid.ChangeLocation(tempPocongPosition);
         kid.transform.position = tempPocongPosition;
 
         // Once the blink animation is done, set isBlink to false
         anim.SetBool("isTeleport", false);
+        // yield return new WaitForSeconds(5f);
+        isTeleported = false;
     }
 
 
     private void TeleportAbility()
     {
+        isTeleported = true;
         if (teleportCooldownTimer < 0 && isMirrorDetected)
         {
             List<PlayerKid> allKids = PlayerManager.instance.GetAllKids();

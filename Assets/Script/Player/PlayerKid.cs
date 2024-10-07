@@ -252,4 +252,55 @@ public class PlayerKid : Character
     {
 
     }
+
+    public void ChangeLocation(Vector3 loc)
+    {
+        transform.position = loc;
+        Debug.Log("Swapped to : " + transform.position);
+        // currentlocation = loc.ToString();
+    }
+
+    [ClientRpc]
+    private void SwapPositionsClientRpc(ulong kidNetworkId, Vector3 newPocongPosition, Vector3 newKidPosition, ClientRpcParams rpcParams = default)
+    {
+        // Update Pocong's position on all clients
+        transform.position = newPocongPosition;
+
+        // Find the PlayerKid object and update its position on all clients
+        NetworkObject kidNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[kidNetworkId];
+        if (kidNetworkObject != null)
+        {
+            PlayerKid kid = kidNetworkObject.GetComponent<PlayerKid>();
+            if (kid != null)
+            {
+                kid.ChangeLocation(newKidPosition);
+            }
+        }
+    }
+
+    [ServerRpc]
+    private void SwapPositionsServerRpc(ulong kidNetworkId, Vector3 pocongPosition, Vector3 kidPosition)
+    {
+        Debug.Log($"Swapping Pocong position {pocongPosition} with Kid {kidNetworkId} position {kidPosition}");
+
+        // Get the PlayerKid's NetworkObject using the kid's Network ID
+        NetworkObject kidNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[kidNetworkId];
+
+        if (kidNetworkObject != null)
+        {
+            PlayerKid kid = kidNetworkObject.GetComponent<PlayerKid>();
+
+            if (kid != null)
+            {
+                // Perform the position swap
+                Vector3 tempPocongPosition = pocongPosition;
+                transform.position = kidPosition;
+                kid.ChangeLocation(tempPocongPosition);
+
+                // Notify all clients to update their positions via ClientRpc
+                Debug.Log($"Swapping on server successful. New Pocong position: {transform.position}, New Kid position: {kid.transform.position}");
+                SwapPositionsClientRpc(kidNetworkId, transform.position, kid.transform.position);
+            }
+        }
+    }
 }

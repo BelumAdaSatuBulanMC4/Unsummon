@@ -26,8 +26,8 @@ public class GamePlayManager : NetworkBehaviour
         foreach (var client in NetworkManager.ConnectedClientsList)
         {
             // Debug.Log($"Player: {client.ClientId}");
-            if ((int)client.ClientId == randomPocongId)
-            // if ((int)client.ClientId == 0)
+            // if ((int)client.ClientId == randomPocongId)
+            if ((int)client.ClientId == 0)
             // if (false)
             {
                 GameObject playerInstance = Instantiate(playerPocongPrefab, spawnPocongPosition, Quaternion.identity);
