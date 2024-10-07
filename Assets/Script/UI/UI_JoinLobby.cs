@@ -10,13 +10,15 @@ public class UI_JoinLobby : MonoBehaviour
     [SerializeField] private Button joinButton;
     // [SerializeField] private Button closeJoin;
 
-    private void Start() {
-        joinButton.onClick.AddListener(JoinClient);
+    private void Start()
+    {
+        // joinButton.onClick.AddListener(JoinClient);
     }
 
     // Start is called before the first frame update
-    public void JoinClient(){
-        ClientManager.Instance.StartClient(joinCodeInput.text);
+    public async void JoinClient()
+    {
+        await ClientManager.Instance.StartClient(joinCodeInput.text);
         SceneManagerScript.instance.GoToLobbies();
     }
 }

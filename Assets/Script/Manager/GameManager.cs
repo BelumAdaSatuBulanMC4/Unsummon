@@ -21,9 +21,6 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private TMP_Text secondaryText;
     [SerializeField] private TMP_Text informationText;
     [SerializeField] private Image splash;
-
-    [SerializeField] private Button homeButton;
-    [SerializeField] private Button playAgainButton;
     [SerializeField] private GameObject result;
     Character currentChar;
 

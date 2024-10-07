@@ -16,6 +16,8 @@ public class LobbyManager : NetworkBehaviour
     public Button startButton;
     public Button backButton;
 
+    public TextMeshProUGUI codeRoomOutput;
+
     void Start()
     {
         Debug.Log("LobbyManager Active");
@@ -23,11 +25,26 @@ public class LobbyManager : NetworkBehaviour
         backButton.onClick.AddListener(OnBackButtonPressed);
         NetworkManager.Singleton.OnClientConnectedCallback += OnPlayerJoined;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnPlayerLeave;
+        // if (IsClient)
+        // {
+        //     string roomCode = PlayerPrefs.GetString("RoomCode", "NoCode");
+        //     UpdateRoomCode(roomCode);
+        // }
+    }
+
+    public void UpdateRoomCode(string roomCode)
+    {
+        codeRoomOutput.text = roomCode;
     }
 
     // Callback saat pemain bergabung
     private void OnPlayerJoined(ulong clientId)
     {
+        string roomCode = PlayerPrefs.GetString("RoomCode", "NoCode");
+        UpdateRoomCode(roomCode);
+
+        Debug.Log($"ROOM CODE: {roomCode}");
+        Debug.Log("PLAYER JOIN");
         Debug.Log($"{DataPersistence.LoadUsername()}");
         // Debug.Log("Player Joined dengan Client ID: " + clientId);
         SendProfileToAllClientRpc(clientId);

@@ -2940,7 +2940,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1927861720}
-  - component: {fileID: 1927861719}
   - component: {fileID: 1927861722}
   - component: {fileID: 1927861721}
   m_Layer: 0
@@ -2950,19 +2949,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1927861719
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1927861718}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe0a9f123829a48e79c231b93cf1feaf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  codeRoomOutput: {fileID: 394811966}
 --- !u!4 &1927861720
 Transform:
   m_ObjectHideFlags: 0
@@ -3010,6 +2996,7 @@ MonoBehaviour:
   - {fileID: 774748545}
   startButton: {fileID: 1467710480}
   backButton: {fileID: 158641283}
+  codeRoomOutput: {fileID: 394811966}
 --- !u!114 &1927861722
 MonoBehaviour:
   m_ObjectHideFlags: 0
