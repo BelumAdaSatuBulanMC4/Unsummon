@@ -3,6 +3,7 @@ using Unity.Netcode;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using Unity.Netcode.Transports.UTP;
 
 public class GamePlayManager : NetworkBehaviour
 {
@@ -14,10 +15,56 @@ public class GamePlayManager : NetworkBehaviour
     [SerializeField] GameObject roleKidScene;
     [SerializeField] GameObject rolePocongScene;
 
+    [Header("Error")]
+    [SerializeField] private GameObject UI_PopUpLostConnection;
+
+    private int totalPreviousPlayer;
+    private int totalCurrentPlayer;
 
     private void Start()
     {
+        if (IsHost)
+        {
+            totalPreviousPlayer = NetworkManager.Singleton.ConnectedClientsList.Count;
+            // UpdateTotalPlayersClientRpc(totalPreviousPlayer);
+        }
+        NetworkManager.Singleton.OnClientDisconnectCallback += OnPlayerLeave;
+    }
 
+    private void Update()
+    {
+        totalCurrentPlayer = NetworkManager.Singleton.ConnectedClientsList.Count;
+        Debug.Log($"Jumlah player sebelumnya: {totalPreviousPlayer}");
+        Debug.Log($"Jumlah player sekarang: {totalCurrentPlayer}");
+        if (IsHost)
+        {
+            if (totalPreviousPlayer != totalCurrentPlayer)
+            {
+                Debug.Log($"CLIENT DISCONNECT");
+                // ReturnToMainMenuClientRpc();
+                totalPreviousPlayer = totalCurrentPlayer;
+                NotifyPlayerClientRpc();
+                StartCoroutine(WaitingReturnToMainMenu(7f));
+            }
+        }
+    }
+
+    private void OnPlayerLeave(ulong clientId)
+    {
+        if (IsHost)
+        {
+            Debug.Log($"Client disconnect dengan ID: {clientId}");
+            NetworkManager.Singleton.Shutdown();
+            NotifyPlayerClientRpc();
+            ReturnToMainMenuClientRpc();
+        }
+        else if (IsClient)
+        {
+            Debug.Log($"Client disconnect dengan ID: {clientId}");
+            NotifyPlayerServerRpc();
+            NetworkManager.Singleton.Shutdown();
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
     // Fungsi yang dipanggil setelah scene GamePlay di-load
@@ -27,6 +74,11 @@ public class GamePlayManager : NetworkBehaviour
         {
             SpawnPlayers();
         }
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
     }
 
     // Spawn semua pemain di posisi yang sama
@@ -88,6 +140,37 @@ public class GamePlayManager : NetworkBehaviour
         scene.SetActive(false);
     }
 
+    private IEnumerator WaitingReturnToMainMenu(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ReturnToMainMenuClientRpc();
+    }
+
+    // Server membuat semua client berpindah ke MainMenu
+    [ClientRpc]
+    private void ReturnToMainMenuClientRpc()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void NotifyPlayerServerRpc()
+    {
+        NotifyPlayerClientRpc();
+    }
+
+    [ClientRpc]
+    private void NotifyPlayerClientRpc()
+    {
+        Debug.Log("CLIENT DAPET NOTIF ADA YG DISCONNECT");
+        UI_PopUpLostConnection.SetActive(true);
+    }
+
+    // [ClientRpc]
+    // private void UpdateTotalPlayersClientRpc(int totalPlayers)
+    // {
+    //     totalPreviousPlayer = totalPlayers;
+    // }
 
 }
 

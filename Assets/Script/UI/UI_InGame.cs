@@ -31,20 +31,20 @@ public class UI_InGame : MonoBehaviour
         }
     }
 
-    // void Start()
-    // {
-    //     authorCharacter = FindAuthorCharacter();
+    void Start()
+    {
+        authorCharacter = FindAuthorCharacter();
 
-    //     if (authorCharacter != null)
-    //     {
-    //         InstantiateUIForCharacter(authorCharacter);
-    //         InteractButton.GetComponentInChildren<Button>().onClick.AddListener(InteractedWithItem);
-    //     }
-    //     else
-    //     {
-    //         Debug.LogWarning("no one have isAuthor");
-    //     }
-    // }
+        // if (authorCharacter != null)
+        // {
+        //     InstantiateUIForCharacter(authorCharacter);
+        //     InteractButton.GetComponentInChildren<Button>().onClick.AddListener(InteractedWithItem);
+        // }
+        // else
+        // {
+        //     Debug.LogWarning("no one have isAuthor");
+        // }
+    }
 
     private void Update()
     {
