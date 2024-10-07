@@ -66,7 +66,8 @@ public class Character : NetworkBehaviour
         UserManager.instance.SetYourRole(typeChar);
     }
 
-    public void MakeANoise(){
+    public void MakeANoise()
+    {
         Debug.Log("Berhasil Membuat Suara! dengan posisi = " + transform.position.x + "dan " + transform.position.x);
     }
 
@@ -254,6 +255,12 @@ public class Character : NetworkBehaviour
                 sfxMovement.Stop();  // Hentikan sound effect saat berhenti
             }
         }
+    }
+
+    public void ChangeLocation(Vector3 loc)
+    {
+        transform.position = loc;
+        // currentlocation = loc.ToString();
     }
 
 }

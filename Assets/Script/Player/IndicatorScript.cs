@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.iOS;
 
 public class IndicatorScript : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class IndicatorScript : MonoBehaviour
     private float srHeight;
 
     private bool isFirstRender = true;
+
+    private Character authorCharacter;
 
     void Start()
     {
@@ -45,20 +48,20 @@ public class IndicatorScript : MonoBehaviour
         // InitializeIndicators();
 
         // Initialize indicators based on the initial state of kidPositions
-        // InitializeIndicators();
+        InitializeIndicators();
+        authorCharacter = FindAuthorCharacter();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         // if (isFirstRender)
         // {
         //     InitializeIndicators();
         //     isFirstRender = false;
         // }
-        InitializeIndicators();
+        // InitializeIndicators();
         // Dynamically handle additions and removals in kidPositions
         SyncIndicatorsWithKidPositions();
-
         // Update existing indicators
         UpdateIndicators();
     }
@@ -89,6 +92,20 @@ public class IndicatorScript : MonoBehaviour
                 }
             }
         }
+    }
+
+    private Character FindAuthorCharacter()
+    {
+        Character[] allCharacters = FindObjectsOfType<Character>();
+        Debug.Log("jumlah author " + allCharacters.Length);
+        foreach (Character character in allCharacters)
+        {
+            if (character.GetIsAuthor())
+            {
+                return character;
+            }
+        }
+        return null;
     }
 
 
@@ -150,6 +167,10 @@ public class IndicatorScript : MonoBehaviour
                 if (kidIndicators.ContainsKey(networkId))
                 {
                     GameObject indicator = kidIndicators[networkId];
+                    if (authorCharacter is PlayerKid || authorCharacter is PlayerSpirit)
+                    {
+                        indicator.SetActive(false);
+                    }
 
                     // Update the indicator for this kid's position
                     UpdateOffScreenIndicator(kidPosition, indicator);

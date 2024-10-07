@@ -65,7 +65,8 @@ public class UI_InGame : MonoBehaviour
         HandleButtonInteraction();
     }
 
-    private void DeActivatedButton(){
+    private void DeActivatedButton()
+    {
         InteractButton.SetActive(false);
         UI_InGameKid.SetActive(false);
         UI_InGamePocong.SetActive(false);
