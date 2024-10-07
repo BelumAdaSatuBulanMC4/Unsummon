@@ -9416,19 +9416,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 412252455}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1120053241}
-        m_TargetAssemblyTypeName: WinningCondition, Assembly-CSharp
-        m_MethodName: PlayAgainButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &412252455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9713,19 +9701,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 485802099}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1120053241}
-        m_TargetAssemblyTypeName: WinningCondition, Assembly-CSharp
-        m_MethodName: HomeButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &485802099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57891,7 +57867,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1120053241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100014,7 +99990,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerKidPrefab: {fileID: 4057405978394237103, guid: 53679de70933245b99d610d10ec6cd7e, type: 3}
   playerPocongPrefab: {fileID: 3527622045971319382, guid: d0745f63bb90d41fabe0cdb7d0be4567, type: 3}
-  playerSpiritPrefab: {fileID: 5544716519150484690, guid: 8e4fb9c8fda97466b80758ab8e3daddd, type: 3}
   roleKidScene: {fileID: 1442241212}
   rolePocongScene: {fileID: 1292448547}
 --- !u!114 &1494755933

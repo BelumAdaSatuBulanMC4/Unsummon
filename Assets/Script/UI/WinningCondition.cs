@@ -38,7 +38,7 @@ public class WinningCondition : NetworkBehaviour
             SetupScenePocong(isPocongWin);
         }
         homeButton.onClick.AddListener(OnHomeButtonPressed);
-        playAgainButton.onClick.AddListener(OnPlayAgainButtonPressed);
+        playAgainButton.onClick.AddListener(OnHomeButtonPressed);
     }
 
 
