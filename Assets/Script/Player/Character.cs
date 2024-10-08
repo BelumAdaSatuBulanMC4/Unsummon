@@ -66,6 +66,11 @@ public class Character : NetworkBehaviour
         UserManager.instance.SetYourRole(typeChar);
     }
 
+    public void MakeANoise()
+    {
+        Debug.Log("Berhasil Membuat Suara! dengan posisi = " + transform.position.x + "dan " + transform.position.x);
+    }
+
     private void OnEnable()
     {
         inputPlayer.Enable();
@@ -99,8 +104,10 @@ public class Character : NetworkBehaviour
             dashTime -= Time.deltaTime;
             dashCooldownTimer -= Time.deltaTime;
         }
-
-        HandleMovement();
+        if (typeChar != "Player")
+        {
+            HandleMovement();
+        }
         HandleItemInteraction();
         HandleFlip();
         SendPositionToServerServerRpc();
@@ -185,7 +192,7 @@ public class Character : NetworkBehaviour
         rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
     }
 
-    private void HandleMovement()
+    protected virtual void HandleMovement()
     {
         if (dashTime > 0)
         {
@@ -216,7 +223,7 @@ public class Character : NetworkBehaviour
     }
 
     [ServerRpc]
-    void SendPositionToServerServerRpc()
+    public void SendPositionToServerServerRpc()
     {
         // Server memperbarui posisi pemain di server dan mengirimkan ke semua client
         UpdatePositionClientRpc(transform.position);

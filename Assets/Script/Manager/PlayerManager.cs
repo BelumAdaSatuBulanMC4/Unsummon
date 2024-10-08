@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : NetworkBehaviour
 {
     // Dictionary to store each Kid's position and time
     public static PlayerManager instance;
@@ -11,7 +12,7 @@ public class PlayerManager : MonoBehaviour
     private Vector3 pocongPosition = new Vector3();
     private List<PlayerKid> allKids = new List<PlayerKid>();
 
-    // Register a Kid and start tracking its position
+    private Dictionary<ulong, Vector3> kidPositionsNET = new Dictionary<ulong, Vector3>();
 
     private void Awake()
     {
@@ -53,15 +54,26 @@ public class PlayerManager : MonoBehaviour
     {
         if (kidPositions.ContainsKey(kid))
         {
+            Debug.Log("alreadyn containing " + kid.ToString());
             kidPositions[kid] = position;
         }
         else
         {
             kidPositions.Add(kid, position);
+            Debug.Log("adding kid position " + kidPositions[kid]);
         }
 
         // Start coroutine to remove the position after 7 seconds
-        StartCoroutine(RemoveKidPositionAfterTime(kid, 5f));
+        // StartCoroutine(RemoveKidPositionAfterTime(kid, 5f));
+    }
+
+    public void RemoveKidPosition(PlayerKid kid)
+    {
+        if (kidPositions.ContainsKey(kid))
+        {
+            Debug.Log($"Kid {kid.gameObject.name}'s position removed from Manager.");
+            kidPositions.Remove(kid);
+        }
     }
 
     public void UpdatePocongPosition(Pocong pocong, Vector3 position)
@@ -117,6 +129,107 @@ public class PlayerManager : MonoBehaviour
     // Provide Pocong with the positions of all Kid characters
     public Dictionary<PlayerKid, Vector3> GetKidPositions()
     {
-        return new Dictionary<PlayerKid, Vector3>(kidPositions); // Return a copy to avoid direct manipulation
+        Debug.Log("is get the kids positions " + kidPositions.ToString());
+        // return new Dictionary<PlayerKid, Vector3>(kidPositions); // Return a copy to avoid direct manipulation
+        return kidPositions;
+    }
+
+    public bool IsContainingKid(PlayerKid kid)
+    {
+        return kidPositions.ContainsKey(kid);
+    }
+
+    // Server RPC for Kids to update their position
+    [ServerRpc(RequireOwnership = false)]
+    public void UpdateKidPositionServerRpc(ulong kidId, Vector3 newPosition)
+    {
+        if (IsServer)
+        {
+            // Update the position in the dictionary
+            if (kidPositionsNET.ContainsKey(kidId))
+            {
+                kidPositionsNET[kidId] = newPosition;
+            }
+            else
+            {
+                kidPositionsNET.Add(kidId, newPosition);
+            }
+
+            // Broadcast to all clients
+            UpdateKidPositionClientRpc(kidId, newPosition);
+        }
+    }
+
+    // Client RPC to broadcast position update to all clients
+    [ClientRpc]
+    public void UpdateKidPositionClientRpc(ulong kidId, Vector3 newPosition)
+    {
+        // Update the kid's position on all clients
+        if (kidPositionsNET.ContainsKey(kidId))
+        {
+            kidPositionsNET[kidId] = newPosition;
+        }
+        else
+        {
+            kidPositionsNET.Add(kidId, newPosition);
+        }
+    }
+
+    // Server RPC to update Pocong's position (sent by Pocong client)
+    [ServerRpc(RequireOwnership = false)]
+    public void UpdatePocongPositionServerRpc(Vector3 newPosition)
+    {
+        if (IsServer)
+        {
+            pocongPosition = newPosition;
+
+            // Broadcast to all clients
+            UpdatePocongPositionClientRpc(newPosition);
+        }
+    }
+
+    // Client RPC to broadcast Pocong's position to all clients
+    [ClientRpc]
+    public void UpdatePocongPositionClientRpc(Vector3 newPosition)
+    {
+        pocongPosition = newPosition;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void RemoveKidPositionServerRpc(ulong kidId)
+    {
+        // if (IsServer)
+        // {
+        Debug.Log("masuk ke IsServer 1");
+        // Remove from the server's kidPositions dictionary
+        if (kidPositionsNET.ContainsKey(kidId))
+        {
+            Debug.Log("masuk ke IsServer -> containskid");
+            kidPositionsNET.Remove(kidId);
+            Debug.Log($"Kid {kidId}'s position removed from server.");
+
+            // Notify all clients to remove this position
+            RemoveKidPositionClientRpc(kidId);
+        }
+        Debug.Log("masuk ke IsServer -> not containt");
+
+        // }
+    }
+
+    [ClientRpc]
+    private void RemoveKidPositionClientRpc(ulong kidId)
+    {
+        // Remove from each client's kidPositions dictionary
+        if (kidPositionsNET.ContainsKey(kidId))
+        {
+            kidPositionsNET.Remove(kidId);
+            Debug.Log($"Kid {kidId}'s position removed on client.");
+        }
+    }
+
+
+    public Dictionary<ulong, Vector3> GetKidPositionsNET()
+    {
+        return kidPositionsNET;
     }
 }

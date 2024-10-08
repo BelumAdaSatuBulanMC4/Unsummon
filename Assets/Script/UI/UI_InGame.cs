@@ -15,6 +15,7 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private GameObject UI_InGameKid;
     [SerializeField] private GameObject UI_InGameSpirit;
     [SerializeField] private GameObject InteractButton;
+    [SerializeField] private GameObject UI_NoiseButton;
 
     private GameObject currentInGameController;
     private Character authorCharacter;
@@ -58,9 +59,18 @@ public class UI_InGame : MonoBehaviour
         else
         {
             Debug.LogWarning("no one have isAuthor");
+            DeActivatedButton();
         }
 
         HandleButtonInteraction();
+    }
+
+    private void DeActivatedButton()
+    {
+        InteractButton.SetActive(false);
+        UI_InGameKid.SetActive(false);
+        UI_InGamePocong.SetActive(false);
+        UI_InGameSpirit.SetActive(false);
     }
 
     private void HandleButtonInteraction()
@@ -178,6 +188,7 @@ public class UI_InGame : MonoBehaviour
         }
         else if (character is PlayerSpirit)
         {
+            Debug.Log("InGame spirit " + character.ToString());
             currentInGameController = UI_InGameSpirit;
             UI_InGameSpirit.SetActive(true);
             UI_InGameKid.SetActive(false);

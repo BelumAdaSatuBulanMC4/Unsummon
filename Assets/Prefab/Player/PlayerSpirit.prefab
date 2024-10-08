@@ -103,7 +103,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2089060487
-  m_SortingLayer: 10
+  m_SortingLayer: 11
   m_SortingOrder: 0
   m_Sprite: {fileID: 8480664182131228983, guid: b234dd527243d1042a19b2cf7ef17cd7, type: 3}
   m_Color: {r: 0.76862746, g: 0.76862746, b: 0.76862746, a: 0.46666667}
@@ -178,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6704383231857762970}
   - component: {fileID: 7433594794925973164}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: PlayerSpirit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -326,8 +326,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.016851366, y: -0.23591864}
-  m_Size: {x: 1.1628193, y: 1.5447834}
+  m_Offset: {x: 0.16873938, y: -0.100304365}
+  m_Size: {x: 1.4665953, y: 1.9895983}
   m_Direction: 0
 --- !u!82 &3998608124495222603
 AudioSource:
@@ -637,6 +637,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 11
       objectReference: {fileID: 0}
+    - target: {fileID: 5085804510324486007, guid: 781c2bede183a45aa8b362d82a2ee54f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6047299681816692976, guid: 781c2bede183a45aa8b362d82a2ee54f, type: 3}
       propertyPath: m_Name
       value: UI_InGameSpirit
@@ -647,7 +651,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6047299681816692976, guid: 781c2bede183a45aa8b362d82a2ee54f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7942697735957843393, guid: 781c2bede183a45aa8b362d82a2ee54f, type: 3}
       propertyPath: m_Pivot.x
@@ -729,6 +733,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8874347305847800545, guid: 781c2bede183a45aa8b362d82a2ee54f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8874347305847800545, guid: 781c2bede183a45aa8b362d82a2ee54f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8874347305847800545, guid: 781c2bede183a45aa8b362d82a2ee54f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1622849654390276023}
+    - target: {fileID: 8874347305847800545, guid: 781c2bede183a45aa8b362d82a2ee54f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8874347305847800545, guid: 781c2bede183a45aa8b362d82a2ee54f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NoiseButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 8874347305847800545, guid: 781c2bede183a45aa8b362d82a2ee54f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerSpirit, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8874347305847800545, guid: 781c2bede183a45aa8b362d82a2ee54f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 9037568670939010301, guid: 781c2bede183a45aa8b362d82a2ee54f, type: 3}
       propertyPath: m_Layer
       value: 11
@@ -772,6 +804,10 @@ PrefabInstance:
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 7514857015301246925}
+    - target: {fileID: 5298427744701122900, guid: a03ffc571ebfa4376a72137fee46d71b, type: 3}
+      propertyPath: m_BoundingShape2D
+      value: 
+      objectReference: {fileID: 7563757579954533960, guid: aecce8e5943da4154a043d4029367e82, type: 3}
     - target: {fileID: 5868260051383993844, guid: a03ffc571ebfa4376a72137fee46d71b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -53.267723
@@ -825,7 +861,8 @@ PrefabInstance:
       value: -744.41455
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5782370370083584291, guid: a03ffc571ebfa4376a72137fee46d71b, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a03ffc571ebfa4376a72137fee46d71b, type: 3}

@@ -22,18 +22,30 @@ public class UI_NoiseButton : MonoBehaviour
 
     private void Start()
     {
-        chara = FindAuthorSpirit();
-        if (chara != null)
-        {
-            button.onClick.AddListener(TriggerNoise);
-        }
+        button.onClick.AddListener(TriggerNoise);
+
+        // Debug.Log("Masuk ke button noise 1");
+        // chara = FindAuthorSpirit();
+        // if (chara != null)
+        // {
+        //     button.onClick.AddListener(TriggerNoise);
+        //     Debug.Log("Masuk ke button noise 2");
+        // }
     }
 
     private void Update()
     {
+        chara = FindAuthorSpirit();
+
         if (chara != null)
         {
-            if (chara.GetNoiseCooldown() <= 0)
+            button.onClick.AddListener(TriggerNoise);
+            // Debug.Log("Masuk ke button noise 2");
+        }
+
+        if (chara != null)
+        {
+            if (!chara.IsMakingNoise())
             {
                 EnableButton();
                 buttonText.text = "";
@@ -41,7 +53,7 @@ public class UI_NoiseButton : MonoBehaviour
             else
             {
                 DisableButton();
-                buttonText.text = Mathf.CeilToInt(chara.GetNoiseCooldown()).ToString();
+                // buttonText.text = Mathf.CeilToInt(chara.GetNoiseCooldown()).ToString();
             }
         }
     }
@@ -51,7 +63,8 @@ public class UI_NoiseButton : MonoBehaviour
         PlayerSpirit[] spirits = FindObjectsOfType<PlayerSpirit>();
         foreach (PlayerSpirit spirit in spirits)
         {
-            if (spirit.isAuthor)
+            // Debug.Log("Spirit found: " + spirit.name + " | isAuthor: " + spirit.GetIsAuthor());
+            if (spirit.GetIsAuthor())
             {
                 return spirit;
             }
@@ -62,9 +75,11 @@ public class UI_NoiseButton : MonoBehaviour
 
     public void TriggerNoise()
     {
+        // Debug.Log("Halooooooo DI SiNI SUWARA");
         if (chara != null && chara.GetNoiseCooldown() <= 0)
         {
             chara.NoiseButton();
+            // Debug.Log("Noise");
         }
     }
 

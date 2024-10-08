@@ -46,7 +46,7 @@ public class PlayerKid : Character
 
     private IEnumerator RegisterKidWhenReady()
     {
-        while (PlayerManager.instance == null)
+        while (GameManager.instance == null)
         {
             yield return null; // Wait until PlayerManager is initialized
         }
@@ -66,20 +66,23 @@ public class PlayerKid : Character
         if (!IsOwner) { return; }
         base.Update();
         HandleAnimations();
-        HandleLocationChanged();
+        // HandleLocationChanged();
         HandlePlayerCollision();
+        HandleMovement();
+        // PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
+
         // HandleButtonInteraction();
         // controller_UI.SetActive(IsOwner);
         // Debug.Log("location of kid " + transform.position);
     }
 
-    private void HandleLocationChanged()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            PlayerManager.instance.UpdateKidPosition(this, transform.position);
-        }
-    }
+    // private void HandleLocationChanged()
+    // {
+    //     if (Input.GetKeyDown(KeyCode.L))
+    //     {
+    //         PlayerManager.instance.UpdateKidPosition(this, transform.position);
+    //     }
+    // }
 
     private void HandlePlayerCollision()
     {
@@ -94,6 +97,33 @@ public class PlayerKid : Character
                 {
                     Physics2D.IgnoreCollision(myCollider, spirit);
                 }
+            }
+        }
+    }
+
+    protected override void HandleMovement()
+    {
+        base.HandleMovement();
+
+        // Check if the character is dashing
+        if (dashTime > 0)
+        {
+            // If the character is dashing, send its position to the PlayerManager
+            if (PlayerManager.instance != null)
+            {
+                Debug.Log("Di sini update position!");
+                // Update position on the server (if this is the host or owner)
+                PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
+            }
+        }
+        else
+        {
+            // If the character is no longer dashing, remove its position from the PlayerManager
+            if (PlayerManager.instance != null)
+            {
+                Debug.Log("Di sini remove position!");
+
+                PlayerManager.instance.RemoveKidPositionServerRpc(NetworkObjectId);
             }
         }
     }
@@ -206,8 +236,15 @@ public class PlayerKid : Character
                 deadBody.GetComponent<NetworkObject>().Spawn();
 
                 GameObject spirit = Instantiate(spiritPrefab, transform.position, Quaternion.identity);
+                PlayerSpirit newSpirit = spiritPrefab.GetComponent<PlayerSpirit>();
                 spirit.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
-                CameraManager.instance.ChangeCameraFollow(spirit.transform);
+                // UI_NoiseButton uiNoiseButton = FindObjectOfType<UI_NoiseButton>();  // Assuming you have only one UI_NoiseButton
+
+                // if (uiNoiseButton != null)
+                // {
+                //     uiNoiseButton.AssignPlayerSpirit(newSpirit); // Call a method to assign the spirit
+                // }
+                // CameraManager.instance.ChangeCameraFollow(spirit.transform);
             }
         }
     }
@@ -249,6 +286,57 @@ public class PlayerKid : Character
         Debug.Log($"Client: Playing animation '{animationTrigger}'");
         anim.SetFloat(animationTrigger, 0);
     }
+
+    public void ChangeLocation(Vector3 loc)
+    {
+        transform.position = loc;
+        Debug.Log("Swapped to : " + transform.position);
+        // currentlocation = loc.ToString();
+    }
+
+    [ClientRpc]
+    private void SwapPositionsClientRpc(ulong kidNetworkId, Vector3 newPocongPosition, Vector3 newKidPosition, ClientRpcParams rpcParams = default)
+    {
+        // Update Pocong's position on all clients
+        transform.position = newPocongPosition;
+
+        // Find the PlayerKid object and update its position on all clients
+        NetworkObject kidNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[kidNetworkId];
+        if (kidNetworkObject != null)
+        {
+            PlayerKid kid = kidNetworkObject.GetComponent<PlayerKid>();
+            if (kid != null)
+            {
+                kid.ChangeLocation(newKidPosition);
+            }
+        }
+    }
+
+    // [ServerRpc]
+    // private void SwapPositionsServerRpc(ulong kidNetworkId, Vector3 pocongPosition, Vector3 kidPosition)
+    // {
+    //     Debug.Log($"Swapping Pocong position {pocongPosition} with Kid {kidNetworkId} position {kidPosition}");
+
+    //     // Get the PlayerKid's NetworkObject using the kid's Network ID
+    //     NetworkObject kidNetworkObject = NetworkManager.Singleton.SpawnManager.SpawnedObjects[kidNetworkId];
+
+    //     if (kidNetworkObject != null)
+    //     {
+    //         PlayerKid kid = kidNetworkObject.GetComponent<PlayerKid>();
+
+    //         if (kid != null)
+    //         {
+    //             // Perform the position swap
+    //             Vector3 tempPocongPosition = pocongPosition;
+    //             transform.position = kidPosition;
+    //             kid.ChangeLocation(tempPocongPosition);
+
+    //             // Notify all clients to update their positions via ClientRpc
+    //             Debug.Log($"Swapping on server successful. New Pocong position: {transform.position}, New Kid position: {kid.transform.position}");
+    //             SwapPositionsClientRpc(kidNetworkId, transform.position, kid.transform.position);
+    //         }
+    //     }
+    // }
 
 
 }
