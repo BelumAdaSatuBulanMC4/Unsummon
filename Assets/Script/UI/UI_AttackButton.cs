@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +13,8 @@ public class UI_AttackButton : MonoBehaviour
     [SerializeField] private Color enabledColor = new Color(1f, 1f, 1f, 1f);
     [SerializeField] private Color disabledColor = new Color(1f, 1f, 1f, 0.5f);
     private Image buttonImage;
+
+    private bool isAttackDisabled;
 
     private void Awake()
     {
@@ -35,7 +36,14 @@ public class UI_AttackButton : MonoBehaviour
     {
         if (chara != null)
         {
-            if (chara.GetAttackCooldown() <= 0)
+            // Check if teleport just happened
+            if (chara.GetIsTeleported() && !isAttackDisabled)
+            {
+                StartCoroutine(DisableAttackForTeleport());
+            }
+
+            // Check if attack is available and kid is detected, and teleport cooldown is not active
+            if (!isAttackDisabled && chara.GetAttackCooldown() <= 0 && chara.GetIsKidDetected())
             {
                 EnableButton();
                 buttonText.text = "";
@@ -43,7 +51,7 @@ public class UI_AttackButton : MonoBehaviour
             else
             {
                 DisableButton();
-                buttonText.text = Mathf.CeilToInt(chara.GetAttackCooldown()).ToString();
+                buttonText.text = "";
             }
         }
     }
@@ -64,7 +72,7 @@ public class UI_AttackButton : MonoBehaviour
 
     public void TriggerKill()
     {
-        if (chara != null && chara.GetAttackCooldown() <= 0)
+        if (chara != null && chara.GetAttackCooldown() <= 0 && !isAttackDisabled)
         {
             chara.AttackButton();
         }
@@ -76,10 +84,18 @@ public class UI_AttackButton : MonoBehaviour
         buttonImage.color = enabledColor;  // Set to full visibility
     }
 
-    // Method to disable the button
     private void DisableButton()
     {
         button.interactable = false;
         buttonImage.color = disabledColor;  // Set to semi-transparency
+    }
+
+    // Coroutine to disable the attack for 5 seconds after teleporting
+    private IEnumerator DisableAttackForTeleport()
+    {
+        isAttackDisabled = true;
+        DisableButton();  // Disable attack button immediately after teleporting
+        yield return new WaitForSeconds(5f);  // Wait for 5 seconds
+        isAttackDisabled = false;  // Re-enable attack
     }
 }

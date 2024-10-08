@@ -16,13 +16,19 @@ public class GameManager : NetworkBehaviour
     private int killedKids = 0;
     private bool kidsWin;
     private bool pocongWin;
-    // private bool isGamePlaying = true;
+    public Vector3[] spawnPoints;
+    public Vector3[] randomSelectedPoints;
+
+    public int[] randomIndexNumbers;
+
+    private const int numberOfPointsToSelect = 10;
 
     [SerializeField] private TMP_Text victoryText;
     [SerializeField] private TMP_Text secondaryText;
     [SerializeField] private TMP_Text informationText;
     [SerializeField] private Image splash;
     [SerializeField] private GameObject result;
+    [SerializeField] private GameObject[] candleLocs;
     Character currentChar;
 
     [Header("Audio in GamePlay")]
@@ -40,7 +46,7 @@ public class GameManager : NetworkBehaviour
         }
         else
         {
-            // Destroy(gameObject);
+            Destroy(gameObject);
         }
     }
 
@@ -49,6 +55,7 @@ public class GameManager : NetworkBehaviour
         FindAllPlayerKids();
         currentChar = FindAuthorCharacter();
         result.SetActive(false);
+        UploadNumbersServerRpc();
         audioSource = GetComponent<AudioSource>();
         audioSource.clip = environmentGamePlay;
         audioSource.Play();
@@ -69,6 +76,56 @@ public class GameManager : NetworkBehaviour
             EndGame();
         }
     }
+    public int[] GetRandomIndexNumbers()
+    {
+        return randomIndexNumbers;
+    }
+
+    int[] GenerateUniqueRandomNumbers(int min, int max, int length)
+    {
+        List<int> numbers = new List<int>();
+        for (int i = min; i < max; i++)
+        {
+            numbers.Add(i);
+        }
+
+
+        for (int i = 0; i < numbers.Count; i++)
+        {
+            int randomIndex = UnityEngine.Random.Range(i, numbers.Count);
+            int temp = numbers[i];
+            numbers[i] = numbers[randomIndex];
+            numbers[randomIndex] = temp;
+        }
+        return numbers.GetRange(0, length).ToArray();
+    }
+
+    public Vector3[] GetRandomSelectedPoints()
+    {
+        return randomSelectedPoints;
+    }
+
+    public int[] getRandomGeneratedUniquePoints()
+    {
+        return randomIndexNumbers;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void RequestRandomNumbersServerRpc()
+    {
+        if (IsServer)
+        {
+            // Server responds with the random numbers
+            ShareRandomNumbersClientRpc(randomIndexNumbers);
+        }
+    }
+
+    [ClientRpc]
+    private void ShareRandomNumbersClientRpc(int[] receivedRandomNumbers)
+    {
+        randomIndexNumbers = receivedRandomNumbers;
+        Debug.Log("Client received random numbers: " + string.Join(", ", randomIndexNumbers));
+    }
 
 
     public void FindAllPlayerKids()
@@ -87,12 +144,10 @@ public class GameManager : NetworkBehaviour
     {
         return totalItems;
     }
-
     public void UpdateKilledKids()
     {
         if (killedKids < totalKids)
         {
-            // killedKids++;
             AddKillKidsServerRpc();
         }
     }
@@ -103,7 +158,6 @@ public class GameManager : NetworkBehaviour
         if (activeItems < totalItems)
         {
             item.ChangeVariable();
-            // activeItems++;
             AddActiveItemsServerRpc();
         }
     }
@@ -130,6 +184,7 @@ public class GameManager : NetworkBehaviour
         if (activeItems > 0)
         {
             item.ResetValue();
+            item.DeActivatedCandle();
             // activeItems--;
             DecActiveItemsServerRpc();
             Debug.Log("Pocong turned off an item. Active items: " + activeItems);
@@ -179,9 +234,6 @@ public class GameManager : NetworkBehaviour
                 secondaryText.text = "Ritual Collapse";
                 informationText.text = "The light prevails! The pocong is dragged back to hell.";
                 splash.enabled = true;
-                // audioSource.clip = kidsWinSound;
-                // audioSource.Play();
-                // audioSource.PlayOneShot(kidsWinSound);
             }
         }
     }
@@ -210,8 +262,6 @@ public class GameManager : NetworkBehaviour
         activeItems--;
     }
 
-
-
     [ServerRpc(RequireOwnership = false)]
     public void AddKillKidsServerRpc()
     {
@@ -224,6 +274,19 @@ public class GameManager : NetworkBehaviour
         killedKids++;
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    public void UploadNumbersServerRpc()
+    {
+        randomIndexNumbers = GenerateUniqueRandomNumbers(0, candleLocs.Length, 10);
+        UploadNumbersClientRpc(randomIndexNumbers);
+    }
+
+    [ClientRpc]
+    public void UploadNumbersClientRpc(int[] receivedRandomNumbers)
+    {
+        randomIndexNumbers = receivedRandomNumbers;
+        // ActivateObjectsAtRandomIndices();
+    }
     // PLAY SOUND WIN AND LOSE
     private void PlayResultSound()
     {

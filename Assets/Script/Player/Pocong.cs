@@ -40,6 +40,8 @@ public class Pocong : Character
 
     [SerializeField] private GameObject buttonInteraction;
 
+    private bool isTeleported = false;
+
 
     protected override void Awake()
     {
@@ -68,22 +70,20 @@ public class Pocong : Character
         HandleAnimations();
         // HandleTeleport();
         HandlePlayerCollision();
-        HandleLocationChanged();
+        // HandleLocationChanged();
         HandleKidInteraction();
         HandleMirrorInteraction();
         GetKidsPosition();
         // controller_UI.SetActive(IsOwner);
         HandleButtonInteraction();
     }
-
-
-    private void HandleLocationChanged()
-    {
-        if (dashTime > 0)
-        {
-            PlayerManager.instance.UpdatePocongPosition(this, transform.position);
-        }
-    }
+    // private void HandleLocationChanged()
+    // {
+    //     if (dashTime > 0)
+    //     {
+    //         PlayerManager.instance.UpdatePocongPosition(this, transform.position);
+    //     }
+    // }
 
     private void HandlePlayerCollision()
     {
@@ -120,6 +120,8 @@ public class Pocong : Character
     private void HandleKidInteraction()
     {
         detectedKids = Physics2D.OverlapCircleAll(kidCheck.position, kidCheckRadius, whatIsKid);
+        isKidDetected = detectedKids.Length > 0 ? true : false;
+
         // Debug.Log("Detected kids " + detectedKids.Length);
         // foreach (Collider2D kidCollider in detectedKids)
         // {
@@ -160,7 +162,24 @@ public class Pocong : Character
 
     private void GetKidsPosition()
     {
-        Dictionary<PlayerKid, Vector3> kidPositions = PlayerManager.instance.GetKidPositions();
+        // Dictionary<PlayerKid, Vector3> kidPositions = PlayerManager.instance.GetKidPositions();
+        // foreach (KeyValuePair<PlayerKid, Vector3> entry in kidPositions)
+        // {
+        //     Debug.Log("Kid: " + entry.Key.name + ", Position: " + entry.Value);
+        // }
+        if (PlayerManager.instance != null)
+        {
+            Dictionary<ulong, Vector3> kidPositions = PlayerManager.instance.GetKidPositionsNET();
+            Debug.Log("isi dari kid positions: " + kidPositions.Count);
+
+            foreach (var kidPosition in kidPositions)
+            {
+                ulong kidId = kidPosition.Key;
+                Vector3 position = kidPosition.Value;
+
+                Debug.Log($"Kid {kidId} is at position {position}");
+            }
+        }
     }
 
     public void AttackButton()
@@ -184,11 +203,20 @@ public class Pocong : Character
         return teleportCooldownTimer;
     }
 
+    public bool GetIsTeleported()
+    {
+        return isTeleported;
+    }
+
+    public bool GetIsKidDetected()
+    {
+        return isKidDetected;
+    }
+
     public bool GetIsMirrorDetected()
     {
         return isMirrorDetected;
     }
-
     private void AttackAbility()
     {
         if (attackCooldownTimer < 0)
@@ -227,15 +255,19 @@ public class Pocong : Character
 
         Vector3 tempPocongPosition = transform.position;
         transform.position = kid.transform.position;
+        kid.ChangeLocation(tempPocongPosition);
         kid.transform.position = tempPocongPosition;
 
         // Once the blink animation is done, set isBlink to false
         anim.SetBool("isTeleport", false);
+        // yield return new WaitForSeconds(5f);
+        isTeleported = false;
     }
 
 
     private void TeleportAbility()
     {
+        isTeleported = true;
         if (teleportCooldownTimer < 0 && isMirrorDetected)
         {
             List<PlayerKid> allKids = PlayerManager.instance.GetAllKids();

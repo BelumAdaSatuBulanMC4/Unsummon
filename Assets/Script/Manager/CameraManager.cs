@@ -4,7 +4,7 @@ using Cinemachine;
 using Unity.Netcode;
 using UnityEngine;
 
-public class CameraManager : NetworkBehaviour
+public class CameraManager : MonoBehaviour
 {
     public static CameraManager instance;
 
