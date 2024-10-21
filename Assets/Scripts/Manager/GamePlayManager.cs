@@ -86,9 +86,11 @@ public class GamePlayManager : NetworkBehaviour
     {
         if (!IsServer) return;
         int randomPocongId = Random.Range(0, 3);
+        int i = 0;
         foreach (var client in NetworkManager.ConnectedClientsList)
         {
-            if ((int)client.ClientId == randomPocongId)
+            if (i == randomPocongId)
+            // if ((int)client.ClientId == randomPocongId)
             // if ((int)client.ClientId == 0)
             // if (false)
             {
@@ -115,7 +117,7 @@ public class GamePlayManager : NetworkBehaviour
                     }
                 });
             }
-
+            i++;
         }
     }
 

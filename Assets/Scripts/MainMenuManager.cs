@@ -54,8 +54,8 @@ public class MainMenuManager : MonoBehaviour
         if (codeRoomInput.text.Length == 6)
         {
             await ClientManager.Instance.StartClient(codeRoomInput.text);
-            PlayerPrefs.SetString("RoomCode", codeRoomInput.text);
-            PlayerPrefs.Save();
+            // PlayerPrefs.SetString("RoomCode", codeRoomInput.text);
+            // PlayerPrefs.Save();
             if (ClientManager.Instance.roomNotFound)
             {
                 UI_PopUpRoomNotFound.SetActive(true);
