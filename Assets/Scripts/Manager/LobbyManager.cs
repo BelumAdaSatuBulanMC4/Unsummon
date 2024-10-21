@@ -59,8 +59,11 @@ public class LobbyManager : NetworkBehaviour
     private void OnPlayerJoined(ulong clientId)
     {
         if (!IsServer) { startButtonObject.SetActive(false); }
-        string roomCode = PlayerPrefs.GetString("RoomCode", "NoCode");
-        UpdateRoomCode(roomCode);
+        // if (!IsServer)
+        // {
+        //     string roomCode = PlayerPrefs.GetString("RoomCode", "NoCode");
+        //     UpdateRoomCode(roomCode);
+        // }
 
         // Debug.Log($"ROOM CODE: {roomCode}");
         // Debug.Log("PLAYER JOIN");
@@ -69,6 +72,7 @@ public class LobbyManager : NetworkBehaviour
         {
             Debug.Log($"Client {clientId} connected.");
             connectedClients.Add(clientId);
+            UpdateRoomCodeClientRpc(codeRoomOutput.text);
         }
         // Debug.Log("Player Joined dengan Client ID: " + clientId);
         // SendProfileToAllClientRpc(clientId);
@@ -200,4 +204,9 @@ public class LobbyManager : NetworkBehaviour
         Debug.Log($"LEAVE Player ID: {clientId}");
     }
 
+    [ClientRpc]
+    private void UpdateRoomCodeClientRpc(string codeRoom)
+    {
+        codeRoomOutput.text = codeRoom;
+    }
 }
