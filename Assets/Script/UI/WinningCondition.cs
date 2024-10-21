@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 // using Microsoft.Unity.VisualStudio.Editor;
@@ -44,14 +45,32 @@ public class WinningCondition : NetworkBehaviour
 
     private void OnHomeButtonPressed()
     {
-        if (IsHost)
+        Debug.Log("Tombol Home ditekan");
+        Debug.Log($"Host: {IsHost} dan Client: {IsClient}");
+        // NetworkManager.Singleton.Shutdown();
+        // SceneManager.LoadScene("MainMenu");
+        // if (IsHost)
+        // {
+        //     Debug.Log("Tombol Home ditekan oleh Host");
+        //     NetworkManager.Singleton.Shutdown();
+        //     ReturnToMainMenuClientRpc();
+        // }
+        // else if (IsClient)
+        // {
+        //     Debug.Log("Tombol Home ditekan oleh client");
+        //     NetworkManager.Singleton.Shutdown();
+        //     SceneManager.LoadScene("MainMenu");
+        // }
+        // Shutdown NetworkManager ketika kembali ke Main Menu
+        if (NetworkManager.Singleton != null)
         {
             NetworkManager.Singleton.Shutdown();
-            ReturnToMainMenuClientRpc();
+            Debug.Log("NetworkManager shut down successfully and return to MainMenu.");
+            SceneManager.LoadScene("MainMenu");
         }
-        else if (IsClient)
+        else
         {
-            NetworkManager.Singleton.Shutdown();
+            Debug.Log("NetworkManager NULL and return to MainMenu");
             SceneManager.LoadScene("MainMenu");
         }
     }

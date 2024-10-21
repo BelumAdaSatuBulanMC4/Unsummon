@@ -20,6 +20,7 @@ public class DataPersistence : MonoBehaviour
             string json = File.ReadAllText(path);
             userData = JsonUtility.FromJson<UserData>(json);
             Debug.Log($"Data loaded: Username: {userData.username}, isFirstTime: {userData.isFirstTime}");
+            Debug.Log(path);
         }
         else
         {
