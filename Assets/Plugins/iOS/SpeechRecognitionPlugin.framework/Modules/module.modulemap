@@ -1,0 +1,6 @@
+framework module SpeechRecognitionPlugin {
+  umbrella header "SpeechRecognitionPlugin.h"
+  export *
+
+  module * { export * }
+}

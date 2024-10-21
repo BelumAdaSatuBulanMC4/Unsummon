@@ -1,0 +1,106 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "TopLevel",
+    "printedName": "TopLevel",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "SpeechRecognitionPlugin",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "Speech",
+        "printedName": "Speech",
+        "declKind": "Import",
+        "moduleName": "SpeechRecognitionPlugin"
+      },
+      {
+        "kind": "Import",
+        "name": "AVFoundation",
+        "printedName": "AVFoundation",
+        "declKind": "Import",
+        "moduleName": "SpeechRecognitionPlugin"
+      },
+      {
+        "kind": "Function",
+        "name": "initialize",
+        "printedName": "initialize()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)initialize",
+        "mangledName": "$s23SpeechRecognitionPlugin10initializeyyF",
+        "moduleName": "SpeechRecognitionPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "startRecording",
+        "printedName": "startRecording()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)startRecording",
+        "mangledName": "$s23SpeechRecognitionPlugin14startRecordingyyF",
+        "moduleName": "SpeechRecognitionPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "stopRecording",
+        "printedName": "stopRecording()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)stopRecording",
+        "mangledName": "$s23SpeechRecognitionPlugin13stopRecordingyyF",
+        "moduleName": "SpeechRecognitionPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin.swift",
+      "kind": "StringLiteral",
+      "offset": 473,
+      "length": 6,
+      "value": "\"Buka\""
+    }
+  ]
+}
