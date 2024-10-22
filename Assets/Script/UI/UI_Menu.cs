@@ -17,6 +17,12 @@ public class UI_Menu : MonoBehaviour
     [SerializeField] private Button close_UI_PopUpFull;
     [SerializeField] private Button close_UI_PopUpRoomNotFound;
     [SerializeField] private Button close_UI_PopUpLostConnection;
+    private UI_FadeEffect fadeEffect;
+
+    private void Awake()
+    {
+        fadeEffect = GetComponentInChildren<UI_FadeEffect>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +30,7 @@ public class UI_Menu : MonoBehaviour
         // OPEN UI
 
         // CLOSE UI
+        fadeEffect.ScreenFade(0, 4f);
         close_UI_JoinLobby.onClick.AddListener(() => CloseUI(UI_JoinLobby));
         close_UI_PopUpFull.onClick.AddListener(() => CloseUI(UI_PopUpFull));
         close_UI_PopUpRoomNotFound.onClick.AddListener(() => CloseUI(UI_PopUpRoomNotFound));
