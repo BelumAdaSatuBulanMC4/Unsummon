@@ -14,15 +14,15 @@
 		</data>
 		<key>Modules/SpeechRecognitionPlugin.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo</key>
 		<data>
-		Hztz2BO/JuuZzfRx7i3pF1/QvZI=
+		Pyi1rk37GgTghjaKAL50mTHsB3M=
 		</data>
 		<key>Modules/SpeechRecognitionPlugin.swiftmodule/arm64-apple-ios.abi.json</key>
 		<data>
-		vJlP2r+h0VzucEj26Wx4SJmSjXg=
+		BycrDREOYIPhQAGgmLpNYdBGW8o=
 		</data>
 		<key>Modules/SpeechRecognitionPlugin.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<data>
-		Ec1W3OWl0xdYh0dGbJp25GxuSWc=
+		QezDsGbuvXWr56zCVYFt4l/agvA=
 		</data>
 		<key>Modules/SpeechRecognitionPlugin.swiftmodule/arm64-apple-ios.swiftdoc</key>
 		<data>
@@ -30,11 +30,11 @@
 		</data>
 		<key>Modules/SpeechRecognitionPlugin.swiftmodule/arm64-apple-ios.swiftinterface</key>
 		<data>
-		Ec1W3OWl0xdYh0dGbJp25GxuSWc=
+		QezDsGbuvXWr56zCVYFt4l/agvA=
 		</data>
 		<key>Modules/SpeechRecognitionPlugin.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		V8SgOGz9nTzEEW9Y+4JvnRSlWJk=
+		zGAQfvfn0OmTTfTUwuTZjJK1b0o=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -54,21 +54,21 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			s9r4zZL1NGbCgkg+I8AQ7aF2aMCihT2E8dsSXag8MWY=
+			0emtDRAhKEMNW8zfm96SLTJUeCaTIgdRed3GepRP678=
 			</data>
 		</dict>
 		<key>Modules/SpeechRecognitionPlugin.swiftmodule/arm64-apple-ios.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			0IyTzSRlZ3dpHEe72+jtjz5ETlO4WWm2zb8iRbckAnw=
+			WfcqujUmedqY5B84Qqv2P40LubFa420NhlurcS1ONgk=
 			</data>
 		</dict>
 		<key>Modules/SpeechRecognitionPlugin.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			KYT4cSEst4k8s3RchnH9rgo+hiIPh7nqgmD8lNEkyAs=
+			M4s1whXkQ120M2OMdb+fXVKYZ4c6n2dThgJKZheqzrc=
 			</data>
 		</dict>
 		<key>Modules/SpeechRecognitionPlugin.swiftmodule/arm64-apple-ios.swiftdoc</key>
@@ -82,14 +82,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			KYT4cSEst4k8s3RchnH9rgo+hiIPh7nqgmD8lNEkyAs=
+			M4s1whXkQ120M2OMdb+fXVKYZ4c6n2dThgJKZheqzrc=
 			</data>
 		</dict>
 		<key>Modules/SpeechRecognitionPlugin.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			LzHlfgMpElfL7nwWcCQbscoyl9CITQp0L0zHeUaAb5s=
+			Vf8Cd3CXjLfFOwiPWacXEt81yyZdOGFqd0Mt2svn48A=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

@@ -9,9 +9,22 @@ import Swift
 import _Concurrency
 import _StringProcessing
 import _SwiftConcurrencyShims
+@_inheritsConvenienceInitializers @objc public class SpeechRecognitionPlugin : ObjectiveC.NSObject {
+  public func initialize()
+  public func setTargetWord(_ word: Swift.UnsafePointer<Swift.CChar>)
+  public func startRecording()
+  public func stopRecording()
+  public func getRecognitionResult() -> Swift.UnsafePointer<Swift.CChar>
+  @objc override dynamic public init()
+  @objc deinit
+}
 @_cdecl("InitializeSpeechRecognizer")
 public func initialize()
+@_cdecl("SetTargetWord")
+public func setTargetWord(_ word: Swift.UnsafePointer<Swift.CChar>)
 @_cdecl("StartSpeechRecognition")
 public func startRecording()
 @_cdecl("StopSpeechRecognition")
 public func stopRecording()
+@_cdecl("GetRecognitionResult")
+public func getRecognitionResult() -> Swift.UnsafePointer<Swift.CChar>

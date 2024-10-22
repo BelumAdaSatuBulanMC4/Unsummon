@@ -9,23 +9,23 @@ public class PluginTest : MonoBehaviour
     private SwiftPlugin swiftPlugin = new SwiftPlugin();
     [SerializeField] TMP_Text text;
 
-    private void Start()
-    {
-        swiftPlugin.Initialize();
-    }
+    // private void Start()
+    // {
+    //     swiftPlugin.Initialize();
+    // }
 
-    private void Update()
-    {
-        text.text = swiftPlugin.GetPrintSwift();
-    }
+    // private void Update()
+    // {
+    //     text.text = swiftPlugin.GetPrintSwift();
+    // }
 
-    public void OnStartRecording()
-    {
-        swiftPlugin.StartRecording();
-    }
+    // public void OnStartRecording()
+    // {
+    //     swiftPlugin.StartRecording();
+    // }
 
-    public void OnStopRecording()
-    {
-        swiftPlugin.StopRecording();
-    }
+    // public void OnStopRecording()
+    // {
+    //     swiftPlugin.StopRecording();
+    // }
 }
