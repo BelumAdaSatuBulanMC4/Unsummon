@@ -1,0 +1,6 @@
+framework module SwiftUnityPlugin {
+  umbrella header "SwiftUnityPlugin.h"
+  export *
+
+  module * { export * }
+}
