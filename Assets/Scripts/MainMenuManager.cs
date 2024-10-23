@@ -39,6 +39,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void StartHost()
     {
+        Debug.Log("Seharusnya start Host");
         // Masih belum nampil pop up lost nya
         HostManager.Instance.StartHost();
         if (HostManager.Instance.lostConnection)
@@ -51,6 +52,7 @@ public class MainMenuManager : MonoBehaviour
 
     public async void StartClient()
     {
+        Debug.Log("Seharusnya start Client");
         if (codeRoomInput.text.Length == 6)
         {
             await ClientManager.Instance.StartClient(codeRoomInput.text);
