@@ -29,112 +29,14 @@
         "moduleName": "SpeechRecognitionPlugin"
       },
       {
-        "kind": "TypeDecl",
-        "name": "SpeechRecognitionPlugin",
-        "printedName": "SpeechRecognitionPlugin",
+        "kind": "Function",
+        "name": "GetTranscribedText",
+        "printedName": "GetTranscribedText()",
         "children": [
           {
-            "kind": "Function",
-            "name": "initialize",
-            "printedName": "initialize()",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Void",
-                "printedName": "()"
-              }
-            ],
-            "declKind": "Func",
-            "usr": "s:23SpeechRecognitionPluginAAC10initializeyyF",
-            "mangledName": "$s23SpeechRecognitionPluginAAC10initializeyyF",
-            "moduleName": "SpeechRecognitionPlugin",
-            "declAttributes": [
-              "AccessControl",
-              "RawDocComment"
-            ],
-            "funcSelfKind": "NonMutating"
-          },
-          {
-            "kind": "Function",
-            "name": "setTargetWord",
-            "printedName": "setTargetWord(_:)",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Void",
-                "printedName": "()"
-              },
-              {
-                "kind": "TypeNominal",
-                "name": "UnsafePointer",
-                "printedName": "Swift.UnsafePointer<Swift.Int8>",
-                "children": [
-                  {
-                    "kind": "TypeNominal",
-                    "name": "Int8",
-                    "printedName": "Swift.Int8",
-                    "usr": "s:s4Int8V"
-                  }
-                ],
-                "usr": "s:SP"
-              }
-            ],
-            "declKind": "Func",
-            "usr": "s:23SpeechRecognitionPluginAAC13setTargetWordyySPys4Int8VGF",
-            "mangledName": "$s23SpeechRecognitionPluginAAC13setTargetWordyySPys4Int8VGF",
-            "moduleName": "SpeechRecognitionPlugin",
-            "declAttributes": [
-              "AccessControl",
-              "RawDocComment"
-            ],
-            "funcSelfKind": "NonMutating"
-          },
-          {
-            "kind": "Function",
-            "name": "startRecording",
-            "printedName": "startRecording()",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Void",
-                "printedName": "()"
-              }
-            ],
-            "declKind": "Func",
-            "usr": "s:23SpeechRecognitionPluginAAC14startRecordingyyF",
-            "mangledName": "$s23SpeechRecognitionPluginAAC14startRecordingyyF",
-            "moduleName": "SpeechRecognitionPlugin",
-            "declAttributes": [
-              "AccessControl",
-              "RawDocComment"
-            ],
-            "funcSelfKind": "NonMutating"
-          },
-          {
-            "kind": "Function",
-            "name": "stopRecording",
-            "printedName": "stopRecording()",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Void",
-                "printedName": "()"
-              }
-            ],
-            "declKind": "Func",
-            "usr": "s:23SpeechRecognitionPluginAAC13stopRecordingyyF",
-            "mangledName": "$s23SpeechRecognitionPluginAAC13stopRecordingyyF",
-            "moduleName": "SpeechRecognitionPlugin",
-            "declAttributes": [
-              "AccessControl",
-              "RawDocComment"
-            ],
-            "funcSelfKind": "NonMutating"
-          },
-          {
-            "kind": "Function",
-            "name": "getRecognitionResult",
-            "printedName": "getRecognitionResult()",
+            "kind": "TypeNominal",
+            "name": "Optional",
+            "printedName": "Swift.UnsafePointer<Swift.Int8>?",
             "children": [
               {
                 "kind": "TypeNominal",
@@ -151,108 +53,79 @@
                 "usr": "s:SP"
               }
             ],
-            "declKind": "Func",
-            "usr": "s:23SpeechRecognitionPluginAAC03getB6ResultSPys4Int8VGyF",
-            "mangledName": "$s23SpeechRecognitionPluginAAC03getB6ResultSPys4Int8VGyF",
-            "moduleName": "SpeechRecognitionPlugin",
-            "declAttributes": [
-              "AccessControl",
-              "RawDocComment"
-            ],
-            "funcSelfKind": "NonMutating"
-          },
-          {
-            "kind": "Constructor",
-            "name": "init",
-            "printedName": "init()",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "SpeechRecognitionPlugin",
-                "printedName": "SpeechRecognitionPlugin.SpeechRecognitionPlugin",
-                "usr": "c:@M@SpeechRecognitionPlugin@objc(cs)SpeechRecognitionPlugin"
-              }
-            ],
-            "declKind": "Constructor",
-            "usr": "c:@M@SpeechRecognitionPlugin@objc(cs)SpeechRecognitionPlugin(im)init",
-            "mangledName": "$s23SpeechRecognitionPluginAACABycfc",
-            "moduleName": "SpeechRecognitionPlugin",
-            "overriding": true,
-            "implicit": true,
-            "objc_name": "init",
-            "declAttributes": [
-              "Dynamic",
-              "ObjC",
-              "Override"
-            ],
-            "init_kind": "Designated"
+            "usr": "s:Sq"
           }
         ],
-        "declKind": "Class",
-        "usr": "c:@M@SpeechRecognitionPlugin@objc(cs)SpeechRecognitionPlugin",
-        "mangledName": "$s23SpeechRecognitionPluginAAC",
+        "declKind": "Func",
+        "usr": "c:(cm)GetTranscribedText",
+        "mangledName": "$s23SpeechRecognitionPlugin18GetTranscribedTextSPys4Int8VGSgyF",
         "moduleName": "SpeechRecognitionPlugin",
         "declAttributes": [
           "AccessControl",
-          "ObjC",
+          "CDecl",
           "RawDocComment"
         ],
-        "superclassUsr": "c:objc(cs)NSObject",
-        "inheritsConvenienceInitializers": true,
-        "superclassNames": [
-          "ObjectiveC.NSObject"
-        ],
-        "conformances": [
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "IsRecording",
+        "printedName": "IsRecording()",
+        "children": [
           {
-            "kind": "Conformance",
-            "name": "Equatable",
-            "printedName": "Equatable",
-            "usr": "s:SQ",
-            "mangledName": "$sSQ"
-          },
-          {
-            "kind": "Conformance",
-            "name": "Hashable",
-            "printedName": "Hashable",
-            "usr": "s:SH",
-            "mangledName": "$sSH"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CVarArg",
-            "printedName": "CVarArg",
-            "usr": "s:s7CVarArgP",
-            "mangledName": "$ss7CVarArgP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "_KeyValueCodingAndObservingPublishing",
-            "printedName": "_KeyValueCodingAndObservingPublishing",
-            "usr": "s:10Foundation37_KeyValueCodingAndObservingPublishingP",
-            "mangledName": "$s10Foundation37_KeyValueCodingAndObservingPublishingP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "_KeyValueCodingAndObserving",
-            "printedName": "_KeyValueCodingAndObserving",
-            "usr": "s:10Foundation27_KeyValueCodingAndObservingP",
-            "mangledName": "$s10Foundation27_KeyValueCodingAndObservingP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CustomStringConvertible",
-            "printedName": "CustomStringConvertible",
-            "usr": "s:s23CustomStringConvertibleP",
-            "mangledName": "$ss23CustomStringConvertibleP"
-          },
-          {
-            "kind": "Conformance",
-            "name": "CustomDebugStringConvertible",
-            "printedName": "CustomDebugStringConvertible",
-            "usr": "s:s28CustomDebugStringConvertibleP",
-            "mangledName": "$ss28CustomDebugStringConvertibleP"
+            "kind": "TypeNominal",
+            "name": "Bool",
+            "printedName": "Swift.Bool",
+            "usr": "s:Sb"
           }
-        ]
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)IsRecording",
+        "mangledName": "$s23SpeechRecognitionPlugin11IsRecordingSbyF",
+        "moduleName": "SpeechRecognitionPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "GetFeedbackMessage",
+        "printedName": "GetFeedbackMessage()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Optional",
+            "printedName": "Swift.UnsafePointer<Swift.Int8>?",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "UnsafePointer",
+                "printedName": "Swift.UnsafePointer<Swift.Int8>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int8",
+                    "printedName": "Swift.Int8",
+                    "usr": "s:s4Int8V"
+                  }
+                ],
+                "usr": "s:SP"
+              }
+            ],
+            "usr": "s:Sq"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)GetFeedbackMessage",
+        "mangledName": "$s23SpeechRecognitionPlugin18GetFeedbackMessageSPys4Int8VGSgyF",
+        "moduleName": "SpeechRecognitionPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
       },
       {
         "kind": "Function",
@@ -268,41 +141,6 @@
         "declKind": "Func",
         "usr": "c:(cm)initialize",
         "mangledName": "$s23SpeechRecognitionPlugin10initializeyyF",
-        "moduleName": "SpeechRecognitionPlugin",
-        "declAttributes": [
-          "AccessControl",
-          "CDecl"
-        ],
-        "funcSelfKind": "NonMutating"
-      },
-      {
-        "kind": "Function",
-        "name": "setTargetWord",
-        "printedName": "setTargetWord(_:)",
-        "children": [
-          {
-            "kind": "TypeNominal",
-            "name": "Void",
-            "printedName": "()"
-          },
-          {
-            "kind": "TypeNominal",
-            "name": "UnsafePointer",
-            "printedName": "Swift.UnsafePointer<Swift.Int8>",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Int8",
-                "printedName": "Swift.Int8",
-                "usr": "s:s4Int8V"
-              }
-            ],
-            "usr": "s:SP"
-          }
-        ],
-        "declKind": "Func",
-        "usr": "c:(cm)setTargetWord:",
-        "mangledName": "$s23SpeechRecognitionPlugin13setTargetWordyySPys4Int8VGF",
         "moduleName": "SpeechRecognitionPlugin",
         "declAttributes": [
           "AccessControl",
@@ -351,36 +189,6 @@
           "CDecl"
         ],
         "funcSelfKind": "NonMutating"
-      },
-      {
-        "kind": "Function",
-        "name": "getRecognitionResult",
-        "printedName": "getRecognitionResult()",
-        "children": [
-          {
-            "kind": "TypeNominal",
-            "name": "UnsafePointer",
-            "printedName": "Swift.UnsafePointer<Swift.Int8>",
-            "children": [
-              {
-                "kind": "TypeNominal",
-                "name": "Int8",
-                "printedName": "Swift.Int8",
-                "usr": "s:s4Int8V"
-              }
-            ],
-            "usr": "s:SP"
-          }
-        ],
-        "declKind": "Func",
-        "usr": "c:(cm)getRecognitionResult",
-        "mangledName": "$s23SpeechRecognitionPlugin03getB6ResultSPys4Int8VGyF",
-        "moduleName": "SpeechRecognitionPlugin",
-        "declAttributes": [
-          "AccessControl",
-          "CDecl"
-        ],
-        "funcSelfKind": "NonMutating"
       }
     ],
     "json_format_version": 8
@@ -389,16 +197,30 @@
     {
       "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin.swift",
       "kind": "StringLiteral",
-      "offset": 543,
-      "length": 6,
-      "value": "\"Buka\""
+      "offset": 559,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin.swift",
+      "kind": "BooleanLiteral",
+      "offset": 601,
+      "length": 5,
+      "value": "false"
     },
     {
       "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin.swift",
       "kind": "StringLiteral",
-      "offset": 594,
+      "offset": 652,
+      "length": 14,
+      "value": "\"Say the word\""
+    },
+    {
+      "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin.swift",
+      "kind": "StringLiteral",
+      "offset": 701,
       "length": 6,
-      "value": "\"none\""
+      "value": "\"Buka\""
     }
   ]
 }
