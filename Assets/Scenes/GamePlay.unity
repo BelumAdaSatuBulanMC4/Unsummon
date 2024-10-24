@@ -6216,6 +6216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActivated: 0
+  isCursed: 0
   onCandle: {fileID: 0}
   offCandle: {fileID: 0}
 --- !u!61 &70664625
@@ -6813,6 +6814,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActivated: 0
+  isCursed: 0
   onCandle: {fileID: 0}
   offCandle: {fileID: 0}
 --- !u!61 &234141489
@@ -9785,6 +9787,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActivated: 0
+  isCursed: 0
   onCandle: {fileID: 0}
   offCandle: {fileID: 0}
 --- !u!61 &539306351
@@ -11388,6 +11391,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActivated: 0
+  isCursed: 0
   onCandle: {fileID: 0}
   offCandle: {fileID: 0}
 --- !u!61 &696304389
@@ -12447,6 +12451,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isActivated: 0
+  isCursed: 0
   onCandle: {fileID: 0}
   offCandle: {fileID: 0}
 --- !u!61 &854908038
@@ -99567,6 +99572,7 @@ GameObject:
   - component: {fileID: 1494755932}
   - component: {fileID: 1494755935}
   - component: {fileID: 1494755936}
+  - component: {fileID: 1494755937}
   m_Layer: 0
   m_Name: '**Manager**'
   m_TagString: Untagged
@@ -99780,6 +99786,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1494755937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494755927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 503ce0e1a6f8f4c21b9ddaee5a4adcdd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1496381667
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ using UnityEngine.Rendering.Universal;
 public class Item : NetworkBehaviour
 {
     public bool isActivated = false;
+    public bool isCursed = false;
     private Animator anim;
 
     public AudioClip onCandle;
@@ -27,10 +28,10 @@ public class Item : NetworkBehaviour
         {
             anim.SetFloat("isCandleActive", 1);
         }
-        else
-        {
-            anim.SetFloat("isCandleActive", 0);
-        }
+        // else
+        // {
+        //     anim.SetFloat("isCandleActive", 0);
+        // }
     }
 
     private void Update()
@@ -45,34 +46,80 @@ public class Item : NetworkBehaviour
             anim.SetFloat("isCandleActive", 0);
             light.enabled = false;
         }
+
+        //check the logic
+        if (isActivated && !isCursed)
+        {
+            anim.SetFloat("isCandleActive", 1);
+        }
+        else if (!isActivated && !isCursed)
+        {
+            anim.SetFloat("isCandleActive", 0);
+        }
+        else if (!isActivated && isCursed)
+        {
+            // anim.SetFloat("isCandleActive", 2);
+        }
     }
 
-    public void ChangeVariable()
+    public void ItemActivated()
     {
-        audioSource.PlayOneShot(onCandle);
-        ChangeVariableServerRpc();
+        if (!isCursed && !isActivated)
+        {
+            audioSource.PlayOneShot(onCandle);
+            ItemActivatedServerRpc();
+        }
     }
-    public void ResetValue()
+    public void ItemDeactivated()
     {
-        audioSource.PlayOneShot(offCandle);
-        ResetValueServerRpc();
+        if (isActivated)
+        {
+            audioSource.PlayOneShot(offCandle);
+            ItemDeactivatedServerRpc();
+            CurseActivated();
+            Debug.Log("Cursing successfully " + isCursed);
+        }
     }
 
+    public void CurseActivated()
+    {
+        CurseActivatedServerRpc();
+    }
+
+    public void CurseDectivated()
+    {
+        CurseDectivatedServerRpc();
+    }
 
     [ServerRpc(RequireOwnership = false)]
-    public void ChangeVariableServerRpc()
+    public void ItemActivatedServerRpc()
     {
-        ChangeVariableClientRpc();
+        ItemActivatedClientRpc();
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void ResetValueServerRpc()
+    public void ItemDeactivatedServerRpc()
     {
-        ResetValueClientRpc();
+        ItemDeactivatedClientRpc();
+    }
+
+    //turn the curse off
+    [ServerRpc(RequireOwnership = false)]
+    public void CurseDectivatedServerRpc()
+    {
+        // ItemDeactivatedClientRpc();
+        CurseDectivatedClientRpc();
+    }
+    //turn the curse on
+    [ServerRpc(RequireOwnership = false)]
+    public void CurseActivatedServerRpc()
+    {
+        // ItemDeactivatedClientRpc();
+        CurseActivatedClientRpc();
     }
 
     [ClientRpc(RequireOwnership = false)]
-    public void ChangeVariableClientRpc()
+    public void ItemActivatedClientRpc()
     {
         isActivated = true;
         anim.SetFloat("isCandleActive", 1);
@@ -80,10 +127,26 @@ public class Item : NetworkBehaviour
     }
 
     [ClientRpc(RequireOwnership = false)]
-    public void ResetValueClientRpc()
+    public void ItemDeactivatedClientRpc()
     {
         isActivated = false;
         anim.SetFloat("isCandleActive", 0);
+        // GetComponent<SpriteRenderer>().color = Color.white;
+    }
+
+    [ClientRpc(RequireOwnership = false)]
+    public void CurseActivatedClientRpc()
+    {
+        isCursed = true;
+        // anim.SetFloat("isCandleActive", 1);
+        // GetComponent<SpriteRenderer>().color = Color.green;
+    }
+
+    [ClientRpc(RequireOwnership = false)]
+    public void CurseDectivatedClientRpc()
+    {
+        isCursed = false;
+        // anim.SetFloat("isCandleActive", 0);
         // GetComponent<SpriteRenderer>().color = Color.white;
     }
 

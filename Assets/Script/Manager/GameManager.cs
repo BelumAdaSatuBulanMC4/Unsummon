@@ -37,6 +37,8 @@ public class GameManager : NetworkBehaviour
     public AudioClip environmentGamePlay;
     private AudioSource audioSource;
 
+    //SWIFT PLUGIN HERE!!!
+    private SwiftPlugin swiftPlugin;
 
     private void Awake()
     {
@@ -57,6 +59,7 @@ public class GameManager : NetworkBehaviour
         result.SetActive(false);
         UploadNumbersServerRpc();
         audioSource = GetComponent<AudioSource>();
+        swiftPlugin = GetComponent<SwiftPlugin>();
         audioSource.clip = environmentGamePlay;
         audioSource.Play();
         // audioSource.PlayOneShot(environmentGamePlay);
@@ -76,6 +79,58 @@ public class GameManager : NetworkBehaviour
             EndGame();
         }
     }
+
+    public void StartSpeechRecognitionForCurseRemoval(Item cursedItem, System.Action<string, bool> feedbackCallback)
+    {
+        swiftPlugin.StartRecording();
+        StartCoroutine(CheckSpeechRecognizer(cursedItem, feedbackCallback));
+    }
+
+    private IEnumerator CheckSpeechRecognizer(Item cursedItem, System.Action<string, bool> feedbackCallback)
+    {
+        while (swiftPlugin.IsSwiftRecording())
+        {
+            yield return null; // Wait until the recording stops
+        }
+
+        string recognizedText = swiftPlugin.GetTranscribedTextFromSwift();
+        if (recognizedText.ToLower().Contains("buka"))
+        {
+            cursedItem.CurseDectivated(); // Remove the curse if the word is correctly recognized
+            feedbackCallback?.Invoke("Correct! You said 'Buka'", true); // Trigger callback for correct feedback
+        }
+        else
+        {
+            feedbackCallback?.Invoke("Incorrect, try again.", false); // Trigger callback for incorrect feedback
+        }
+    }
+
+    // public void StartSpeechRecognitionForCurseRemoval(Item cursedItem)
+    // {
+    //     swiftPlugin.StartRecording();
+    //     StartCoroutine(CheckSpeechRecognizer(cursedItem));
+    // }
+
+    // private IEnumerator CheckSpeechRecognizer(Item cursedItem)
+    // {
+    //     while (swiftPlugin.IsSwiftRecording())
+    //     {
+    //         yield return null; // Wait until the recording stops
+    //     }
+
+    //     string recognizedText = swiftPlugin.GetTranscribedTextFromSwift();
+    //     if (recognizedText.ToLower().Contains("buka"))
+    //     {
+    //         cursedItem.CurseDectivated(); // Remove the curse if the word is correctly recognized
+    //         Debug.Log("Curse removed successfully " + cursedItem.isCursed);
+    //     }
+    // }
+
+    public void CancelVoiceRecognition()
+    {
+        swiftPlugin.StopRecording();
+    }
+
     public int[] GetRandomIndexNumbers()
     {
         return randomIndexNumbers;
@@ -157,7 +212,7 @@ public class GameManager : NetworkBehaviour
         Debug.Log("type " + currentChar.GetTypeChar());
         if (activeItems < totalItems)
         {
-            item.ChangeVariable();
+            item.ItemActivated();
             AddActiveItemsServerRpc();
         }
     }
@@ -183,7 +238,10 @@ public class GameManager : NetworkBehaviour
     {
         if (activeItems > 0)
         {
-            item.ResetValue();
+            item.ItemDeactivated();
+            //activate curse
+            // item.CurseActivated();
+
             item.DeActivatedCandle();
             // activeItems--;
             DecActiveItemsServerRpc();
