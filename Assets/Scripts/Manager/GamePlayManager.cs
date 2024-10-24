@@ -21,8 +21,14 @@ public class GamePlayManager : NetworkBehaviour
     private int totalPreviousPlayer;
     private int totalCurrentPlayer;
 
+    [SerializeField] private Button leaveButton;
+    private int totalPreviousPersonalLeave = 0;
+    private int totalCurrentPersonalLeave = 0;
+    private bool personalLeave = false;
+
     private void Start()
     {
+        leaveButton.onClick.AddListener(OnLeaveButtonPressed);
         if (IsHost)
         {
             totalPreviousPlayer = NetworkManager.Singleton.ConnectedClientsList.Count;
@@ -31,16 +37,37 @@ public class GamePlayManager : NetworkBehaviour
         NetworkManager.Singleton.OnClientDisconnectCallback += OnPlayerLeave;
     }
 
+    private void OnLeaveButtonPressed()
+    {
+        Debug.Log($"OnLeaveButtonPressed - Terdapat player yang sengaja AFK");
+        SetPersonalLeaveServerRpc(true);
+        // AddPersonalLeaveServerRpc();
+        NetworkManager.Singleton.Shutdown();
+        SceneManager.LoadScene("MainMenu");
+        // SetLeavePersonalServerRpc(false);
+    }
+
     private void Update()
     {
         totalCurrentPlayer = NetworkManager.Singleton.ConnectedClientsList.Count;
-        Debug.Log($"Jumlah player sebelumnya: {totalPreviousPlayer}");
-        Debug.Log($"Jumlah player sekarang: {totalCurrentPlayer}");
+        Debug.Log($"Update - Jumlah player sebelumnya: {totalPreviousPlayer}");
+        Debug.Log($"Update - Jumlah player sekarang: {totalCurrentPlayer}");
         if (IsHost)
         {
-            if (totalPreviousPlayer != totalCurrentPlayer)
+            if (personalLeave)
             {
-                Debug.Log($"CLIENT DISCONNECT");
+                totalPreviousPlayer--;
+                personalLeave = false;
+            }
+            // if (totalPreviousPersonalLeave > totalCurrentPersonalLeave)
+            // {
+            //     totalPreviousPersonalLeave = totalCurrentPersonalLeave;
+            //     totalPreviousPlayer--;
+            // }
+            // if (totalPreviousPlayer != totalCurrentPlayer)
+            if (totalPreviousPlayer > totalCurrentPlayer)
+            {
+                Debug.Log($"Update - CLIENT DISCONNECT");
                 // ReturnToMainMenuClientRpc();
                 totalPreviousPlayer = totalCurrentPlayer;
                 NotifyPlayerClientRpc();
@@ -51,20 +78,23 @@ public class GamePlayManager : NetworkBehaviour
 
     private void OnPlayerLeave(ulong clientId)
     {
-        if (IsHost)
-        {
-            Debug.Log($"Client disconnect dengan ID: {clientId}");
-            NetworkManager.Singleton.Shutdown();
-            NotifyPlayerClientRpc();
-            ReturnToMainMenuClientRpc();
-        }
-        else if (IsClient)
-        {
-            Debug.Log($"Client disconnect dengan ID: {clientId}");
-            NotifyPlayerServerRpc();
-            NetworkManager.Singleton.Shutdown();
-            SceneManager.LoadScene("MainMenu");
-        }
+        Debug.Log($"OnPlayerLeave - Player leave dengan ID: {clientId}");
+        Debug.Log($"OnPlayerLeave - OwnerClientID: {OwnerClientId}");
+        Debug.Log($"OnPlayerLeave - IsHost: {IsHost}");
+        // if (IsHost)
+        // {
+        //     Debug.Log($"Client disconnect dengan ID: {clientId}");
+        //     NetworkManager.Singleton.Shutdown();
+        //     NotifyPlayerClientRpc();
+        //     ReturnToMainMenuClientRpc();
+        // }
+        // else if (IsClient)
+        // {
+        //     Debug.Log($"Client disconnect dengan ID: {clientId}");
+        //     NotifyPlayerServerRpc();
+        //     NetworkManager.Singleton.Shutdown();
+        //     SceneManager.LoadScene("MainMenu");
+        // }
     }
 
     // Fungsi yang dipanggil setelah scene GamePlay di-load
@@ -121,6 +151,20 @@ public class GamePlayManager : NetworkBehaviour
         }
     }
 
+    // ====================================== SERVER RPC ======================================
+    [ServerRpc]
+    private void AddPersonalLeaveServerRpc()
+    {
+        totalCurrentPersonalLeave++;
+    }
+
+    [ServerRpc]
+    private void SetPersonalLeaveServerRpc(bool isPersonalLeave)
+    {
+        personalLeave = isPersonalLeave;
+    }
+
+    // ====================================== CLIENT RPC ======================================
     [ClientRpc]
     private void ShowRolePocongSceneClientRpc(ClientRpcParams clientRpcParams = default)
     {
@@ -175,4 +219,3 @@ public class GamePlayManager : NetworkBehaviour
     // }
 
 }
-
