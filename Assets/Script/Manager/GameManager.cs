@@ -50,6 +50,8 @@ public class GameManager : NetworkBehaviour
         {
             Destroy(gameObject);
         }
+        audioSource = GetComponent<AudioSource>();
+        swiftPlugin = GetComponent<SwiftPlugin>();
     }
 
     private void Start()
@@ -58,8 +60,7 @@ public class GameManager : NetworkBehaviour
         currentChar = FindAuthorCharacter();
         result.SetActive(false);
         UploadNumbersServerRpc();
-        audioSource = GetComponent<AudioSource>();
-        swiftPlugin = GetComponent<SwiftPlugin>();
+        swiftPlugin.Initialize();
         audioSource.clip = environmentGamePlay;
         audioSource.Play();
         // audioSource.PlayOneShot(environmentGamePlay);
