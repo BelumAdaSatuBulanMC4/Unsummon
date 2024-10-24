@@ -7025,7 +7025,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 6693092682794212167, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1685966470}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
 --- !u!1 &258822241 stripped
@@ -99628,6 +99631,7 @@ MonoBehaviour:
   roleKidScene: {fileID: 1442241212}
   rolePocongScene: {fileID: 638743383}
   UI_PopUpLostConnection: {fileID: 1862920489}
+  leaveButton: {fileID: 2064559706}
 --- !u!114 &1494755934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105443,9 +105447,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1685966469}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -33.45488, y: 11.9, z: -1.3986064}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 907131890}
@@ -105468,7 +105472,7 @@ Transform:
   - {fileID: 1954433344}
   - {fileID: 1565399040}
   - {fileID: 1741433093}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 258822242}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1685966472
 MonoBehaviour:
@@ -107675,7 +107679,6 @@ SceneRoots:
   - {fileID: 560355870}
   - {fileID: 115152055}
   - {fileID: 622339556}
-  - {fileID: 1685966470}
   - {fileID: 1120053245}
   - {fileID: 1889193552}
   - {fileID: 875778447}
