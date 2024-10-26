@@ -55,6 +55,8 @@ public class UI_MiniGame : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log("item is cursed? " + item.isCursed);
+
         if (item != null)
         {
             // Disable the button and use speech recognition if the item is cursed
@@ -62,6 +64,7 @@ public class UI_MiniGame : MonoBehaviour
             {
                 candleButton.interactable = false; // Disable the button
                 StartVoiceRecognitionForCurse(item); // Start speech recognition
+                instructionText.text = GameManager.instance.GetTheSpeech();
             }
             else
             {

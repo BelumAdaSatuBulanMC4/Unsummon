@@ -87,6 +87,11 @@ public class GameManager : NetworkBehaviour
         StartCoroutine(CheckSpeechRecognizer(cursedItem, feedbackCallback));
     }
 
+    public string GetTheSpeech()
+    {
+        return swiftPlugin.GetTranscribedTextFromSwift();
+    }
+
     private IEnumerator CheckSpeechRecognizer(Item cursedItem, System.Action<string, bool> feedbackCallback)
     {
         while (swiftPlugin.IsSwiftRecording())

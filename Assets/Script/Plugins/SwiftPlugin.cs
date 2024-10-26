@@ -25,6 +25,7 @@ public class SwiftPlugin : MonoBehaviour
 
     [DllImport("__Internal")]
     private static extern IntPtr GetFeedbackMessage();
+    private bool isRecordingStarted = false;
 
     // Call the Initialize function
     public void Initialize()
@@ -37,14 +38,26 @@ public class SwiftPlugin : MonoBehaviour
     public void StartRecording()
     {
         StartSpeechRecognition();
-        Debug.Log("Started recording");
+
+        // if (!isRecordingStarted)
+        // {
+        //     StartSpeechRecognition();
+        //     Debug.Log("Started recording");
+        //     isRecordingStarted = true;
+        // }
     }
 
     // Call the StopSpeechRecognition function
     public void StopRecording()
     {
         StopSpeechRecognition();
-        Debug.Log("Stopped recording");
+
+        // if (isRecordingStarted)
+        // {
+        //     StopSpeechRecognition();
+        //     Debug.Log("Stopped recording");
+        //     isRecordingStarted = false;
+        // }
     }
 
     // Call the GetTranscribedText function

@@ -9,10 +9,7 @@
         "name": "Foundation",
         "printedName": "Foundation",
         "declKind": "Import",
-        "moduleName": "SpeechRecognitionPlugin",
-        "declAttributes": [
-          "RawDocComment"
-        ]
+        "moduleName": "SpeechRecognitionPlugin"
       },
       {
         "kind": "Import",
@@ -197,28 +194,28 @@
     {
       "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin.swift",
       "kind": "StringLiteral",
-      "offset": 559,
+      "offset": 385,
       "length": 2,
       "value": "\"\""
     },
     {
       "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin.swift",
       "kind": "BooleanLiteral",
-      "offset": 601,
+      "offset": 427,
       "length": 5,
       "value": "false"
     },
     {
       "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin.swift",
       "kind": "StringLiteral",
-      "offset": 652,
+      "offset": 478,
       "length": 14,
       "value": "\"Say the word\""
     },
     {
       "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin.swift",
       "kind": "StringLiteral",
-      "offset": 701,
+      "offset": 527,
       "length": 6,
       "value": "\"Buka\""
     }
