@@ -40,6 +40,8 @@ public class GameManager : NetworkBehaviour
     //SWIFT PLUGIN HERE!!!
     private SwiftPlugin swiftPlugin;
 
+    private bool curseRemoved = false;
+
     private void Awake()
     {
         if (instance == null)
@@ -84,7 +86,7 @@ public class GameManager : NetworkBehaviour
     public void StartSpeechRecognitionForCurseRemoval(Item cursedItem, System.Action<string, bool> feedbackCallback)
     {
         swiftPlugin.StartRecording();
-        StartCoroutine(CheckSpeechRecognizer(cursedItem, feedbackCallback));
+        // StartCoroutine(CheckSpeechRecognizer(cursedItem, feedbackCallback));
     }
 
     public string GetTheSpeech()
@@ -102,7 +104,7 @@ public class GameManager : NetworkBehaviour
         string recognizedText = swiftPlugin.GetTranscribedTextFromSwift();
         if (recognizedText.ToLower().Contains("buka"))
         {
-            cursedItem.CurseDectivated(); // Remove the curse if the word is correctly recognized
+            cursedItem.RemoveCurse(); // Remove the curse if the word is correctly recognized
             feedbackCallback?.Invoke("Correct! You said 'Buka'", true); // Trigger callback for correct feedback
         }
         else
@@ -219,6 +221,7 @@ public class GameManager : NetworkBehaviour
         if (activeItems < totalItems)
         {
             item.ItemActivated();
+            // item.CurseDectivated();
             AddActiveItemsServerRpc();
         }
     }
@@ -245,10 +248,11 @@ public class GameManager : NetworkBehaviour
         if (activeItems > 0)
         {
             item.ItemDeactivated();
+            // item.CurseActivated();
             //activate curse
             // item.CurseActivated();
 
-            item.DeActivatedCandle();
+            // item.DeActivatedCandle();
             // activeItems--;
             DecActiveItemsServerRpc();
             Debug.Log("Pocong turned off an item. Active items: " + activeItems);
@@ -360,4 +364,3 @@ public class GameManager : NetworkBehaviour
     }
 
 }
-

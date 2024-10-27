@@ -26,7 +26,7 @@ public class Item : NetworkBehaviour
     {
         if (isActivated)
         {
-            anim.SetFloat("isCandleActive", 1);
+            anim.SetFloat("isCandleActive", 0);
         }
         // else
         // {
@@ -36,48 +36,69 @@ public class Item : NetworkBehaviour
 
     private void Update()
     {
-        if (isActivated)
-        {
-            anim.SetFloat("isCandleActive", 1);
-            light.enabled = true;
-        }
-        else
-        {
-            anim.SetFloat("isCandleActive", 0);
-            light.enabled = false;
-        }
+        anim.SetFloat("isCandleActive", isActivated ? 1 : 0);
+        light.enabled = isActivated;
+        // if (isActivated)
+        // {
+        //     anim.SetFloat("isCandleActive", 1);
+        //     light.enabled = true;
+        // }
+        // else
+        // {
+        //     anim.SetFloat("isCandleActive", 0);
+        //     light.enabled = false;
+        // }
 
         //check the logic
-        if (isActivated && !isCursed)
-        {
-            anim.SetFloat("isCandleActive", 1);
-        }
-        else if (!isActivated && !isCursed)
-        {
-            anim.SetFloat("isCandleActive", 0);
-        }
-        else if (!isActivated && isCursed)
-        {
-            // anim.SetFloat("isCandleActive", 2);
-        }
+        // if (isActivated && !isCursed)
+        // {
+        //     anim.SetFloat("isCandleActive", 1);
+        // }
+        // else if (!isActivated && !isCursed)
+        // {
+        //     anim.SetFloat("isCandleActive", 0);
+        // }
+        // else if (!isActivated && isCursed)
+        // {
+        //     // anim.SetFloat("isCandleActive", 2);
+        // }
     }
 
     public void ItemActivated()
     {
-        if (!isCursed && !isActivated)
-        {
-            audioSource.PlayOneShot(onCandle);
-            ItemActivatedServerRpc();
-        }
+        audioSource.PlayOneShot(onCandle);
+        SetActivatedStateServerRpc(true);
+        SetCursedStateServerRpc(false);
+        // if (!isCursed && !isActivated)
+        // {
+        //     audioSource.PlayOneShot(onCandle);
+        //     SetActivatedStateServerRpc(true);
+        //     SetCursedStateServerRpc(false);
+        //     // ItemActivatedServerRpc();
+        // }
     }
     public void ItemDeactivated()
     {
-        if (isActivated)
+        audioSource.PlayOneShot(offCandle);
+        SetActivatedStateServerRpc(false);
+        SetCursedStateServerRpc(true);
+        // if (isActivated)
+        // {
+        //     audioSource.PlayOneShot(offCandle);
+        //     SetActivatedStateServerRpc(false);
+        //     SetCursedStateServerRpc(true);
+        //     // ItemDeactivatedServerRpc();
+        //     // CurseActivated();
+        //     Debug.Log("Cursing successfully " + isCursed);
+        // }
+    }
+
+    public void RemoveCurse()
+    {
+        if (isCursed)
         {
-            audioSource.PlayOneShot(offCandle);
-            ItemDeactivatedServerRpc();
-            CurseActivated();
-            Debug.Log("Cursing successfully " + isCursed);
+            SetCursedStateServerRpc(false);
+            SetActivatedStateServerRpc(true);
         }
     }
 
@@ -90,6 +111,56 @@ public class Item : NetworkBehaviour
     {
         CurseDectivatedServerRpc();
     }
+
+    //================================================================
+
+    // [ServerRpc(RequireOwnership = false)]
+    // private void SetActivatedStateServerRpc(bool state)
+    // {
+    //     isActivated = state;
+    //     UpdateActivatedStateClientRpc(state);
+    // }
+
+    // [ServerRpc(RequireOwnership = false)]
+    // private void SetCursedStateServerRpc(bool state)
+    // {
+    //     isCursed = state;
+    //     UpdateCursedStateClientRpc(state);
+    // }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetActivatedStateServerRpc(bool state)
+    {
+        if (isActivated != state)
+        {
+            isActivated = state;
+            UpdateActivatedStateClientRpc(state);
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetCursedStateServerRpc(bool state)
+    {
+        if (isCursed != state)
+        {
+            isCursed = state;
+            UpdateCursedStateClientRpc(state);
+        }
+    }
+
+    [ClientRpc]
+    private void UpdateActivatedStateClientRpc(bool state)
+    {
+        isActivated = state;
+    }
+
+    [ClientRpc]
+    private void UpdateCursedStateClientRpc(bool state)
+    {
+        isCursed = state;
+    }
+
+    //================================================================
 
     [ServerRpc(RequireOwnership = false)]
     public void ItemActivatedServerRpc()
