@@ -36,8 +36,15 @@ public class Item : NetworkBehaviour
 
     private void Update()
     {
-        anim.SetFloat("isCandleActive", isActivated ? 1 : 0);
-        light.enabled = isActivated;
+        if (isCursed)
+        {
+            anim.SetFloat("isCandleActive", 2);
+        }
+        else
+        {
+            anim.SetFloat("isCandleActive", isActivated ? 1 : 0);
+            light.enabled = isActivated;
+        }
         // if (isActivated)
         // {
         //     anim.SetFloat("isCandleActive", 1);
@@ -66,9 +73,12 @@ public class Item : NetworkBehaviour
 
     public void ItemActivated()
     {
-        audioSource.PlayOneShot(onCandle);
-        SetActivatedStateServerRpc(true);
-        SetCursedStateServerRpc(false);
+        if (!isActivated)
+        {
+            audioSource.PlayOneShot(onCandle);
+            SetActivatedStateServerRpc(true);
+            SetCursedStateServerRpc(false);
+        }
         // if (!isCursed && !isActivated)
         // {
         //     audioSource.PlayOneShot(onCandle);
@@ -79,9 +89,12 @@ public class Item : NetworkBehaviour
     }
     public void ItemDeactivated()
     {
-        audioSource.PlayOneShot(offCandle);
-        SetActivatedStateServerRpc(false);
-        SetCursedStateServerRpc(true);
+        if (isActivated)
+        {
+            audioSource.PlayOneShot(offCandle);
+            SetActivatedStateServerRpc(false);
+            SetCursedStateServerRpc(true);
+        }
         // if (isActivated)
         // {
         //     audioSource.PlayOneShot(offCandle);
