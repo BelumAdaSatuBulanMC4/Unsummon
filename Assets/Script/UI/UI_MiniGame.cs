@@ -11,6 +11,7 @@ public class UI_MiniGame : MonoBehaviour
     [SerializeField] Button cancelGame;
     [SerializeField] TMP_Text candleText;
     [SerializeField] TMP_Text instructionText;
+    [SerializeField] GameObject imageAnimated;
     private Animator anim;
 
     private bool isHoldingButton = false;
@@ -31,7 +32,7 @@ public class UI_MiniGame : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        anim = GetComponentInChildren<Animator>();
+        anim = imageAnimated.GetComponent<Animator>();
     }
 
     private void Start()
@@ -137,7 +138,7 @@ public class UI_MiniGame : MonoBehaviour
                     if (item.isActivated)
                     {
                         instructionText.text = "Hold to snuff out the candle";
-                        if (candleConditionValue >= 4f) // Snuffing the candle at value 4
+                        if (candleConditionValue >= 4f && !item.isCursed) // Snuffing the candle at value 4
                         {
                             GameManager.instance.PocongTurnedOffItem(item);
                             StartCoroutine(WaitAndDeactivate());
