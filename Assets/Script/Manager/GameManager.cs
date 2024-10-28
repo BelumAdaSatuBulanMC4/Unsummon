@@ -29,6 +29,7 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private Image splash;
     [SerializeField] private GameObject result;
     [SerializeField] private GameObject[] candleLocs;
+    [SerializeField] private GameObject[] mirrorTeleports;
     Character currentChar;
 
     [Header("Audio in GamePlay")]
@@ -81,6 +82,16 @@ public class GameManager : NetworkBehaviour
             // isGamePlaying = false;
             EndGame();
         }
+    }
+
+    public Vector3[] GetAllMirrors()
+    {
+        Vector3[] mirrorPositions = new Vector3[mirrorTeleports.Length];
+        for (int i = 0; i < mirrorTeleports.Length; i++)
+        {
+            mirrorPositions[i] = mirrorTeleports[i].transform.position;
+        }
+        return mirrorPositions;
     }
 
     public void StartSpeechRecognitionForCurseRemoval(Item cursedItem, System.Action<string, bool> feedbackCallback)
