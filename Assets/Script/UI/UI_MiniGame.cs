@@ -124,6 +124,8 @@ public class UI_MiniGame : MonoBehaviour
         {
             Debug.Log("The item is not cursed!!!!");
             candleButton.interactable = true; // Disable the button
+            GameManager.instance.CancelVoiceRecognition(); ///
+
             if (isHoldingButton)
             {
                 // Increase the hold time while holding the button
@@ -141,7 +143,9 @@ public class UI_MiniGame : MonoBehaviour
                         if (candleConditionValue >= 4f) // Snuffing the candle at value 4
                         {
                             GameManager.instance.PocongTurnedOffItem(item);
-                            StartCoroutine(WaitAndDeactivate());
+                            isHoldingButton = false;
+                            gameObject.SetActive(false);
+                            // StartCoroutine(WaitAndDeactivate());
                         }
                     }
                     else
