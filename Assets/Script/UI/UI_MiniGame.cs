@@ -138,7 +138,7 @@ public class UI_MiniGame : MonoBehaviour
                     if (item.isActivated)
                     {
                         instructionText.text = "Hold to snuff out the candle";
-                        if (candleConditionValue >= 4f && !item.isCursed) // Snuffing the candle at value 4
+                        if (candleConditionValue >= 4f) // Snuffing the candle at value 4
                         {
                             GameManager.instance.PocongTurnedOffItem(item);
                             StartCoroutine(WaitAndDeactivate());

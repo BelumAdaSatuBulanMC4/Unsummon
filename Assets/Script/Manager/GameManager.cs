@@ -245,7 +245,7 @@ public class GameManager : NetworkBehaviour
 
     public void PocongTurnedOffItem(Item item)
     {
-        if (activeItems > 0)
+        if (activeItems > 0 && item.isActivated)
         {
             item.ItemDeactivated();
             // item.CurseActivated();
