@@ -99943,6 +99943,7 @@ MonoBehaviour:
   roleKidScene: {fileID: 1442241212}
   rolePocongScene: {fileID: 638743383}
   UI_PopUpLostConnection: {fileID: 1862920489}
+  leaveButton: {fileID: 2064559706}
 --- !u!114 &1494755934
 MonoBehaviour:
   m_ObjectHideFlags: 0
