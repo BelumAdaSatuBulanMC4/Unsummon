@@ -248,6 +248,27 @@ public class Pocong : Character
         StartCoroutine(TeleportRoutine(kid));
     }
 
+    public void TeleportAnimationMirror(Vector3 mirror)
+    {
+        StartCoroutine(TeleportRoutineMirror(mirror));
+    }
+
+    private IEnumerator TeleportRoutineMirror(Vector3 mirror)
+    {
+        anim.SetBool("isTeleport", true);
+        yield return new WaitForSeconds(.4f);
+
+        // Vector3 tempPocongPosition = mirror;
+        transform.position = mirror;
+        // kid.ChangeLocation(tempPocongPosition);
+        // kid.transform.position = tempPocongPosition;
+
+        // Once the blink animation is done, set isBlink to false
+        anim.SetBool("isTeleport", false);
+        // yield return new WaitForSeconds(5f);
+        isTeleported = false;
+    }
+
     private IEnumerator TeleportRoutine(PlayerKid kid)
     {
         anim.SetBool("isTeleport", true);
@@ -270,17 +291,21 @@ public class Pocong : Character
         isTeleported = true;
         if (teleportCooldownTimer < 0 && isMirrorDetected)
         {
-            List<PlayerKid> allKids = PlayerManager.instance.GetAllKids();
-            PlayerKid kidToSwap = ChooseKidToSwap(allKids);
 
-            if (kidToSwap != null)
-            {
-                TeleportAnimation(kidToSwap);
-            }
-            else
-            {
-                Debug.Log("No Kid selected for swapping.");
-            }
+            // List<PlayerKid> allKids = PlayerManager.instance.GetAllKids();
+            // PlayerKid kidToSwap = ChooseKidToSwap(allKids);
+
+            Vector3[] mirrorPosition = GameManager.instance.GetAllMirrors();
+
+            // if (kidToSwap != null)
+            // {
+            int randomIndex = Random.Range(0, mirrorPosition.Length);
+            TeleportAnimationMirror(mirrorPosition[randomIndex]);
+            // }
+            // else
+            // {
+            //     Debug.Log("No Kid selected for swapping.");
+            // }
             // Perform teleport
             // Debug.Log("Teleporting...");
 
