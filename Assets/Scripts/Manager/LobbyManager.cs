@@ -147,7 +147,7 @@ public class LobbyManager : NetworkBehaviour
 
     public void UpdateRoomCode(string roomCode)
     {
-        codeRoomOutput.text = roomCode;
+        codeRoomOutput.text = roomCode.ToLower();
     }
 
     private void UpdatePlayerUI()
@@ -207,7 +207,7 @@ public class LobbyManager : NetworkBehaviour
     [ClientRpc]
     private void UpdateRoomCodeClientRpc(string codeRoom)
     {
-        codeRoomOutput.text = codeRoom;
+        codeRoomOutput.text = codeRoom.ToLower();
     }
 
     [ClientRpc]
