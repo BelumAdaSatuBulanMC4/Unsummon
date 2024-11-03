@@ -9,8 +9,11 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 0
-    path: Assets/Scenes/SpeechRecognitionTest.unity
+    path: Assets/Scenes/Testing/SpeechRecognitionTest.unity
     guid: c6c17cb7999204af0ab8c3c6a18837ea
+  - enabled: 1
+    path: Assets/Scenes/Testing/CoreMotionTest.unity
+    guid: cacf0b2b141a74655a53e688e6ab228c
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
     guid: dbf3e239d6ccb463c8875a09785718a1
