@@ -2,6 +2,7 @@ using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class GyroGaugeController : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class GyroGaugeController : MonoBehaviour
     public float sensitivity = 5.0f;
     public float minPitch = -0.5f;
     public float maxPitch = 0.5f;
+    public float animationSpeed = 2.0f; // Speed for the smooth animation
+    public float progressSpeed = 0.1f; // Initial speed of progress increase/decrease
 
     private float minPositionX;
     private float maxPositionX;
@@ -23,9 +26,10 @@ public class GyroGaugeController : MonoBehaviour
     [SerializeField] private TMP_Text feedbackText; // TMP_Text to display "Correct"
 
     private SwiftPlugin swiftPlugin;
-    private float timeSinceLastUpdate = 0f;
-    private float randomTargetWidth;
-    private Vector2 randomTargetPosition;
+    private Vector2 targetPosition; // Target position for smooth movement of gaugeRandomTarget
+    private bool isGaugeCorrect;
+
+    [SerializeField] private Slider progressBar; // Slider for the progress bar
 
     private void Awake()
     {
@@ -40,8 +44,15 @@ public class GyroGaugeController : MonoBehaviour
 
         swiftPlugin.StartGyro();
 
-        // Initialize the random target
-        UpdateRandomTarget();
+        // Set initial target position
+        SetRandomTargetPosition();
+
+        // Set initial progress bar value to 50%
+        progressBar.value = 0.5f;
+
+        // Start coroutines to update the target position and increase progress speed
+        StartCoroutine(UpdateRandomTargetPositionRoutine());
+        StartCoroutine(IncreaseProgressSpeedRoutine());
     }
 
     private void OnDestroy()
@@ -77,39 +88,61 @@ public class GyroGaugeController : MonoBehaviour
         float targetValue = Mathf.Lerp(slider.minValue, slider.maxValue, normalizedPitch);
         slider.value = Mathf.Clamp(targetValue, slider.minValue, slider.maxValue);
 
-        // Update the random target every 5 seconds
-        timeSinceLastUpdate += Time.deltaTime;
-        if (timeSinceLastUpdate >= 5f)
-        {
-            UpdateRandomTarget();
-            timeSinceLastUpdate = 0f;
-        }
+        // Smoothly move the gaugeRandomTarget to the target position
+        gaugeRandomTarget.anchoredPosition = Vector2.Lerp(gaugeRandomTarget.anchoredPosition, targetPosition, Time.deltaTime * animationSpeed);
 
         // Check if the gauge needle is within the gaugeRandomTarget range
         if (targetPositionX >= gaugeRandomTarget.anchoredPosition.x - gaugeRandomTarget.rect.width / 2 &&
             targetPositionX <= gaugeRandomTarget.anchoredPosition.x + gaugeRandomTarget.rect.width / 2)
         {
             feedbackText.text = "Correct";
+            isGaugeCorrect = true;
         }
         else
         {
             feedbackText.text = ""; // Clear the text if not within range
+            isGaugeCorrect = false;
+        }
+
+        // Update the progress bar based on isGaugeCorrect
+        UpdateProgressBar();
+    }
+
+    private IEnumerator UpdateRandomTargetPositionRoutine()
+    {
+        while (true)
+        {
+            SetRandomTargetPosition();
+            yield return new WaitForSeconds(Random.Range(1f, 2f)); // Random delay between position changes
         }
     }
 
-    private void UpdateRandomTarget()
+    private IEnumerator IncreaseProgressSpeedRoutine()
     {
-        // Calculate max width for the gaugeRandomTarget (no more than half width of gaugeBackground)
-        float maxTargetWidth = gaugeBackground.rect.width / 2;
-        randomTargetWidth = Random.Range(20f, maxTargetWidth); // Width range from 20f to maxTargetWidth
-        gaugeRandomTarget.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, randomTargetWidth);
+        while (true)
+        {
+            yield return new WaitForSeconds(3f);
+            progressSpeed += 0.1f;
+        }
+    }
 
+    private void SetRandomTargetPosition()
+    {
         // Calculate random position within the bounds of the gaugeBackground
-        float maxPosition = maxPositionX - randomTargetWidth;
-        float minPosition = minPositionX;
+        float maxPosition = maxPositionX - gaugeRandomTarget.rect.width / 2;
+        float minPosition = minPositionX + gaugeRandomTarget.rect.width / 2;
         float randomXPosition = Random.Range(minPosition, maxPosition);
 
-        // Update the gaugeRandomTarget position
-        gaugeRandomTarget.anchoredPosition = new Vector2(randomXPosition, gaugeRandomTarget.anchoredPosition.y);
+        // Set the target position
+        targetPosition = new Vector2(randomXPosition, gaugeRandomTarget.anchoredPosition.y);
+    }
+
+    private void UpdateProgressBar()
+    {
+        // Define target progress based on isGaugeCorrect
+        float targetProgress = isGaugeCorrect ? 1f : 0f;
+
+        // Smoothly transition the progress bar value to the target progress
+        progressBar.value = Mathf.MoveTowards(progressBar.value, targetProgress, progressSpeed * Time.deltaTime);
     }
 }
