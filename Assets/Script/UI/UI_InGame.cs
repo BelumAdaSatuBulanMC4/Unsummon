@@ -35,16 +35,6 @@ public class UI_InGame : MonoBehaviour
     void Start()
     {
         authorCharacter = FindAuthorCharacter();
-
-        // if (authorCharacter != null)
-        // {
-        //     InstantiateUIForCharacter(authorCharacter);
-        //     InteractButton.GetComponentInChildren<Button>().onClick.AddListener(InteractedWithItem);
-        // }
-        // else
-        // {
-        //     Debug.LogWarning("no one have isAuthor");
-        // }
     }
 
     private void Update()
@@ -112,7 +102,7 @@ public class UI_InGame : MonoBehaviour
             if (!authorCharacter.GetCurrentItem().isActivated)
             {
                 // GameManager.instance.KidTurnedOnItem(item);
-                UI_InGame.instance.OpenMiniGame();
+                OpenMiniGame();
                 UI_MiniGame.instance.CurrentItem(authorCharacter.GetCurrentItem());
             }
         }
@@ -121,7 +111,7 @@ public class UI_InGame : MonoBehaviour
             if (authorCharacter.GetCurrentItem().isActivated)
             {
                 // GameManager.instance.PocongTurnedOnItem(item);
-                UI_InGame.instance.OpenMiniGame();
+                OpenMiniGame();
                 UI_MiniGame.instance.CurrentItem(authorCharacter.GetCurrentItem());
             }
             // GameManager.instance.PocongTurnedOffItem(item);
@@ -147,16 +137,6 @@ public class UI_InGame : MonoBehaviour
     {
         UI_MiniGames.SetActive(false);
     }
-
-    // public void SwitchUI(GameObject uiToEnable)
-    // {
-    //     foreach (GameObject ui in uiElements)
-    //     {
-    //         ui.SetActive(false);
-    //     }
-
-    //     uiToEnable.SetActive(true);
-    // }
 
     private Character FindAuthorCharacter()
     {
