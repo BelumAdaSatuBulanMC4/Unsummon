@@ -50,6 +50,7 @@ public class Character : NetworkBehaviour
     public AudioClip sfxMovementClip;  // AudioClip untuk AudioSource pertama
     public AudioClip sfxPocongKillClip;  // AudioClip untuk AudioSource kedua
 
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
