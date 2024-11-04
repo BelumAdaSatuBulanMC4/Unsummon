@@ -1191,6 +1191,7 @@ MonoBehaviour:
   teleportCooldown: 5
   controller_UI: {fileID: 5797229610900672768}
   buttonInteraction: {fileID: 5489786076985034811}
+  characterLight2D: {fileID: 9035628466085272901}
 --- !u!114 &7307612335329235897
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1264,7 +1265,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &383266063127704693
 Transform:
   m_ObjectHideFlags: 0
