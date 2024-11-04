@@ -1,15 +1,14 @@
-using System.Runtime.InteropServices;
-using TMPro;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
-public class GyroGaugeController : MonoBehaviour
+public class UI_HidingMechanics : MonoBehaviour
 {
+    public static UI_HidingMechanics instance;
     [SerializeField] private RectTransform gaugeNeedle;
     [SerializeField] private RectTransform gaugeBackground;
     [SerializeField] private RectTransform gaugeRandomTarget;
-    // [SerializeField] private Slider slider;
 
     public float sensitivity = 5.0f;
     public float minPitch = -0.5f;
@@ -20,29 +19,33 @@ public class GyroGaugeController : MonoBehaviour
     private float minPositionX;
     private float maxPositionX;
 
-    [SerializeField] private TMP_Text rollVal;
-    [SerializeField] private TMP_Text pitchVal;
-    [SerializeField] private TMP_Text yawVal;
-    [SerializeField] private TMP_Text feedbackText;
-
-    private SwiftPlugin swiftPlugin;
+    //swiftplugin pake gameManager
     private Vector2 targetPosition;
     private bool isGaugeCorrect;
-
     [SerializeField] private Slider progressBar;
 
+    private Closet closet;
     private void Awake()
     {
-        swiftPlugin = GetComponent<SwiftPlugin>();
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    private void Start()
+    // Start is called before the first frame update
+    void Start()
     {
         float halfNeedleWidth = gaugeNeedle.rect.width / 2;
         minPositionX = gaugeBackground.rect.xMin + halfNeedleWidth;
         maxPositionX = gaugeBackground.rect.xMax - halfNeedleWidth;
 
-        swiftPlugin.StartGyro();
+        //make gameManager to start gyro
+        GameManager.instance.StartGyroCoreMotion();
 
         SetRandomTargetPosition();
 
@@ -52,54 +55,37 @@ public class GyroGaugeController : MonoBehaviour
         StartCoroutine(IncreaseProgressSpeedRoutine());
     }
 
-    private void OnDestroy()
+    // Update is called once per frame
+    void Update()
     {
-        swiftPlugin.StopGyro();
-    }
+        //make a get value for roll pitch yaw
+        // double roll = swiftPlugin.GetRollValue();
+        // double pitch = swiftPlugin.GetPitchValue();
+        double pitch = GameManager.instance.GetPitchValueFromSwift();
+        // double yaw = swiftPlugin.GetYawValue();
 
-    private void Update()
-    {
-        double roll = swiftPlugin.GetRollValue();
-        double pitch = swiftPlugin.GetPitchValue();
-        double yaw = swiftPlugin.GetYawValue();
-
-        rollVal.text = roll.ToString("F2");
-        pitchVal.text = pitch.ToString("F2");
-        yawVal.text = yaw.ToString("F2");
-
-        // Calculate the normalized pitch so that 0 pitch is in the center
         float normalizedPitch = Mathf.InverseLerp(minPitch, maxPitch, (float)pitch);
 
-        // Calculate the target x position for the gauge needle
         float targetPositionX = Mathf.Lerp(minPositionX, maxPositionX, normalizedPitch);
 
-        // Clamp the needle position to ensure it stays within the bounds
         targetPositionX = Mathf.Clamp(targetPositionX, minPositionX, maxPositionX);
 
-        // Apply the new position to the gauge needle
         gaugeNeedle.anchoredPosition = new Vector2(targetPositionX, gaugeNeedle.anchoredPosition.y);
 
-        // Set the slider value to the midpoint if pitch is 0
-        // float targetValue = Mathf.Lerp(slider.minValue, slider.maxValue, normalizedPitch);
-        // slider.value = Mathf.Clamp(targetValue, slider.minValue, slider.maxValue);
-
-        // Smoothly move the gaugeRandomTarget to the target position
         gaugeRandomTarget.anchoredPosition = Vector2.Lerp(gaugeRandomTarget.anchoredPosition, targetPosition, Time.deltaTime * animationSpeed);
 
-        // Check if the gauge needle is within the gaugeRandomTarget range
         if (targetPositionX >= gaugeRandomTarget.anchoredPosition.x - gaugeRandomTarget.rect.width / 2 &&
             targetPositionX <= gaugeRandomTarget.anchoredPosition.x + gaugeRandomTarget.rect.width / 2)
         {
-            feedbackText.text = "Correct";
+            // feedbackText.text = "Correct";
             isGaugeCorrect = true;
         }
         else
         {
-            feedbackText.text = ""; // Clear the text if not within range
+            // feedbackText.text = ""; 
             isGaugeCorrect = false;
         }
 
-        // Update the progress bar based on isGaugeCorrect
         UpdateProgressBar();
     }
 
@@ -139,5 +125,23 @@ public class GyroGaugeController : MonoBehaviour
 
         // Smoothly transition the progress bar value to the target progress
         progressBar.value = Mathf.MoveTowards(progressBar.value, targetProgress, progressSpeed * Time.deltaTime);
+        if (progressBar.value == 0f)
+        {
+            CancelHidingMechanics();
+        }
+    }
+
+    public void CurrentCloset(Closet newCloset)
+    {
+        closet = newCloset;
+        //set initialize buat closet di sini
+    }
+
+    public void CancelHidingMechanics()
+    {
+        //bikin stop gyro di sini
+        GameManager.instance.StopGyroCoreMotion();
+        StopAllCoroutines();
+        gameObject.SetActive(false);
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,7 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private GameObject UI_InGameSpirit;
     [SerializeField] private GameObject InteractButton;
     [SerializeField] private GameObject UI_NoiseButton;
+    [SerializeField] private GameObject UI_HidingMiniGame;
 
     private GameObject currentInGameController;
     private Character authorCharacter;
@@ -115,6 +117,14 @@ public class UI_InGame : MonoBehaviour
                 UI_InGame.instance.OpenMiniGame();
                 UI_MiniGame.instance.CurrentItem(authorCharacter.GetCurrentItem());
             }
+
+            //test the closet
+            // if (!authorCharacter.GetCurrentCloset().isUsed)
+            // {
+            //     // UI_InGame.instance.OpenMiniGame();
+            //     OpenHidingMechanics();
+            //     UI_HidingMechanics.instance.CurrentCloset(authorCharacter.GetCurrentCloset());
+            // }
         }
         else if (authorCharacter.GetTypeChar() == "Pocong")
         {
@@ -127,6 +137,11 @@ public class UI_InGame : MonoBehaviour
             // GameManager.instance.PocongTurnedOffItem(item);
         }
     }
+
+    /// <summary>
+    /// BIKIN BUAT INTERACTION WITH CLOSET HERE!
+    /// </summary>
+
     public void SwitchToSettings()
     {
         UI_InGameSettings.SetActive(true);
@@ -199,4 +214,13 @@ public class UI_InGame : MonoBehaviour
             Debug.LogWarning("Unknown character type.");
         }
     }
+
+    //================================================================
+    //Gyro MotionManager
+    public void OpenHidingMechanics()
+    {
+        UI_HidingMiniGame.SetActive(true);
+    }
+
+
 }

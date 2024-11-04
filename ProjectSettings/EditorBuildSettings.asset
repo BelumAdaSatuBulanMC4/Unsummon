@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Testing/SpeechRecognitionTest.unity
     guid: c6c17cb7999204af0ab8c3c6a18837ea
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Testing/CoreMotionTest.unity
     guid: cacf0b2b141a74655a53e688e6ab228c
   - enabled: 1

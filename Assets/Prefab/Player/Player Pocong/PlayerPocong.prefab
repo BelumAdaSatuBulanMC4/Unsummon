@@ -768,6 +768,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &5906465405233146725
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2364518036474879614}
+  m_Layer: 10
+  m_Name: ClosetCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2364518036474879614
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5906465405233146725}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.19, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2987724735778951620}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8381834603926894782
 GameObject:
   m_ObjectHideFlags: 0
@@ -891,6 +922,7 @@ Transform:
   - {fileID: 1551439908100313034}
   - {fileID: 6543412781679389371}
   - {fileID: 383266063127704693}
+  - {fileID: 2364518036474879614}
   m_Father: {fileID: 2220125847470855314}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &897265086533159946
@@ -1172,6 +1204,11 @@ MonoBehaviour:
   mySelf: {fileID: 3527622045971319382}
   sfxMovementClip: {fileID: 8300000, guid: 49f47a0efe2304d358a950ab9647fb75, type: 3}
   sfxPocongKillClip: {fileID: 8300000, guid: bb6579fbefafc4835aec27b1e3839f9a, type: 3}
+  closetCheck: {fileID: 2364518036474879614}
+  closetCheckRadius: 2
+  whatIsCloset:
+    serializedVersion: 2
+    m_Bits: 16384
   kidCheck: {fileID: 8755744105393276333}
   kidCheckRadius: 2
   whatIsKid:

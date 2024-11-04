@@ -371,6 +371,7 @@ public class Pocong : Character
     private void OnDrawGizmos()
     {
         DrawItemDetector();
+        DrawClosetDetector();
         Gizmos.DrawWireSphere(kidCheck.position, kidCheckRadius);
         Gizmos.DrawWireSphere(mirrorCheck.position, mirrorCheckRadius);
         Gizmos.DrawWireSphere(spiritCheck.position, spiritCheckRadius);

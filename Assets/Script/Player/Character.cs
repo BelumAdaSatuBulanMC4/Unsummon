@@ -30,6 +30,7 @@ public class Character : NetworkBehaviour
     [SerializeField] protected float itemCheckRadius;
     [SerializeField] protected LayerMask whatIsItem;
     protected Collider2D[] detectedItems;
+    protected Item currentItem;
 
     [Header("Dash info")]
     [SerializeField] protected float dashSpeed;
@@ -37,10 +38,7 @@ public class Character : NetworkBehaviour
     protected float dashTime;
     [SerializeField] protected float dashCooldown;
     protected float dashCooldownTimer;
-
     protected string currentlocation;
-
-    protected Item currentItem;
 
     [SerializeField] protected GameObject mySelf;
 
@@ -49,6 +47,14 @@ public class Character : NetworkBehaviour
 
     public AudioClip sfxMovementClip;  // AudioClip untuk AudioSource pertama
     public AudioClip sfxPocongKillClip;  // AudioClip untuk AudioSource kedua
+
+    // BAGIAN CLOSET
+    [Header("Closet Check")]
+    [SerializeField] protected Transform closetCheck;
+    [SerializeField] protected float closetCheckRadius;
+    [SerializeField] protected LayerMask whatIsCloset;
+    protected Collider2D[] detectedClosets;
+    protected Closet currentCloset;
 
     protected virtual void Awake()
     {
@@ -77,6 +83,25 @@ public class Character : NetworkBehaviour
         inputPlayer.Kid.Move.performed += ctx => { moveInput = ctx.ReadValue<Vector2>(); };
         inputPlayer.Kid.Move.canceled += ctx => moveInput = Vector2.zero;
     }
+    protected virtual void Update()
+    {
+        if (!IsOwner) { return; }
+        Debug.Log($"PlayerID: {OwnerClientId} adalah {typeChar}");
+        if (typeChar == "Player" || typeChar == "Pocong")
+        {
+            dashTime -= Time.deltaTime;
+            dashCooldownTimer -= Time.deltaTime;
+        }
+        if (typeChar != "Player")
+        {
+            HandleMovement();
+        }
+        HandleItemInteraction();
+        // HandleClosetInteraction();
+        HandleFlip();
+        SendPositionToServerServerRpc();
+        HandleMovementSound();
+    }
 
     private void OnDisable()
     {
@@ -94,30 +119,6 @@ public class Character : NetworkBehaviour
         return typeChar;
     }
     public void DashButton() => DashAbility();
-
-    protected virtual void Update()
-    {
-        if (!IsOwner) { return; }
-        Debug.Log($"PlayerID: {OwnerClientId} adalah {typeChar}");
-        if (typeChar == "Player" || typeChar == "Pocong")
-        {
-            dashTime -= Time.deltaTime;
-            dashCooldownTimer -= Time.deltaTime;
-        }
-        if (typeChar != "Player")
-        {
-            HandleMovement();
-        }
-        HandleItemInteraction();
-        HandleFlip();
-        SendPositionToServerServerRpc();
-        HandleMovementSound();
-    }
-
-    public Item GetCurrentItem()
-    {
-        return currentItem;
-    }
 
     public float GetDashCooldown()
     {
@@ -146,21 +147,99 @@ public class Character : NetworkBehaviour
         if (typeChar == "Player" || typeChar == "Pocong")
         {
             detectedItems = Physics2D.OverlapCircleAll(itemCheck.position, itemCheckRadius, whatIsItem);
-            foreach (Collider2D itemCollider in detectedItems)
-            {
-                Item item = itemCollider.GetComponent<Item>();
-                if (item != null)
-                {
-                    // InteractWithItem(item);
-                    currentItem = item;
-                    // Debug.Log("item ada " + currentItem.isActivated);
-                }
-            }
+            detectedClosets = Physics2D.OverlapCircleAll(closetCheck.position, closetCheckRadius, whatIsCloset);
+
+            // if (detectedClosets != null)
+            // {
+            //     Debug.Log("Closet is not null");
+            // }
+            // else
+            // {
+            //     Debug.Log("Closet is null");
+            // }
+
             if (detectedItems.Length == 0)
             {
                 currentItem = null;
             }
+            else
+            {
+                foreach (Collider2D itemCollider in detectedItems)
+                {
+                    Item item = itemCollider.GetComponent<Item>();
+                    if (item != null)
+                    {
+                        // InteractWithItem(item);
+                        currentItem = item;
+                        // Debug.Log("item ada " + currentItem.isActivated);
+                    }
+                }
+            }
+
+            // Debug.Log("eaea");
+            if (typeChar == "Player")
+            {
+                // Debug.Log("ini di mau masuk!");
+                if (detectedClosets.Length == 0)
+                {
+                    // Debug.Log("lho kosong!");
+                    currentCloset = null;
+                }
+                else
+                {
+                    // Debug.Log("Closet detected!");
+                    foreach (Collider2D detectedClosets in detectedClosets)
+                    {
+                        Closet closet = detectedClosets.GetComponent<Closet>();
+                        if (closet != null)
+                        {
+                            // InteractWithItem(item);
+                            currentCloset = closet;
+                            // Debug.Log("item ada " + currentItem.isActivated);
+                        }
+                    }
+                }
+            }
+            // Debug.Log("Uhuk");
         }
+    }
+
+    public Item GetCurrentItem()
+    {
+        return currentItem;
+    }
+
+    // closet interaction
+    private void HandleClosetInteraction()
+    {
+        Debug.Log("masuk ke HandleClosetInteraction");
+        if (typeChar == "Player")
+        {
+            Debug.Log("typechar " + typeChar);
+            detectedClosets = Physics2D.OverlapCircleAll(closetCheck.position, closetCheckRadius, whatIsCloset);
+            foreach (Collider2D closetCollider in detectedClosets)
+            {
+                Debug.Log("masuk ke foreach ");
+
+                Closet closet = closetCollider.GetComponent<Closet>();
+                if (closet != null)
+                {
+                    currentCloset = closet;
+                    Debug.Log("Closet detected ");
+                }
+            }
+            if (detectedClosets.Length == 0)
+            {
+                currentCloset = null;
+                Debug.Log("Closet not detected ");
+            }
+        }
+        Debug.Log("Di bagian luar!");
+    }
+
+    public Closet GetCurrentCloset()
+    {
+        return currentCloset;
     }
 
     public void interactItemButton()
@@ -220,6 +299,11 @@ public class Character : NetworkBehaviour
     protected void DrawItemDetector()
     {
         Gizmos.DrawWireSphere(itemCheck.position, itemCheckRadius);
+    }
+
+    protected void DrawClosetDetector()
+    {
+        Gizmos.DrawWireSphere(closetCheck.position, closetCheckRadius);
     }
 
     [ServerRpc]

@@ -135,6 +135,7 @@ Transform:
   - {fileID: 3174912958544155440}
   - {fileID: 2023791975658744652}
   - {fileID: 2595255624578999491}
+  - {fileID: 3484161093891201428}
   - {fileID: 4612568817782078737}
   - {fileID: 6329147388549834567}
   m_Father: {fileID: 3251251258958118885}
@@ -418,6 +419,11 @@ MonoBehaviour:
   mySelf: {fileID: 4057405978394237103}
   sfxMovementClip: {fileID: 8300000, guid: 2f546fd74eaf746009b0e76b1870b9f6, type: 3}
   sfxPocongKillClip: {fileID: 8300000, guid: bb6579fbefafc4835aec27b1e3839f9a, type: 3}
+  closetCheck: {fileID: 3484161093891201428}
+  closetCheckRadius: 2
+  whatIsCloset:
+    serializedVersion: 2
+    m_Bits: 16384
   knockBackDuration: 1
   knockBackPower: {x: 0, y: 0}
   spiritPrefab: {fileID: 4057405978394237103, guid: 9a7e79eac63824f04b49523f873166d1, type: 3}
@@ -762,6 +768,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2023791975658744652}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6866671969176252601
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3484161093891201428}
+  m_Layer: 8
+  m_Name: ClosetCheck
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3484161093891201428
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6866671969176252601}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5712358460163206507}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &986528078928930397
 PrefabInstance:
