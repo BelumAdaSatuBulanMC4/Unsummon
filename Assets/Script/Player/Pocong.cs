@@ -69,11 +69,11 @@ public class Pocong : Character
 
         HandleAnimations();
         // HandleTeleport();
-        HandlePlayerCollision();
+        // HandlePlayerCollision();
         // HandleLocationChanged();
         HandleKidInteraction();
         HandleMirrorInteraction();
-        GetKidsPosition();
+        // GetKidsPosition();
         // controller_UI.SetActive(IsOwner);
         HandleButtonInteraction();
     }

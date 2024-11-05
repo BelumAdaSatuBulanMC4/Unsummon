@@ -142,6 +142,8 @@ public class UI_HidingMechanics : MonoBehaviour
         //bikin stop gyro di sini
         GameManager.instance.StopGyroCoreMotion();
         StopAllCoroutines();
+        progressSpeed = 0.1f;
+        progressBar.value = 0.5f;
         gameObject.SetActive(false);
     }
 }

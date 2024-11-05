@@ -16,6 +16,8 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private GameObject UI_InGameKid;
     [SerializeField] private GameObject UI_InGameSpirit;
     [SerializeField] private GameObject InteractButton;
+    [SerializeField] private GameObject InteractButtonHiding;
+
     [SerializeField] private GameObject UI_NoiseButton;
     [SerializeField] private GameObject UI_HidingMiniGame;
 
@@ -51,12 +53,22 @@ public class UI_InGame : MonoBehaviour
 
     private void Update()
     {
-        authorCharacter = FindAuthorCharacter();
+        // authorCharacter = FindAuthorCharacter();
 
         if (authorCharacter != null)
         {
             InstantiateUIForCharacter(authorCharacter);
-            InteractButton.GetComponentInChildren<Button>().onClick.AddListener(InteractedWithItem);
+            if (authorCharacter.GetTypeChar() == "Player")
+            {
+                if (authorCharacter.GetCurrentItem() != null)
+                {
+                    InteractButton.GetComponentInChildren<Button>().onClick.AddListener(InteractedWithItem);
+                }
+                else if (authorCharacter.GetCurrentCloset() != null)
+                {
+                    InteractButtonHiding.GetComponentInChildren<Button>().onClick.AddListener(InteractedWithCloset);
+                }
+            }
         }
         else
         {
@@ -70,6 +82,7 @@ public class UI_InGame : MonoBehaviour
     private void DeActivatedButton()
     {
         InteractButton.SetActive(false);
+        InteractButtonHiding.SetActive(false);
         UI_InGameKid.SetActive(false);
         UI_InGamePocong.SetActive(false);
         UI_InGameSpirit.SetActive(false);
@@ -97,6 +110,10 @@ public class UI_InGame : MonoBehaviour
             {
                 Debug.LogWarning("is item null? " + authorCharacter.GetCurrentItem() == null);
                 InteractButton.SetActive(true);
+            }
+            else if (authorCharacter.GetCurrentCloset() != null && !authorCharacter.GetCurrentCloset().isUsed)
+            {
+                InteractButtonHiding.SetActive(true);
             }
             else
             {
@@ -138,9 +155,20 @@ public class UI_InGame : MonoBehaviour
         }
     }
 
-    /// <summary>
     /// BIKIN BUAT INTERACTION WITH CLOSET HERE!
-    /// </summary>
+    public void InteractedWithCloset()
+    {
+        if (authorCharacter.GetTypeChar() == "Player")
+        {
+            Debug.Log("Interact sama closet!");
+            if (!authorCharacter.GetCurrentCloset().isUsed)
+            {
+                Debug.Log("Harusnya sih hiding UI muncul");
+                UI_InGame.instance.OpenHidingMechanics();
+                UI_HidingMechanics.instance.CurrentCloset(authorCharacter.GetCurrentCloset());
+            }
+        }
+    }
 
     public void SwitchToSettings()
     {
