@@ -356,7 +356,7 @@ public class GameManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void UploadNumbersServerRpc()
     {
-        randomIndexNumbers = GenerateUniqueRandomNumbers(0, candleLocs.Length, 10);
+        randomIndexNumbers = GenerateUniqueRandomNumbers(0, candleLocs.Length, 6);
         UploadNumbersClientRpc(randomIndexNumbers);
     }
 

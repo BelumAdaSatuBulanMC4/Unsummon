@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class Character : NetworkBehaviour
 {
@@ -49,6 +50,7 @@ public class Character : NetworkBehaviour
 
     public AudioClip sfxMovementClip;  // AudioClip untuk AudioSource pertama
     public AudioClip sfxPocongKillClip;  // AudioClip untuk AudioSource kedua
+
 
     protected virtual void Awake()
     {
