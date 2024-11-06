@@ -12,10 +12,12 @@ public class LobbyManager : NetworkBehaviour
 
     [SerializeField] private TextMeshProUGUI[] playerName;
     [SerializeField] private GameObject[] playerJoin;
-    public Button startButton;
-    public GameObject startButtonObject;
-    public Button backButton;
-    public TextMeshProUGUI codeRoomOutput;
+    [SerializeField] private GameObject loadingScreen;
+    [SerializeField] private Button startButton;
+    [SerializeField] private GameObject startButtonObject;
+    [SerializeField] private Button backButton;
+    [SerializeField] private GameObject backButtonObject;
+    [SerializeField] private TextMeshProUGUI codeRoomOutput;
     private int totalPreviousPlayer;
     private int totalCurrentPlayer;
 
@@ -68,9 +70,16 @@ public class LobbyManager : NetworkBehaviour
         Debug.Log($"OnPlayerJoined - OwnerClientId: {OwnerClientId}");
         Debug.Log($"OnPlayerJoined - IsLocalPlayer: {IsLocalPlayer}");
         Debug.Log($"OnPlayerJoined - IsLocalPlayer: {IsLocalPlayer}");
-        if (!IsServer) startButtonObject.SetActive(false);
+        if (!IsServer)
+        {
+            loadingScreen.SetActive(false);
+            backButtonObject.SetActive(true);
+        }
         if (IsServer)
         {
+            loadingScreen.SetActive(false);
+            startButtonObject.SetActive(true);
+            backButtonObject.SetActive(true);
             Debug.Log($"OnPlayerJoined - Username server: {DataPersistence.LoadUsername()}");
             UpdateRoomCodeClientRpc(codeRoomOutput.text);
             SendPlayerDataToNewClient(clientId);
