@@ -25,6 +25,22 @@ public class SwiftPlugin : MonoBehaviour
 
     [DllImport("__Internal")]
     private static extern IntPtr GetFeedbackMessage();
+
+    [DllImport("__Internal")]
+    private static extern double GetRoll();
+
+    [DllImport("__Internal")]
+    private static extern double GetPitch();
+
+    [DllImport("__Internal")]
+    private static extern double GetYaw();
+
+    [DllImport("__Internal")]
+    private static extern void StartGyroUpdates();
+
+    [DllImport("__Internal")]
+    private static extern void StopGyroUpdates();
+
     private bool isRecordingStarted = false;
 
     // Call the Initialize function
@@ -32,6 +48,16 @@ public class SwiftPlugin : MonoBehaviour
     {
         InitializeSpeechRecognizer();
         Debug.Log("Speech recognizer initialized");
+    }
+
+    public void StartGyro()
+    {
+        StartGyroUpdates();
+    }
+
+    public void StopGyro()
+    {
+        StopGyroUpdates();
     }
 
     // Call the StartSpeechRecognition function
@@ -78,6 +104,21 @@ public class SwiftPlugin : MonoBehaviour
     {
         IntPtr ptr = GetFeedbackMessage();
         return Marshal.PtrToStringAuto(ptr);
+    }
+
+    public double GetRollValue()
+    {
+        return GetRoll();
+    }
+
+    public double GetPitchValue()
+    {
+        return GetPitch();
+    }
+
+    public double GetYawValue()
+    {
+        return GetYaw();
     }
 
     // Declare the Swift functions exposed via DllImport

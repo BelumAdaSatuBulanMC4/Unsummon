@@ -22,13 +22,31 @@ public class PluginTest : MonoBehaviour
     {
         // Initialize the speech recognizer
         speechPlugin.Initialize();
-        button.onClick.AddListener(speechPlugin.StartRecording);
+        speechPlugin.StartGyro();
+        // button.onClick.AddListener(speechPlugin.StartRecording);
     }
+
+    private void OnDestroy()
+    {
+        speechPlugin.StopRecording();
+    }
+
+    // private void Update()
+    // {
+    //     text.text = "Transcribed Text: " + speechPlugin.GetTranscribedTextFromSwift();
+    //     info.text = "Feedback Message: " + speechPlugin.GetFeedbackMessageFromSwift();
+    // }
 
     private void Update()
     {
-        text.text = "Transcribed Text: " + speechPlugin.GetTranscribedTextFromSwift();
-        info.text = "Feedback Message: " + speechPlugin.GetFeedbackMessageFromSwift();
+        // Fetch roll, pitch, and yaw from CoreMotionManager
+        double roll = speechPlugin.GetRollValue();
+        double pitch = speechPlugin.GetPitchValue();
+        double yaw = speechPlugin.GetYawValue();
+
+        // Use pitch and roll to move character based on tilt
+        Vector3 movement = new Vector3((float)roll, 0, (float)pitch) * 3;
+        transform.Translate(movement * Time.deltaTime, Space.World);
     }
 
     public void OnStartRecording()

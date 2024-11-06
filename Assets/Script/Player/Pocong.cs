@@ -74,11 +74,11 @@ public class Pocong : Character
 
         HandleAnimations();
         // HandleTeleport();
-        HandlePlayerCollision();
+        // HandlePlayerCollision();
         // HandleLocationChanged();
         HandleKidInteraction();
         HandleMirrorInteraction();
-        GetKidsPosition();
+        // GetKidsPosition();
         // controller_UI.SetActive(IsOwner);
         HandleButtonInteraction();
     }
@@ -385,6 +385,7 @@ public class Pocong : Character
     private void OnDrawGizmos()
     {
         DrawItemDetector();
+        DrawClosetDetector();
         Gizmos.DrawWireSphere(kidCheck.position, kidCheckRadius);
         Gizmos.DrawWireSphere(mirrorCheck.position, mirrorCheckRadius);
         Gizmos.DrawWireSphere(spiritCheck.position, spiritCheckRadius);

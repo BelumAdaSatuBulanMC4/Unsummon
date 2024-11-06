@@ -70,7 +70,7 @@ public class PlayerKid : Character
         base.Update();
         HandleAnimations();
         // HandleLocationChanged();
-        HandlePlayerCollision();
+        // HandlePlayerCollision();
         HandleMovement();
         // PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
 
@@ -219,6 +219,7 @@ public class PlayerKid : Character
     private void OnDrawGizmos()
     {
         DrawItemDetector();
+        DrawClosetDetector();
         Gizmos.DrawWireSphere(spiritCheck.position, spiritCheckRadius);
     }
 

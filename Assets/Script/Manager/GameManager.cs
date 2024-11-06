@@ -367,4 +367,32 @@ public class GameManager : NetworkBehaviour
         else if (pocongWin) { audioSource.clip = pocongWinSound; audioSource.Play(); }
     }
 
+    // =================================================================================
+    // COREMOTION!!
+
+    public void StartGyroCoreMotion()
+    {
+        swiftPlugin.StartGyro();
+    }
+
+    public void StopGyroCoreMotion()
+    {
+        swiftPlugin.StopGyro();
+    }
+
+    public double GetRollValueFromSwift()
+    {
+        return swiftPlugin.GetRollValue();
+    }
+
+    public double GetPitchValueFromSwift()
+    {
+        return swiftPlugin.GetPitchValue();
+    }
+
+    public double GetYawValueFromSwift()
+    {
+        return swiftPlugin.GetYawValue();
+    }
+
 }
