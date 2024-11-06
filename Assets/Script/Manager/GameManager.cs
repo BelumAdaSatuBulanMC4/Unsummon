@@ -76,22 +76,15 @@ public class GameManager : NetworkBehaviour
         Debug.Log($"Achive items : {activeItems}/{totalItems}");
         kidsWin = activeItems == totalItems;
         pocongWin = killedKids == totalKids;
-        // if ((kidsWin || pocongWin) && isGamePlaying)
         if (kidsWin || pocongWin)
         {
-            // isGamePlaying = false;
             EndGame();
         }
     }
 
-    public Vector3[] GetAllMirrors()
+    public GameObject[] GetAllMirrors()
     {
-        Vector3[] mirrorPositions = new Vector3[mirrorTeleports.Length];
-        for (int i = 0; i < mirrorTeleports.Length; i++)
-        {
-            mirrorPositions[i] = mirrorTeleports[i].transform.position;
-        }
-        return mirrorPositions;
+        return mirrorTeleports;
     }
 
     public void StartSpeechRecognitionForCurseRemoval(Item cursedItem, System.Action<string, bool> feedbackCallback)

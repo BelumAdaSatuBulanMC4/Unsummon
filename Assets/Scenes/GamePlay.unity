@@ -57299,7 +57299,7 @@ GameObject:
   - component: {fileID: 1092368939}
   - component: {fileID: 1092368938}
   m_Layer: 7
-  m_Name: Mirror (2)
+  m_Name: Mirror2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57429,7 +57429,7 @@ GameObject:
   - component: {fileID: 1093925380}
   - component: {fileID: 1093925379}
   m_Layer: 7
-  m_Name: Mirror (1)
+  m_Name: Mirror1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -105842,7 +105842,7 @@ GameObject:
   - component: {fileID: 1821798457}
   - component: {fileID: 1821798456}
   m_Layer: 7
-  m_Name: Mirror (3)
+  m_Name: Mirror3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107220,7 +107220,7 @@ GameObject:
   - component: {fileID: 2069859537}
   - component: {fileID: 2069859536}
   m_Layer: 7
-  m_Name: Mirror
+  m_Name: Mirror0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

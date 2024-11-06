@@ -110,7 +110,6 @@ public class GamePlayManager : NetworkBehaviour
             Debug.Log($"Current player: {totalCurrentPlayer}");
             Debug.Log($"Total player: {totalPlayer}");
             if (i == randomPocongId && totalPlayer != 1)
-            // if ((int)client.ClientId == randomPocongId)
             // if ((int)client.ClientId == 0)
             // if (false)
             {
