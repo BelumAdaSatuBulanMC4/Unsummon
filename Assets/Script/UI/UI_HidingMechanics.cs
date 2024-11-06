@@ -1,20 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UI_HidingMechanics : MonoBehaviour
 {
     public static UI_HidingMechanics instance;
+
     [SerializeField] private RectTransform gaugeNeedle;
     [SerializeField] private RectTransform gaugeBackground;
     [SerializeField] private RectTransform gaugeRandomTarget;
+    // [SerializeField] private TMP_Text speed;
 
     public float sensitivity = 5.0f;
     public float minPitch = -0.5f;
     public float maxPitch = 0.5f;
     public float animationSpeed = 2.0f;
-    public float progressSpeed = 0.1f;
+    public float progressSpeed = 1f;
 
     private float minPositionX;
     private float maxPositionX;
@@ -22,7 +25,8 @@ public class UI_HidingMechanics : MonoBehaviour
     //swiftplugin pake gameManager
     private Vector2 targetPosition;
     private bool isGaugeCorrect;
-    [SerializeField] private Slider progressBar;
+    // [SerializeField] private Slider progressBar;
+    [SerializeField] private Image progressBarImage;
 
     private Closet closet;
     private void Awake()
@@ -49,10 +53,11 @@ public class UI_HidingMechanics : MonoBehaviour
 
         SetRandomTargetPosition();
 
-        progressBar.value = 0.5f;
+        // progressBar.value = 0.5f;
+        progressBarImage.fillAmount = .5f;
 
         StartCoroutine(UpdateRandomTargetPositionRoutine());
-        StartCoroutine(IncreaseProgressSpeedRoutine());
+        // StartCoroutine(IncreaseProgressSpeedRoutine());
     }
 
     // Update is called once per frame
@@ -94,7 +99,7 @@ public class UI_HidingMechanics : MonoBehaviour
         while (true)
         {
             SetRandomTargetPosition();
-            yield return new WaitForSeconds(Random.Range(1f, 2f)); // Random delay between position changes
+            yield return new WaitForSeconds(Random.Range(0.1f, 1f)); // Random delay between position changes
         }
     }
 
@@ -102,7 +107,7 @@ public class UI_HidingMechanics : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(1f);
             progressSpeed += 0.1f;
         }
     }
@@ -124,8 +129,12 @@ public class UI_HidingMechanics : MonoBehaviour
         float targetProgress = isGaugeCorrect ? 1f : 0f;
 
         // Smoothly transition the progress bar value to the target progress
-        progressBar.value = Mathf.MoveTowards(progressBar.value, targetProgress, progressSpeed * Time.deltaTime);
-        if (progressBar.value == 0f)
+        // progressBar.value = Mathf.MoveTowards(progressBar.value, targetProgress, 1 * Time.deltaTime);
+        progressBarImage.fillAmount = Mathf.MoveTowards(progressBarImage.fillAmount, targetProgress, .7f * Time.deltaTime);
+        // Debug.Log("Progress bar value: " + progressBar.value);
+        // speed.text = "Speed " + progressSpeed + " and target progress: " + progressBar.value + " and image progress " + progressBarImage.fillAmount;
+
+        if (progressBarImage.fillAmount == 0f)
         {
             CancelHidingMechanics();
         }
@@ -134,16 +143,31 @@ public class UI_HidingMechanics : MonoBehaviour
     public void CurrentCloset(Closet newCloset)
     {
         closet = newCloset;
+        // float halfNeedleWidth = gaugeNeedle.rect.width / 2;
+        // minPositionX = gaugeBackground.rect.xMin + halfNeedleWidth;
+        // maxPositionX = gaugeBackground.rect.xMax - halfNeedleWidth;
+
+        // //make gameManager to start gyro
+        // GameManager.instance.StartGyroCoreMotion();
+
+        // SetRandomTargetPosition();
+
+        // progressBar.value = 0.5f;
+        // progressSpeed = 0.1f;
+
+        // StartCoroutine(UpdateRandomTargetPositionRoutine());
+        // StartCoroutine(IncreaseProgressSpeedRoutine());
         //set initialize buat closet di sini
     }
 
     public void CancelHidingMechanics()
     {
         //bikin stop gyro di sini
-        GameManager.instance.StopGyroCoreMotion();
-        StopAllCoroutines();
-        progressSpeed = 0.1f;
-        progressBar.value = 0.5f;
-        gameObject.SetActive(false);
+        // GameManager.instance.StopGyroCoreMotion();
+        // StopAllCoroutines();
+        // progressSpeed = 0.1f;
+        // progressBar.value = 0.5f;
+        // gameObject.SetActive(false);
+        UI_InGame.instance.CloseHidingMechanics();
     }
 }

@@ -29,6 +29,7 @@ public class PlayerKid : Character
 
     [SerializeField] private GameObject buttonInteraction;
 
+
     protected override void Awake()
     {
         base.Awake();

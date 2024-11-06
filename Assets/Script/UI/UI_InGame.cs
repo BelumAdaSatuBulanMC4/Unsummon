@@ -20,9 +20,12 @@ public class UI_InGame : MonoBehaviour
 
     [SerializeField] private GameObject UI_NoiseButton;
     [SerializeField] private GameObject UI_HidingMiniGame;
+    private GameObject instantiatedHidingMechanics;
 
     private GameObject currentInGameController;
     private Character authorCharacter;
+
+    private bool isOnHidingMiniGame = false;
 
     private void Awake()
     {
@@ -39,7 +42,7 @@ public class UI_InGame : MonoBehaviour
     void Start()
     {
         authorCharacter = FindAuthorCharacter();
-
+        InstantiateUIForCharacter(authorCharacter);
         // if (authorCharacter != null)
         // {
         //     InstantiateUIForCharacter(authorCharacter);
@@ -57,7 +60,6 @@ public class UI_InGame : MonoBehaviour
 
         if (authorCharacter != null)
         {
-            InstantiateUIForCharacter(authorCharacter);
             if (authorCharacter.GetTypeChar() == "Player")
             {
                 if (authorCharacter.GetCurrentItem() != null)
@@ -104,21 +106,27 @@ public class UI_InGame : MonoBehaviour
                 InteractButton.SetActive(false);
             }
         }
+
         if (authorCharacter.GetTypeChar() == "Player")
         {
             if (authorCharacter.GetCurrentItem() != null && !authorCharacter.GetCurrentItem().isActivated)
             {
-                Debug.LogWarning("is item null? " + authorCharacter.GetCurrentItem() == null);
+                Debug.Log("[ITEM] is item null? " + authorCharacter.GetCurrentItem() == null);
                 InteractButton.SetActive(true);
             }
             else if (authorCharacter.GetCurrentCloset() != null && !authorCharacter.GetCurrentCloset().isUsed)
             {
-                InteractButtonHiding.SetActive(true);
+                Debug.Log("[CLOSET] is closer null? " + authorCharacter.GetCurrentItem() == null);
+                if (!authorCharacter.GetCurrentCloset().isUsed)
+                {
+                    InteractButtonHiding.SetActive(true);
+                }
             }
             else
             {
-                Debug.LogWarning("is item null? " + authorCharacter.GetCurrentItem() == null);
+                Debug.Log("[NULL] is item null? " + authorCharacter.GetCurrentItem() == null);
                 InteractButton.SetActive(false);
+                InteractButtonHiding.SetActive(false);
             }
         }
     }
@@ -150,6 +158,7 @@ public class UI_InGame : MonoBehaviour
                 // GameManager.instance.PocongTurnedOnItem(item);
                 UI_InGame.instance.OpenMiniGame();
                 UI_MiniGame.instance.CurrentItem(authorCharacter.GetCurrentItem());
+                // Instantiate
             }
             // GameManager.instance.PocongTurnedOffItem(item);
         }
@@ -165,7 +174,7 @@ public class UI_InGame : MonoBehaviour
             {
                 Debug.Log("Harusnya sih hiding UI muncul");
                 UI_InGame.instance.OpenHidingMechanics();
-                UI_HidingMechanics.instance.CurrentCloset(authorCharacter.GetCurrentCloset());
+                // UI_HidingMechanics.instance.CurrentCloset(authorCharacter.GetCurrentCloset());
             }
         }
     }
@@ -244,11 +253,49 @@ public class UI_InGame : MonoBehaviour
     }
 
     //================================================================
-    //Gyro MotionManager
+    // //Gyro MotionManager
+    // public void OpenHidingMechanics()
+    // {
+    //     UI_HidingMiniGame.SetActive(true);
+    // }
     public void OpenHidingMechanics()
     {
-        UI_HidingMiniGame.SetActive(true);
+        if (instantiatedHidingMechanics == null)
+        {
+            // Instantiate the UI_HidingMechanics prefab
+            instantiatedHidingMechanics = Instantiate(UI_HidingMiniGame, transform.parent); // Set parent to UI container
+            instantiatedHidingMechanics.SetActive(true);
+        }
+        else
+        {
+            instantiatedHidingMechanics.SetActive(true); // Reactivate if already instantiated
+        }
+
+        // Initialize UI_HidingMechanics with any required data
+        UI_HidingMechanics hidingMechanics = instantiatedHidingMechanics.GetComponent<UI_HidingMechanics>();
+        if (hidingMechanics != null)
+        {
+            hidingMechanics.CurrentCloset(authorCharacter.GetCurrentCloset());
+        }
+
+        // isOnHidingMiniGame = true;
+        authorCharacter.GetCurrentCloset().ClosetActivated();
+        authorCharacter.HideTheCharacter(true);
+        UI_InGameKid.SetActive(false);
     }
 
+    public void CloseHidingMechanics()
+    {
+        if (instantiatedHidingMechanics != null)
+        {
+            Destroy(instantiatedHidingMechanics);
+            instantiatedHidingMechanics = null; // Clear the reference
+        }
+
+        // isOnHidingMiniGame = false;
+        authorCharacter.GetCurrentCloset().ClosetDeActivated();
+        authorCharacter.HideTheCharacter(false);
+        UI_InGameKid.SetActive(true);
+    }
 
 }

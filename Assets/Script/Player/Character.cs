@@ -55,6 +55,8 @@ public class Character : NetworkBehaviour
     [SerializeField] protected LayerMask whatIsCloset;
     protected Collider2D[] detectedClosets;
     protected Closet currentCloset;
+    private Vector3 LatestPosition;
+
 
     protected virtual void Awake()
     {
@@ -70,6 +72,7 @@ public class Character : NetworkBehaviour
     private void Start()
     {
         UserManager.instance.SetYourRole(typeChar);
+        Debug.Log("woylah ini masuk ke character start!");
     }
 
     public void MakeANoise()
@@ -240,6 +243,35 @@ public class Character : NetworkBehaviour
     public Closet GetCurrentCloset()
     {
         return currentCloset;
+    }
+
+    public void HideTheCharacter(bool isHiding)
+    {
+        if (isHiding)
+        {
+            LatestPosition = transform.position;
+            transform.position = currentCloset.transform.position;
+            // gameObject.SetActive(false);
+            HideCharacterServerRpc(false);
+        }
+        else
+        {
+            // gameObject.SetActive(true);
+            HideCharacterServerRpc(true);
+            transform.position = LatestPosition;
+        }
+    }
+
+    [ServerRpc]
+    private void HideCharacterServerRpc(bool isHiding)
+    {
+        HideCharacterClientRpc(isHiding);
+    }
+
+    [ClientRpc]
+    private void HideCharacterClientRpc(bool isHiding)
+    {
+        gameObject.SetActive(isHiding);
     }
 
     public void interactItemButton()

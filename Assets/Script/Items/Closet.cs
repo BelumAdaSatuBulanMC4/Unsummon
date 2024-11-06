@@ -28,6 +28,7 @@ public class Closet : MonoBehaviour
         if (!isUsed)
         {
             //panggil server rpc buat set dia ke true!
+            UpdateUsedServerRpc(true);
         }
     }
 
@@ -35,6 +36,7 @@ public class Closet : MonoBehaviour
     {
         if (isUsed)
         {
+            UpdateUsedServerRpc(false);
             //panggil server rpc buat set dia ke false!
         }
     }
