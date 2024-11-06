@@ -7,6 +7,7 @@ using Unity.Netcode.Transports.UTP;
 
 public class GamePlayManager : NetworkBehaviour
 {
+    [SerializeField] private GameObject[] playerKidPrefabs;
     public GameObject playerKidPrefab;
     public GameObject playerPocongPrefab;
     private Vector3 spawnKidPosition = new(0, 0, 0); // Posisi Spawn playerKid
