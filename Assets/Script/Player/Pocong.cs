@@ -35,12 +35,16 @@ public class Pocong : Character
     [Header("Teleport Info")]
     [SerializeField] protected float teleportCooldown; // Teleport cooldown duration
     protected float teleportCooldownTimer;
+    private GameObject mirrorSelected;
+    private Vector3 nextMirrorPosition;
+
 
     [SerializeField] private GameObject controller_UI;
 
     [SerializeField] private GameObject buttonInteraction;
 
     private bool isTeleported = false;
+    [SerializeField] private GameObject characterLight2D;
 
 
     protected override void Awake()
@@ -54,6 +58,7 @@ public class Pocong : Character
     private void Start()
     {
         isAuthor = IsOwner;
+        if (IsOwner) characterLight2D.SetActive(true);
     }
 
     protected override void Update()
@@ -136,12 +141,17 @@ public class Pocong : Character
 
     private void HandleMirrorInteraction()
     {
-        // detectedMirrors = Physics2D.OverlapCircleAll(mirrorCheck.position, mirrorCheckRadius, whatIsMirror);
-        // if (detectedMirrors.Length > 0)
-        // {
-        //     isMirrorDetected = true;
-        // }
+        detectedMirrors = Physics2D.OverlapCircleAll(mirrorCheck.position, mirrorCheckRadius, whatIsMirror);
+
+        foreach (Collider2D mirror in detectedMirrors)
+        {
+            mirrorSelected = mirror.gameObject;
+            Debug.Log($"HandleMirrorInteraction - Ini mirror: {mirrorSelected}");
+        }
+
         isMirrorDetected = Physics2D.OverlapCircle(mirrorCheck.position, mirrorCheckRadius, whatIsMirror);
+        // if (isMirrorDetected) mirrorSelectedPosition = mirrorCheck.position;
+        // else mirrorSelectedPosition = new Vector3(0, 0);
     }
 
     void killTheKid(PlayerKid kid)
@@ -292,22 +302,26 @@ public class Pocong : Character
         if (teleportCooldownTimer < 0 && isMirrorDetected)
         {
 
-            // List<PlayerKid> allKids = PlayerManager.instance.GetAllKids();
-            // PlayerKid kidToSwap = ChooseKidToSwap(allKids);
+            GameObject[] allMirrorPosition = GameManager.instance.GetAllMirrors();
+            Debug.Log($"TeleportAblity - mirrorSelectedPostition: {mirrorSelected}");
+            for (int i = 0; i < allMirrorPosition.Length; i++)
+            {
+                Debug.Log($"TeleportAblity - for di mirror: {allMirrorPosition[i]}");
+                if (allMirrorPosition[i] == mirrorSelected)
+                {
+                    Debug.Log("TeleportAbility - Berhasil mendapatkan mirror yang sama dengan yang diselect");
+                    Debug.Log($"TeleportAbility - i:{i} dan allMirrorPosition.Length: {allMirrorPosition.Length - 1}");
+                    if (i == (allMirrorPosition.Length - 1)) nextMirrorPosition = allMirrorPosition[0].transform.position;
+                    else nextMirrorPosition = allMirrorPosition[i + 1].transform.position;
+                    break;
+                }
+            }
+            // int randomIndex = Random.Range(0, allMirrorPosition.Length);
+            // TeleportAnimationMirror(allMirrorPosition[randomIndex]);
 
-            Vector3[] mirrorPosition = GameManager.instance.GetAllMirrors();
-
-            // if (kidToSwap != null)
-            // {
-            int randomIndex = Random.Range(0, mirrorPosition.Length);
-            TeleportAnimationMirror(mirrorPosition[randomIndex]);
-            // }
-            // else
-            // {
-            //     Debug.Log("No Kid selected for swapping.");
-            // }
-            // Perform teleport
-            // Debug.Log("Teleporting...");
+            Debug.Log($"TeleportAblity - nextMirror: {nextMirrorPosition}");
+            if (nextMirrorPosition != null) TeleportAnimationMirror(nextMirrorPosition);
+            // if (nextMirror != null) TeleportAnimationMirror(allMirrorPosition[0]);
 
             // Reset the cooldown timer
             teleportCooldownTimer = teleportCooldown;

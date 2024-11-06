@@ -67,6 +67,9 @@ TagManager:
   - name: Foreground 3
     uniqueID: 1335738019
     locked: 0
+  - name: Foreground 4
+    uniqueID: 3779744481
+    locked: 0
   - name: DeadBody
     uniqueID: 3615557949
     locked: 0

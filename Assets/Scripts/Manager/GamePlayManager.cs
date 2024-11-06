@@ -7,6 +7,7 @@ using Unity.Netcode.Transports.UTP;
 
 public class GamePlayManager : NetworkBehaviour
 {
+    [SerializeField] private GameObject[] playerKidPrefabs;
     public GameObject playerKidPrefab;
     public GameObject playerPocongPrefab;
     private Vector3 spawnKidPosition = new(0, 0, 0); // Posisi Spawn playerKid
@@ -81,20 +82,6 @@ public class GamePlayManager : NetworkBehaviour
         Debug.Log($"OnPlayerLeave - Player leave dengan ID: {clientId}");
         Debug.Log($"OnPlayerLeave - OwnerClientID: {OwnerClientId}");
         Debug.Log($"OnPlayerLeave - IsHost: {IsHost}");
-        // if (IsHost)
-        // {
-        //     Debug.Log($"Client disconnect dengan ID: {clientId}");
-        //     NetworkManager.Singleton.Shutdown();
-        //     NotifyPlayerClientRpc();
-        //     ReturnToMainMenuClientRpc();
-        // }
-        // else if (IsClient)
-        // {
-        //     Debug.Log($"Client disconnect dengan ID: {clientId}");
-        //     NotifyPlayerServerRpc();
-        //     NetworkManager.Singleton.Shutdown();
-        //     SceneManager.LoadScene("MainMenu");
-        // }
     }
 
     // Fungsi yang dipanggil setelah scene GamePlay di-load
@@ -115,12 +102,15 @@ public class GamePlayManager : NetworkBehaviour
     private void SpawnPlayers()
     {
         if (!IsServer) return;
-        int randomPocongId = Random.Range(0, 3);
+        int totalPlayer = NetworkManager.ConnectedClients.Count;
+        int randomPocongId = Random.Range(0, totalPlayer);
         int i = 0;
         foreach (var client in NetworkManager.ConnectedClientsList)
         {
-            if (i == randomPocongId)
-            // if ((int)client.ClientId == randomPocongId)
+            Debug.Log($"Previous player: {totalPreviousPlayer}");
+            Debug.Log($"Current player: {totalCurrentPlayer}");
+            Debug.Log($"Total player: {totalPlayer}");
+            if (i == randomPocongId && totalPlayer != 1)
             // if ((int)client.ClientId == 0)
             // if (false)
             {
