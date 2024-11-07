@@ -2,77 +2,47 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class JoystickGame1 : MonoBehaviour
+public class Haptic : MonoBehaviour
 {
-    public RectTransform joystickBase;
-    public RectTransform joystickKnob;
-    public RectTransform onScreenStick; // Reference to the child object
-    public TMP_Text tulisan;
-    private Vector2 joystickPosition = Vector2.zero;
-    private bool isTouching = false;
+    SwiftPlugin swiftPlugin;
+    [SerializeField] private Button second1;
+    [SerializeField] private Button second2;
+    [SerializeField] private Button second3;
+    [SerializeField] private Button second4;
+    [SerializeField] private Button second5;
 
-    private Vector2 initialKnobPosition;
-    private Vector2 initialBasePosition;
+    private void Awake()
+    {
+        swiftPlugin = GetComponent<SwiftPlugin>();
+    }
 
     private void Start()
     {
-        initialBasePosition = joystickBase.localPosition;
-        initialKnobPosition = joystickKnob.localPosition;
+        second1.onClick.AddListener(FirstHaptic);
+        second2.onClick.AddListener(SecondHaptic);
+        second3.onClick.AddListener(ThirdHaptic);
+        second4.onClick.AddListener(FourthHaptic);
+        second5.onClick.AddListener(FifthHaptic);
     }
 
-    void Update()
+    private void FirstHaptic()
     {
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-
-            if (touch.position.x < Screen.width / 2)
-            {
-                if (!isTouching)
-                {
-                    // Initial touch on the left side of the screen
-                    isTouching = true;
-                    joystickBase.gameObject.SetActive(true);
-                    joystickKnob.gameObject.SetActive(true);
-                    joystickBase.position = touch.position;
-                    joystickKnob.position = touch.position;
-                }
-
-                // Update joystick knob position relative to joystick base
-                Vector2 touchLocalPosition = (Vector2)joystickBase.InverseTransformPoint(touch.position);
-                joystickKnob.localPosition = Vector2.ClampMagnitude(touchLocalPosition, joystickBase.rect.width / 2);
-
-                // Update the onScreenStick position to follow the knob
-                if (onScreenStick != null)
-                {
-                    onScreenStick.localPosition = joystickKnob.localPosition;
-                }
-            }
-
-            if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
-            {
-                // End touch, reset joystick to initial positions
-                isTouching = false;
-                joystickBase.localPosition = initialBasePosition;
-                joystickKnob.localPosition = initialKnobPosition;
-
-                // Reset the onScreenStick position as well
-                if (onScreenStick != null)
-                {
-                    onScreenStick.localPosition = initialKnobPosition;
-                }
-
-                tulisan.text = "x: " + GetJoystickDirection().x + " dan y:" + GetJoystickDirection().y;
-
-                joystickBase.gameObject.SetActive(false);
-                joystickKnob.gameObject.SetActive(false);
-            }
-        }
+        swiftPlugin.TriggerHapticFeedback(.7f, 1);
     }
-
-    public Vector2 GetJoystickDirection()
+    private void SecondHaptic()
     {
-        // Normalize joystick direction for movement or other inputs
-        return onScreenStick.localPosition.normalized;
+        swiftPlugin.TriggerHapticFeedback(.7f, 1);
+    }
+    private void ThirdHaptic()
+    {
+        swiftPlugin.TriggerHapticFeedback(.7f, 1);
+    }
+    private void FourthHaptic()
+    {
+        swiftPlugin.TriggerHapticFeedback(.7f, 1);
+    }
+    private void FifthHaptic()
+    {
+        swiftPlugin.TriggerHapticFeedback(.7f, 1);
     }
 }
