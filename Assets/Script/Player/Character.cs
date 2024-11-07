@@ -306,18 +306,20 @@ public class Character : NetworkBehaviour
 
     protected virtual void HandleMovement()
     {
+        Vector2 joystickGame = UI_InGame.instance.joystickGame.GetJoystickDirection();
         if (dashTime > 0)
         {
-            rb.velocity = new Vector2(moveInput.x * moveSpeed * dashSpeed, moveInput.y * moveSpeed * dashSpeed);
+            rb.velocity = new Vector2(joystickGame.x * moveSpeed * dashSpeed, joystickGame.y * moveSpeed * dashSpeed);
         }
         else
         {
-            rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
+            rb.velocity = new Vector2(joystickGame.x * moveSpeed, joystickGame.y * moveSpeed);
         }
     }
     private void HandleFlip()
     {
-        if (moveInput.x < 0 && facingRight || moveInput.x > 0 && !facingRight)
+        Vector2 joystickGame = UI_InGame.instance.joystickGame.GetJoystickDirection();
+        if (joystickGame.x < 0 && facingRight || joystickGame.x > 0 && !facingRight)
             Flip();
     }
 

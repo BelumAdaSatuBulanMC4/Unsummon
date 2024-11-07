@@ -21,6 +21,7 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private GameObject UI_NoiseButton;
     [SerializeField] private GameObject UI_HidingMiniGame;
     private GameObject instantiatedHidingMechanics;
+    public JoystickGame joystickGame;
 
     private GameObject currentInGameController;
     private Character authorCharacter;
@@ -57,6 +58,7 @@ public class UI_InGame : MonoBehaviour
     private void Update()
     {
         // authorCharacter = FindAuthorCharacter();
+        joystickGame = FindObjectOfType<JoystickGame>();
 
         if (authorCharacter != null)
         {
