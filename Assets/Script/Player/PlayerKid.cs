@@ -29,8 +29,6 @@ public class PlayerKid : Character
 
     [SerializeField] private GameObject buttonInteraction;
 
-    [SerializeField] private GameObject characterLight2D;
-
     protected override void Awake()
     {
         base.Awake();
@@ -38,13 +36,13 @@ public class PlayerKid : Character
         myCollider = GetComponent<Collider2D>();
     }
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         anim = GetComponentInChildren<Animator>();
         StartCoroutine(RegisterKidWhenReady());
         myCollider = GetComponent<Collider2D>();
         isAuthor = IsOwner;
-        if (IsOwner) characterLight2D.SetActive(true);
     }
 
     private IEnumerator RegisterKidWhenReady()
