@@ -1,0 +1,223 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "TopLevel",
+    "printedName": "TopLevel",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "SpeechRecognitionPlugin"
+      },
+      {
+        "kind": "Import",
+        "name": "Speech",
+        "printedName": "Speech",
+        "declKind": "Import",
+        "moduleName": "SpeechRecognitionPlugin"
+      },
+      {
+        "kind": "Import",
+        "name": "AVFoundation",
+        "printedName": "AVFoundation",
+        "declKind": "Import",
+        "moduleName": "SpeechRecognitionPlugin"
+      },
+      {
+        "kind": "Function",
+        "name": "GetTranscribedText",
+        "printedName": "GetTranscribedText()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Optional",
+            "printedName": "Swift.UnsafePointer<Swift.Int8>?",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "UnsafePointer",
+                "printedName": "Swift.UnsafePointer<Swift.Int8>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int8",
+                    "printedName": "Swift.Int8",
+                    "usr": "s:s4Int8V"
+                  }
+                ],
+                "usr": "s:SP"
+              }
+            ],
+            "usr": "s:Sq"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)GetTranscribedText",
+        "mangledName": "$s23SpeechRecognitionPlugin18GetTranscribedTextSPys4Int8VGSgyF",
+        "moduleName": "SpeechRecognitionPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl",
+          "RawDocComment"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "IsRecording",
+        "printedName": "IsRecording()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Bool",
+            "printedName": "Swift.Bool",
+            "usr": "s:Sb"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)IsRecording",
+        "mangledName": "$s23SpeechRecognitionPlugin11IsRecordingSbyF",
+        "moduleName": "SpeechRecognitionPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "GetFeedbackMessage",
+        "printedName": "GetFeedbackMessage()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Optional",
+            "printedName": "Swift.UnsafePointer<Swift.Int8>?",
+            "children": [
+              {
+                "kind": "TypeNominal",
+                "name": "UnsafePointer",
+                "printedName": "Swift.UnsafePointer<Swift.Int8>",
+                "children": [
+                  {
+                    "kind": "TypeNominal",
+                    "name": "Int8",
+                    "printedName": "Swift.Int8",
+                    "usr": "s:s4Int8V"
+                  }
+                ],
+                "usr": "s:SP"
+              }
+            ],
+            "usr": "s:Sq"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)GetFeedbackMessage",
+        "mangledName": "$s23SpeechRecognitionPlugin18GetFeedbackMessageSPys4Int8VGSgyF",
+        "moduleName": "SpeechRecognitionPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "initialize",
+        "printedName": "initialize()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)initialize",
+        "mangledName": "$s23SpeechRecognitionPlugin10initializeyyF",
+        "moduleName": "SpeechRecognitionPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "startRecording",
+        "printedName": "startRecording()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)startRecording",
+        "mangledName": "$s23SpeechRecognitionPlugin14startRecordingyyF",
+        "moduleName": "SpeechRecognitionPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "stopRecording",
+        "printedName": "stopRecording()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)stopRecording",
+        "mangledName": "$s23SpeechRecognitionPlugin13stopRecordingyyF",
+        "moduleName": "SpeechRecognitionPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin.swift",
+      "kind": "StringLiteral",
+      "offset": 385,
+      "length": 2,
+      "value": "\"\""
+    },
+    {
+      "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin.swift",
+      "kind": "BooleanLiteral",
+      "offset": 427,
+      "length": 5,
+      "value": "false"
+    },
+    {
+      "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin.swift",
+      "kind": "StringLiteral",
+      "offset": 478,
+      "length": 14,
+      "value": "\"Say the word\""
+    },
+    {
+      "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin\/SpeechRecognitionPlugin.swift",
+      "kind": "StringLiteral",
+      "offset": 527,
+      "length": 6,
+      "value": "\"Buka\""
+    }
+  ]
+}

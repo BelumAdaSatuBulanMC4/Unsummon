@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -39,17 +40,46 @@ public class Character : NetworkBehaviour
 
     protected string currentlocation;
 
+    protected Item currentItem;
+
+    [SerializeField] protected GameObject mySelf;
+
+    protected AudioSource sfxMovement;
+    protected AudioSource sfxPocongKill;
+
+    public AudioClip sfxMovementClip;  // AudioClip untuk AudioSource pertama
+    public AudioClip sfxPocongKillClip;  // AudioClip untuk AudioSource kedua
+
+    [SerializeField] private GameObject characterLight2D;
+
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         inputPlayer = new InputActions();
+        AudioSource[] audioSources = GetComponents<AudioSource>();
+        sfxMovement = audioSources[0];
+        sfxPocongKill = audioSources[1];
+        sfxMovement.clip = sfxMovementClip;
+        sfxPocongKill.clip = sfxPocongKillClip;
+    }
+
+    protected virtual void Start()
+    {
+        Debug.Log("Start - di Character.cs berhasil dijalankan");
+        UserManager.instance.SetYourRole(typeChar);
+        if (IsOwner) characterLight2D.SetActive(true);
+    }
+
+    public void MakeANoise()
+    {
+        Debug.Log("Berhasil Membuat Suara! dengan posisi = " + transform.position.x + "dan " + transform.position.x);
     }
 
     private void OnEnable()
     {
         inputPlayer.Enable();
-        // inputPlayer.Kid.Dash.performed += ctx => DashAbility();
-        inputPlayer.Kid.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        inputPlayer.Kid.Move.performed += ctx => { moveInput = ctx.ReadValue<Vector2>(); };
         inputPlayer.Kid.Move.canceled += ctx => moveInput = Vector2.zero;
     }
 
@@ -63,28 +93,45 @@ public class Character : NetworkBehaviour
     {
         currentlocation = loc;
     }
+
+    public string GetTypeChar()
+    {
+        return typeChar;
+    }
     public void DashButton() => DashAbility();
 
     protected virtual void Update()
     {
         if (!IsOwner) { return; }
+        Debug.Log($"PlayerID: {OwnerClientId} adalah {typeChar}");
         if (typeChar == "Player" || typeChar == "Pocong")
         {
             dashTime -= Time.deltaTime;
             dashCooldownTimer -= Time.deltaTime;
         }
-
-        // isAuthor = IsOwner;
-        // Terapkan input langsung di client tanpa menunggu server
-        HandleMovement();
+        if (typeChar != "Player")
+        {
+            HandleMovement();
+        }
         HandleItemInteraction();
         HandleFlip();
         SendPositionToServerServerRpc();
+        HandleMovementSound();
+    }
+
+    public Item GetCurrentItem()
+    {
+        return currentItem;
     }
 
     public float GetDashCooldown()
     {
         return dashCooldownTimer;
+    }
+
+    public bool GetIsAuthor()
+    {
+        return IsOwner;
     }
 
     private void DashAbility()
@@ -109,25 +156,39 @@ public class Character : NetworkBehaviour
                 Item item = itemCollider.GetComponent<Item>();
                 if (item != null)
                 {
-                    InteractWithItem(item);
+                    // InteractWithItem(item);
+                    currentItem = item;
+                    // Debug.Log("item ada " + currentItem.isActivated);
                 }
+            }
+            if (detectedItems.Length == 0)
+            {
+                currentItem = null;
             }
         }
     }
 
-    void InteractWithItem(Item item)
+    public void interactItemButton()
     {
-        if (item == null) return;
-        if (Input.GetKeyDown(KeyCode.E) && typeChar == "Player")
+        if (typeChar == "Player")
         {
-            Debug.Log("cek!");
-            if (!item.isActivated)
-                GameManager.instance.KidTurnedOnItem(item); // Notify GameManager when a Kid turns on an item
+            // Debug.Log("cek!");
+            if (!currentItem.isActivated)
+            {
+                // GameManager.instance.KidTurnedOnItem(item);
+                UI_InGame.instance.OpenMiniGame();
+                UI_MiniGame.instance.CurrentItem(currentItem);
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.R) && typeChar == "Pocong")
+        else if (typeChar == "Pocong")
         {
-            if (item.isActivated)
-                GameManager.instance.PocongTurnedOffItem(item); // Notify GameManager when Pocong turns off an item
+            if (currentItem.isActivated)
+            {
+                // GameManager.instance.PocongTurnedOnItem(item);
+                UI_InGame.instance.OpenMiniGame();
+                UI_MiniGame.instance.CurrentItem(currentItem);
+            }
+            // GameManager.instance.PocongTurnedOffItem(item);
         }
     }
 
@@ -136,7 +197,7 @@ public class Character : NetworkBehaviour
         rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
     }
 
-    private void HandleMovement()
+    protected virtual void HandleMovement()
     {
         if (dashTime > 0)
         {
@@ -144,17 +205,9 @@ public class Character : NetworkBehaviour
         }
         else
         {
-            Debug.Log($"Movement: {moveInput} for {IsOwner}");
             rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
         }
     }
-
-    // private IEnumerator PositionPocong()
-    // {
-    //     yield return new WaitForSeconds(dashTime);
-    //     PlayerManager.instance.UpdateKidPosition(this, transform.position);
-    // }
-
     private void HandleFlip()
     {
         if (moveInput.x < 0 && facingRight || moveInput.x > 0 && !facingRight)
@@ -175,7 +228,7 @@ public class Character : NetworkBehaviour
     }
 
     [ServerRpc]
-    void SendPositionToServerServerRpc()
+    public void SendPositionToServerServerRpc()
     {
         // Server memperbarui posisi pemain di server dan mengirimkan ke semua client
         UpdatePositionClientRpc(transform.position);
@@ -188,6 +241,24 @@ public class Character : NetworkBehaviour
         {
             // Jika bukan owner (client lain), update posisi berdasarkan data dari server
             transform.position = newPosition;
+        }
+    }
+
+    private void HandleMovementSound()
+    {
+        if (moveInput != Vector2.zero)
+        {
+            if (!sfxMovement.isPlaying)
+            {
+                sfxMovement.Play();  // Mainkan sound effect saat bergerak
+            }
+        }
+        else
+        {
+            if (sfxMovement.isPlaying)
+            {
+                sfxMovement.Stop();  // Hentikan sound effect saat berhenti
+            }
         }
     }
 

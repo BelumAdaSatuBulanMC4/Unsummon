@@ -10,17 +10,17 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Items
+  - 
   - Water
   - UI
   - DeadBody
-  - Kid
+  - Mirror
+  - Kids
+  - Items
   - Pocong
   - Spirit
-  - Mirror
-  - CamBox
+  - Teleport
   - Indicator
-  - 
   - 
   - 
   - 
@@ -43,24 +43,45 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Background
-    uniqueID: 1456335479
+  - name: Background 1
+    uniqueID: 618412413
     locked: 0
-  - name: Items
-    uniqueID: 1875501971
+  - name: Background 2
+    uniqueID: 2919806791
+    locked: 0
+  - name: Background 3
+    uniqueID: 2716501587
+    locked: 0
+  - name: Background 4
+    uniqueID: 3158866819
+    locked: 0
+  - name: Background 5
+    uniqueID: 2944499009
+    locked: 0
+  - name: Foreground 1
+    uniqueID: 497668397
+    locked: 0
+  - name: Foreground 2
+    uniqueID: 3830883367
+    locked: 0
+  - name: Foreground 3
+    uniqueID: 1335738019
     locked: 0
   - name: DeadBody
-    uniqueID: 2275596537
+    uniqueID: 3615557949
     locked: 0
-  - name: Kid
-    uniqueID: 3238698807
+  - name: Items
+    uniqueID: 4199967269
     locked: 0
   - name: Pocong
-    uniqueID: 1663724197
+    uniqueID: 3735928473
     locked: 0
-  - name: Spirit
-    uniqueID: 1273902977
+  - name: kid
+    uniqueID: 2089060487
     locked: 0
   - name: Indicator
-    uniqueID: 316288467
+    uniqueID: 354072313
+    locked: 0
+  - name: Spirit
+    uniqueID: 581648279
     locked: 0

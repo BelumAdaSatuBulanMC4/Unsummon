@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: KidCircle
+  m_Controller: {fileID: 9100000, guid: c476ff0193adc4ad3b3f6f3785731ae4, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: dd45874b6482149c184c461ece6640d2, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 4755dc254d519414e85a0d0ad29140de, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 64b9c933c9dbc475fbac24ac74413afd, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: d64a355d8a47448d58c4d5d11bc2796c, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: e1d22a1eaa0aa457cbca92bd176e656c, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: f7de08fdc545b42d294b3aa17be370fe, type: 2}
