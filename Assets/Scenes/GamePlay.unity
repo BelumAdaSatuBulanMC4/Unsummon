@@ -5730,6 +5730,7 @@ MonoBehaviour:
   InteractButtonHiding: {fileID: 1060381124}
   UI_NoiseButton: {fileID: 2013439517}
   UI_HidingMiniGame: {fileID: 8644589360081746964, guid: e0959bd27a7ea46deb10c198ea0277f2, type: 3}
+  joystickGame: {fileID: 0}
 --- !u!4 &115152055
 Transform:
   m_ObjectHideFlags: 0
@@ -6395,7 +6396,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -95000027
-  m_SortingLayer: 10
+  m_SortingLayer: 11
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 923f73e593bdb463dbe7168de7d3f68d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -6444,6 +6445,40 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 115152055}
     m_Modifications:
+    - target: {fileID: 9017026930020185, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+      propertyPath: candleButton
+      value: 
+      objectReference: {fileID: 258822243}
+    - target: {fileID: 927797310467973339, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: bb9743ab7340949be93909cc34e36ce3, type: 3}
+    - target: {fileID: 927797310467973339, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+      propertyPath: m_FillAmount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1042473106900830399, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -1367.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1042473106900830399, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -631.87
+      objectReference: {fileID: 0}
+    - target: {fileID: 1042473106900830399, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.013916016
+      objectReference: {fileID: 0}
+    - target: {fileID: 1042473106900830399, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.0028076172
+      objectReference: {fileID: 0}
+    - target: {fileID: 1109287031695989378, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+      propertyPath: m_text
+      value: 'Tap and Hold to light the candle
+
+'
+      objectReference: {fileID: 0}
     - target: {fileID: 6479819777253121855, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
       propertyPath: m_Name
       value: UI_MiniGame
@@ -6532,8 +6567,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6983829208742764652, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7027341389419896957, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+      propertyPath: m_Color.a
+      value: 0.98039216
+      objectReference: {fileID: 0}
+    - target: {fileID: 8712701816760986863, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 141.8157
+      objectReference: {fileID: 0}
+    - target: {fileID: 8712701816760986863, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 458
+      objectReference: {fileID: 0}
+    - target: {fileID: 8712701816760986863, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 32
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3326900938583234324, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
@@ -6547,6 +6603,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6693092682794212167, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
   m_PrefabInstance: {fileID: 258822240}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &258822243 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1679794988042030800, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+  m_PrefabInstance: {fileID: 258822240}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &258825637
 GameObject:
   m_ObjectHideFlags: 0
@@ -11250,7 +11317,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -95000027
-  m_SortingLayer: 10
+  m_SortingLayer: 11
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -11600,6 +11667,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 115152055}
     m_Modifications:
+    - target: {fileID: 5147945498288835619, guid: 130f09bd207564538b04d93757e38228, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5599092441974070092, guid: 130f09bd207564538b04d93757e38228, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -57662,7 +57733,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -95000027
-  m_SortingLayer: 10
+  m_SortingLayer: 11
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 602bd76c179e94c16825e752f6a551c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -57792,7 +57863,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -95000027
-  m_SortingLayer: 10
+  m_SortingLayer: 11
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 602bd76c179e94c16825e752f6a551c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -99021,7 +99092,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -95000027
-  m_SortingLayer: 10
+  m_SortingLayer: 11
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 923f73e593bdb463dbe7168de7d3f68d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -99062,23 +99133,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isUsed: 0
---- !u!1 &1362241392 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4543233244099840727, guid: 245b9f92269ce4a2089b705431cc6fcc, type: 3}
-  m_PrefabInstance: {fileID: 6187750076200299056}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1362241396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1362241392}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b29ddb2c3266a4fdb9adde07328af30e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1362727891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99247,7 +99301,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -95000027
-  m_SortingLayer: 10
+  m_SortingLayer: 11
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 97e0d5fc38f634609a30b46e75fdd9e4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -99611,6 +99665,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e90668a0125b84ed9af585a88e335ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerKidPrefabs: []
   playerKidPrefab: {fileID: 4057405978394237103, guid: 53679de70933245b99d610d10ec6cd7e, type: 3}
   playerPocongPrefab: {fileID: 3527622045971319382, guid: d0745f63bb90d41fabe0cdb7d0be4567, type: 3}
   roleKidScene: {fileID: 1442241212}
@@ -106510,7 +106565,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -95000027
-  m_SortingLayer: 10
+  m_SortingLayer: 11
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 602bd76c179e94c16825e752f6a551c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -107888,7 +107943,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -95000027
-  m_SortingLayer: 10
+  m_SortingLayer: 11
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 602bd76c179e94c16825e752f6a551c0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

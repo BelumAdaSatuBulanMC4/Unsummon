@@ -44,7 +44,6 @@ public class Pocong : Character
     [SerializeField] private GameObject buttonInteraction;
 
     private bool isTeleported = false;
-    [SerializeField] private GameObject characterLight2D;
 
 
     protected override void Awake()
@@ -55,10 +54,10 @@ public class Pocong : Character
         myCollider = GetComponent<Collider2D>();
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         isAuthor = IsOwner;
-        if (IsOwner) characterLight2D.SetActive(true);
     }
 
     protected override void Update()

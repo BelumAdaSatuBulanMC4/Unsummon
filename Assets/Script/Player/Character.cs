@@ -58,6 +58,8 @@ public class Character : NetworkBehaviour
     protected Closet currentCloset;
     private Vector3 LatestPosition;
 
+    [Header("Lighting")]
+    [SerializeField] private GameObject characterSpotLight;
 
     protected virtual void Awake()
     {
@@ -70,10 +72,11 @@ public class Character : NetworkBehaviour
         sfxPocongKill.clip = sfxPocongKillClip;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         UserManager.instance.SetYourRole(typeChar);
         Debug.Log("woylah ini masuk ke character start!");
+        if (IsOwner) characterSpotLight.SetActive(true);
     }
 
     public void MakeANoise()
