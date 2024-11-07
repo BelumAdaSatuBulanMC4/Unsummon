@@ -733,7 +733,7 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -559038823
+  m_SortingLayerID: 2089060487
   m_SortingLayer: 12
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: defd0f5aae6164a0da8d86a6f1fc454a, type: 3}
@@ -884,13 +884,13 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 383266063127704693}
   - {fileID: 4901084137552417568}
   - {fileID: 8399580634329649872}
   - {fileID: 8755744105393276333}
   - {fileID: 7333197228307879733}
   - {fileID: 1551439908100313034}
   - {fileID: 6543412781679389371}
-  - {fileID: 383266063127704693}
   m_Father: {fileID: 2220125847470855314}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &897265086533159946
@@ -1172,6 +1172,7 @@ MonoBehaviour:
   mySelf: {fileID: 3527622045971319382}
   sfxMovementClip: {fileID: 8300000, guid: 49f47a0efe2304d358a950ab9647fb75, type: 3}
   sfxPocongKillClip: {fileID: 8300000, guid: bb6579fbefafc4835aec27b1e3839f9a, type: 3}
+  characterLight2D: {fileID: 9035628466085272901}
   kidCheck: {fileID: 8755744105393276333}
   kidCheckRadius: 2
   whatIsKid:
@@ -1656,11 +1657,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2272398380357986474, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.875778
+      value: 5.846203
       objectReference: {fileID: 0}
     - target: {fileID: 2272398380357986474, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -12.39369
+      value: -0.6409607
       objectReference: {fileID: 0}
     - target: {fileID: 3944334889190067606, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
       propertyPath: GlobalObjectIdHash

@@ -6297,6 +6297,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 115152055}
     m_Modifications:
+    - target: {fileID: 2262255915027607933, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+      propertyPath: candleButton
+      value: 
+      objectReference: {fileID: 1728798008}
     - target: {fileID: 6479819777253121855, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
       propertyPath: m_Name
       value: UI_MiniGame
@@ -99048,6 +99052,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e90668a0125b84ed9af585a88e335ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerKidPrefabs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   playerKidPrefab: {fileID: 4057405978394237103, guid: 53679de70933245b99d610d10ec6cd7e, type: 3}
   playerPocongPrefab: {fileID: 3527622045971319382, guid: d0745f63bb90d41fabe0cdb7d0be4567, type: 3}
   roleKidScene: {fileID: 1442241212}
@@ -99096,10 +99105,10 @@ MonoBehaviour:
   - {fileID: 1565399041}
   - {fileID: 1741433094}
   mirrorTeleports:
-  - {fileID: 2069859534}
-  - {fileID: 1093925377}
-  - {fileID: 1092368936}
-  - {fileID: 1821798454}
+  - {fileID: 4057405978394237103, guid: 2942578c7bc6b4eccb6a20c2e0f5eb79, type: 3}
+  - {fileID: 4057405978394237103, guid: 2c8dcabcb6ff34a619602f7df40567a0, type: 3}
+  - {fileID: 4057405978394237103, guid: e3df323941dfd467e910c14ffb0ba971, type: 3}
+  - {fileID: 4057405978394237103, guid: 7990488b000b54e7e95937c263c0ce0c, type: 3}
   pocongWinSound: {fileID: 8300000, guid: 31c2b22885092441cbeb8c7e14a18f3a, type: 3}
   kidsWinSound: {fileID: 8300000, guid: c6a362c7baf984054a23ea6789b715ab, type: 3}
   environmentGamePlay: {fileID: 8300000, guid: 7c53b113620bf44298d11bcbb4d71731, type: 3}
@@ -105216,6 +105225,17 @@ RectTransform:
   m_AnchoredPosition: {x: 3.0901, y: 40}
   m_SizeDelta: {x: 224.9902, y: 45.5853}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1728798008 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1679794988042030800, guid: fc8d30cee1a6f4edb9783bb163127ad1, type: 3}
+  m_PrefabInstance: {fileID: 258822240}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1741433092
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -107447,6 +107467,14 @@ PrefabInstance:
     - target: {fileID: 7307295391521105467, guid: 245b9f92269ce4a2089b705431cc6fcc, type: 3}
       propertyPath: m_Name
       value: UI_GameInfo
+      objectReference: {fileID: 0}
+    - target: {fileID: 7307295391521105467, guid: 245b9f92269ce4a2089b705431cc6fcc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7526761137399138667, guid: 245b9f92269ce4a2089b705431cc6fcc, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7917626941507494709, guid: 245b9f92269ce4a2089b705431cc6fcc, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

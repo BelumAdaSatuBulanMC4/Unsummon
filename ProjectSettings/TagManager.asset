@@ -73,11 +73,11 @@ TagManager:
   - name: Items
     uniqueID: 4199967269
     locked: 0
-  - name: kid
-    uniqueID: 2089060487
-    locked: 0
   - name: Pocong
     uniqueID: 3735928473
+    locked: 0
+  - name: kid
+    uniqueID: 2089060487
     locked: 0
   - name: Indicator
     uniqueID: 354072313

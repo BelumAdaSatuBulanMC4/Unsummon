@@ -13,6 +13,7 @@ public class UI_MiniGame : MonoBehaviour
     [SerializeField] TMP_Text instructionText;
     [SerializeField] GameObject imageAnimated;
     [SerializeField] Image progressBar;
+    [SerializeField] Image progressBarCurse;
     private Animator anim;
 
     private bool isHoldingButton = false;
@@ -95,7 +96,7 @@ public class UI_MiniGame : MonoBehaviour
                     }
                     else
                     {
-                        instructionText.text = "Tap and Hold\nto light the candle";
+                        instructionText.text = "Tap and Hold to light the candle";
                         if (candleConditionValue >= 2f) // Lighting the candle at value 2
                         {
                             GameManager.instance.KidTurnedOnItem(item);
@@ -112,6 +113,7 @@ public class UI_MiniGame : MonoBehaviour
                     holdTime -= Time.deltaTime; // Decrease the hold time
                     candleConditionValue = Mathf.Clamp((holdTime / maxHoldTime) * 5f + startConditionValue, startConditionValue, 5f);
                     anim.SetFloat("CandleCondition", candleConditionValue);
+
                 }
             }
         }

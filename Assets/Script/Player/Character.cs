@@ -50,6 +50,8 @@ public class Character : NetworkBehaviour
     public AudioClip sfxMovementClip;  // AudioClip untuk AudioSource pertama
     public AudioClip sfxPocongKillClip;  // AudioClip untuk AudioSource kedua
 
+    [SerializeField] private GameObject characterLight2D;
+
 
     protected virtual void Awake()
     {
@@ -62,9 +64,11 @@ public class Character : NetworkBehaviour
         sfxPocongKill.clip = sfxPocongKillClip;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
+        Debug.Log("Start - di Character.cs berhasil dijalankan");
         UserManager.instance.SetYourRole(typeChar);
+        if (IsOwner) characterLight2D.SetActive(true);
     }
 
     public void MakeANoise()
