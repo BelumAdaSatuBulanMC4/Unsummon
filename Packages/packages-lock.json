@@ -1,5 +1,19 @@
 {
   "dependencies": {
+    "com.apple.unityplugin.accessibility": {
+      "version": "file:/Users/syuhadarantisi/MyProgram/Unity/unityplugins/Build/com.apple.unityplugin.accessibility-1.1.2.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.apple.unityplugin.core": "3.1.5"
+      }
+    },
+    "com.apple.unityplugin.core": {
+      "version": "file:/Users/syuhadarantisi/MyProgram/Unity/unityplugins/Build/com.apple.unityplugin.core-3.1.5.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {}
+    },
     "com.unity.2d.animation": {
       "version": "9.1.1",
       "depth": 1,
@@ -265,9 +279,9 @@
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.androidjni": "1.0.0",
         "com.unity.nuget.newtonsoft-json": "3.2.1",
-        "com.unity.modules.androidjni": "1.0.0"
+        "com.unity.modules.unitywebrequest": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },

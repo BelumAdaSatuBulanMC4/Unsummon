@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "com.apple.unityplugin.accessibility": "file:/Users/syuhadarantisi/MyProgram/Unity/unityplugins/Build/com.apple.unityplugin.accessibility-1.1.2.tgz",
+    "com.apple.unityplugin.core": "file:/Users/syuhadarantisi/MyProgram/Unity/unityplugins/Build/com.apple.unityplugin.core-3.1.5.tgz",
     "com.unity.cinemachine": "2.10.1",
     "com.unity.collab-proxy": "2.5.1",
     "com.unity.feature.2d": "2.0.1",
