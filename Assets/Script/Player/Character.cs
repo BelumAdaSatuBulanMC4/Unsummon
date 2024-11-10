@@ -83,23 +83,29 @@ public class Character : NetworkBehaviour
         UserManager.instance.SetYourRole(typeChar);
         Debug.Log("woylah ini masuk ke character start!");
         if (IsOwner) characterSpotLight.SetActive(true);
-
-        if (volume != null && volume.profile.TryGet(out vignette))
+        if (IsOwner)
         {
-            Debug.LogWarning("Vignette effect found in the Volume profile.");
-            // Example: Set the vignette intensity
-            if (typeChar == "Pocong")
+            if (volume != null && volume.profile.TryGet(out vignette))
             {
-                vignette.intensity.value = 0f; // Adjust this value as needed
+                Debug.LogWarning("Vignette effect found in the Volume profile.");
+                // Example: Set the vignette intensity
+                if (typeChar == "Pocong")
+                {
+                    vignette.active = false;
+                    // vignette.intensity.value = 0f; // Adjust this value as needed
+                    Debug.Log("Pocong masuk sini! " + vignette.active);
+                }
+                else
+                {
+                    vignette.active = true;
+                    vignette.intensity.value = .5f; // Adjust this value as needed
+                    Debug.Log("Player masuk sini! " + vignette.active);
+                }
             }
             else
             {
-                vignette.intensity.value = .5f; // Adjust this value as needed
+                Debug.LogWarning("No Vignette effect found in the Volume profile.");
             }
-        }
-        else
-        {
-            Debug.LogWarning("No Vignette effect found in the Volume profile.");
         }
     }
 
