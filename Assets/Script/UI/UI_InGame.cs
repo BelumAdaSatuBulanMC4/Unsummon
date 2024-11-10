@@ -73,6 +73,13 @@ public class UI_InGame : MonoBehaviour
                     InteractButtonHiding.GetComponentInChildren<Button>().onClick.AddListener(InteractedWithCloset);
                 }
             }
+            else if (authorCharacter.GetTypeChar() == "Pocong")
+            {
+                if (authorCharacter.GetCurrentItem() != null)
+                {
+                    InteractButton.GetComponentInChildren<Button>().onClick.AddListener(InteractedWithItem);
+                }
+            }
         }
         else
         {
@@ -135,6 +142,8 @@ public class UI_InGame : MonoBehaviour
 
     public void InteractedWithItem()
     {
+        Debug.Log($"InteractedWithItem - Masuk fungsi InteractedWithItem");
+        Debug.Log($"InteractedWithItem - GetTypeChar: {authorCharacter.GetTypeChar()}");
         if (authorCharacter.GetTypeChar() == "Player")
         {
             // Debug.Log("cek!");
@@ -155,8 +164,10 @@ public class UI_InGame : MonoBehaviour
         }
         else if (authorCharacter.GetTypeChar() == "Pocong")
         {
+            Debug.Log($"InteractedWithItem - Masuk Else If Pocong");
             if (authorCharacter.GetCurrentItem().isActivated)
             {
+                Debug.Log($"InteractedWithItem - Klo lilinnya Active Pocong bisa interact");
                 // GameManager.instance.PocongTurnedOnItem(item);
                 OpenMiniGame();
                 UI_MiniGame.instance.CurrentItem(authorCharacter.GetCurrentItem());

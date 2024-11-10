@@ -14,13 +14,16 @@ public class MainMenuManager : MonoBehaviour
 
     [SerializeField] private Button createRoomButton;
     [SerializeField] private Button joinRoomButton;
+    [SerializeField] private Button settingButton;
     [SerializeField] private GameObject UI_PopUpFull;
     [SerializeField] private GameObject UI_PopUpRoomNotFound;
     [SerializeField] private GameObject UI_PopUpLostConnection;
+    [SerializeField] private GameObject UI_Settings;
 
     private async void Start()
     {
         Debug.Log($"{DataPersistence.LoadUsername()}");
+        settingButton.onClick.AddListener(() => UI_Settings.SetActive(true));
         createRoomButton.onClick.AddListener(StartHost);
         // createRoomButton.onClick.AddListener(() => OpenUI(UI_PopUpFull));
         joinRoomButton.onClick.AddListener(StartClient);

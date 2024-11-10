@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 // using static UnityEditor.Progress;
 
 public class Character : NetworkBehaviour
@@ -58,6 +60,12 @@ public class Character : NetworkBehaviour
     protected Closet currentCloset;
     private Vector3 LatestPosition;
 
+    [Header("Lighting")]
+    [SerializeField] private GameObject characterSpotLight;
+
+    [Header("Kamera")]
+    [SerializeField] Volume volume;
+    private Vignette vignette;
 
     protected virtual void Awake()
     {
@@ -70,10 +78,35 @@ public class Character : NetworkBehaviour
         sfxPocongKill.clip = sfxPocongKillClip;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         UserManager.instance.SetYourRole(typeChar);
         Debug.Log("woylah ini masuk ke character start!");
+        if (IsOwner) characterSpotLight.SetActive(true);
+        if (IsOwner)
+        {
+            if (volume != null && volume.profile.TryGet(out vignette))
+            {
+                Debug.LogWarning("Vignette effect found in the Volume profile.");
+                // Example: Set the vignette intensity
+                if (typeChar == "Pocong")
+                {
+                    vignette.active = false;
+                    // vignette.intensity.value = 0f; // Adjust this value as needed
+                    Debug.Log("Pocong masuk sini! " + vignette.active);
+                }
+                else
+                {
+                    vignette.active = true;
+                    vignette.intensity.value = .5f; // Adjust this value as needed
+                    Debug.Log("Player masuk sini! " + vignette.active);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No Vignette effect found in the Volume profile.");
+            }
+        }
     }
 
     public void MakeANoise()
