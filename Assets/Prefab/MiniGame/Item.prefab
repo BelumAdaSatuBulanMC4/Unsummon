@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2576834495
+  GlobalObjectIdHash: 255700736
   InScenePlacedSourceGlobalObjectIdHash: 3759644670
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -269,7 +269,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 100.82214
+  MaxDistance: 21.11509
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -437,7 +437,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -95000027
-  m_SortingLayer: 10
+  m_SortingLayer: 11
   m_SortingOrder: 1
   m_Sprite: {fileID: 214423203, guid: 99f1f69543c2e48bbaefe5303da49f5f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -407,7 +407,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAuthor: 1
-  moveSpeed: 4
+  moveSpeed: 5.5
   itemCheck: {fileID: 2023791975658744652}
   itemCheckRadius: 1.5
   whatIsItem:
@@ -1236,7 +1236,7 @@ PrefabInstance:
     - target: {fileID: 5298427744701122900, guid: a03ffc571ebfa4376a72137fee46d71b, type: 3}
       propertyPath: m_BoundingShape2D
       value: 
-      objectReference: {fileID: 7563757579954533960, guid: aecce8e5943da4154a043d4029367e82, type: 3}
+      objectReference: {fileID: 3073518762224088236, guid: aecce8e5943da4154a043d4029367e82, type: 3}
     - target: {fileID: 5772308043381835828, guid: a03ffc571ebfa4376a72137fee46d71b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.1
@@ -1406,7 +1406,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 358945059510094986, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
       propertyPath: m_CullingMask.m_Bits
-      value: 8183
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 514414178820581068, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
       propertyPath: m_LocalPosition.x
