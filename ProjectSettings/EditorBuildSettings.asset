@@ -17,7 +17,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Testing/JoystickFixTest.unity
     guid: 33ede9fb92fd149fa90bd1212d8854fb
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Testing/CoreHapticTest.unity
     guid: 12807051eeccc49fd8e4c46ae8c6bfce
   - enabled: 1

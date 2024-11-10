@@ -395,4 +395,16 @@ public class GameManager : NetworkBehaviour
         return swiftPlugin.GetYawValue();
     }
 
+    //================================================================
+    //COREHAPTIC
+    public void StartConHapticFeedback(float intensity)
+    {
+        swiftPlugin.StartConHapticFeedback(intensity);
+    }
+
+    public void StopConHapticFeedback()
+    {
+        swiftPlugin.StopConHapticFeedback();
+    }
+
 }

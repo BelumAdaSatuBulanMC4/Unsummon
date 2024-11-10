@@ -29,6 +29,12 @@ public class PlayerKid : Character
 
     [SerializeField] private GameObject buttonInteraction;
 
+    private Vector3 pocongPosition;
+    public float maxDistance = 12f;
+    public float minIntensity = 0f;
+    public float maxIntensity = 1f;
+    private bool isNear = false;
+
     protected override void Awake()
     {
         base.Awake();
@@ -69,6 +75,7 @@ public class PlayerKid : Character
         HandleAnimations();
         // HandleLocationChanged();
         // HandlePlayerCollision();
+        HandlePocongFear();
         HandleMovement();
         // PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
 
@@ -100,6 +107,35 @@ public class PlayerKid : Character
                 }
             }
         }
+    }
+
+    private void HandlePocongFear()
+    {
+        pocongPosition = PlayerManager.instance.GetPocongPosition();
+        float distance = Vector3.Distance(pocongPosition, transform.position);
+        Debug.Log("Distance with pocong: " + distance);
+
+        float intensity = Mathf.Lerp(maxIntensity, minIntensity, distance / maxDistance);
+
+        // Optionally, limit intensity within 0-1 range in case distance exceeds maxDistance
+        intensity = Mathf.Clamp(intensity, minIntensity, maxIntensity);
+
+        // Use the intensity value with your haptic manager
+        // HapticManager.StartHaptic(intensity);
+        if (distance < 12f)
+        {
+            // isNear = true;
+            GameManager.instance.StartConHapticFeedback(intensity);
+        }
+        else
+        {
+            // isNear = false;
+            GameManager.instance.StopConHapticFeedback();
+        }
+        // if (isNear)
+        // {
+        //     GameManager.instance.StopConHapticFeedback();
+        // }
     }
 
     protected override void HandleMovement()

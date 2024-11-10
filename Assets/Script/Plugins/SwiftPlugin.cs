@@ -51,6 +51,12 @@ public class SwiftPlugin : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void StopHaptic();
 
+    [DllImport("__Internal")]
+    private static extern void StartContinuousHaptic(float intensity);
+
+    [DllImport("__Internal")]
+    private static extern void StopContinuousHaptic();
+
     private bool isRecordingStarted = false;
 
     // Call the Initialize function
@@ -131,9 +137,20 @@ public class SwiftPlugin : MonoBehaviour
         return GetYaw();
     }
 
+    // HAPTIC!
     public void TriggerHapticFeedback(float intensity, float duration)
     {
         PlayHaptic(intensity, duration);
+    }
+
+    public void StartConHapticFeedback(float intensity)
+    {
+        StartContinuousHaptic(intensity);
+    }
+
+    public void StopConHapticFeedback()
+    {
+        StopContinuousHaptic();
     }
 
     public void StopHapticFeedback()

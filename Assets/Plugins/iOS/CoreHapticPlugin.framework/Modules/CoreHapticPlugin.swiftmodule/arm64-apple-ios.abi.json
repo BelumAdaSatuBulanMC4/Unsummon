@@ -57,6 +57,54 @@
       },
       {
         "kind": "Function",
+        "name": "StartContinuousHaptic",
+        "printedName": "StartContinuousHaptic(intensity:)",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "Float",
+            "printedName": "Swift.Float",
+            "usr": "s:Sf"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)StartContinuousHapticWithIntensity:",
+        "mangledName": "$s16CoreHapticPlugin015StartContinuousB09intensityySf_tF",
+        "moduleName": "CoreHapticPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "StopContinuousHaptic",
+        "printedName": "StopContinuousHaptic()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)StopContinuousHaptic",
+        "mangledName": "$s16CoreHapticPlugin014StopContinuousB0yyF",
+        "moduleName": "CoreHapticPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
         "name": "StopHaptic",
         "printedName": "StopHaptic()",
         "children": [
