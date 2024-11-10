@@ -10,8 +10,8 @@ public class GamePlayManager : NetworkBehaviour
     [SerializeField] private GameObject[] playerKidPrefabs;
     public GameObject playerKidPrefab;
     public GameObject playerPocongPrefab;
-    private Vector3 spawnKidPosition = new(0, 0, 0); // Posisi Spawn playerKid
-    private Vector3 spawnPocongPosition = new(0, 0, 0); // Posisi Spawn playerKid
+    private Vector3 spawnKidPosition = new(-40f, -10f, 0); // Posisi Spawn playerKid
+    private Vector3 spawnPocongPosition = new(-36f, -14f, 0); // Posisi Spawn playerKid
 
     [SerializeField] GameObject roleKidScene;
     [SerializeField] GameObject rolePocongScene;
@@ -110,12 +110,10 @@ public class GamePlayManager : NetworkBehaviour
             Debug.Log($"Previous player: {totalPreviousPlayer}");
             Debug.Log($"Current player: {totalCurrentPlayer}");
             Debug.Log($"Total player: {totalPlayer}");
-            if (i == randomPocongId && totalPlayer != 1)
-            // if ((int)client.ClientId == 0)
+            // if (i == randomPocongId && totalPlayer != 1)
+            if ((int)client.ClientId == 0)
             // if (false)
             {
-                GameObject playerInstance = Instantiate(playerPocongPrefab, spawnPocongPosition, Quaternion.identity);
-                playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(client.ClientId);
                 ShowRolePocongSceneClientRpc(new ClientRpcParams
                 {
                     Send = new ClientRpcSendParams
@@ -123,6 +121,9 @@ public class GamePlayManager : NetworkBehaviour
                         TargetClientIds = new ulong[] { client.ClientId }
                     }
                 });
+
+                GameObject playerInstance = Instantiate(playerPocongPrefab, spawnPocongPosition, Quaternion.identity);
+                playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(client.ClientId);
             }
             else
             {
@@ -139,6 +140,20 @@ public class GamePlayManager : NetworkBehaviour
             }
             i++;
         }
+    }
+
+    // ====================================== START COUROTINE ======================================
+    private IEnumerator DisableSceneAfterDelay(GameObject scene, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        scene.SetActive(false);
+    }
+
+
+    private IEnumerator WaitingReturnToMainMenu(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ReturnToMainMenuClientRpc();
     }
 
     // ====================================== SERVER RPC ======================================
@@ -167,19 +182,6 @@ public class GamePlayManager : NetworkBehaviour
     {
         roleKidScene.SetActive(true);
         StartCoroutine(DisableSceneAfterDelay(roleKidScene, 5f));
-    }
-
-    // Coroutine untuk menonaktifkan scene setelah delay tertentu
-    private IEnumerator DisableSceneAfterDelay(GameObject scene, float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        scene.SetActive(false);
-    }
-
-    private IEnumerator WaitingReturnToMainMenu(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        ReturnToMainMenuClientRpc();
     }
 
     // Server membuat semua client berpindah ke MainMenu
