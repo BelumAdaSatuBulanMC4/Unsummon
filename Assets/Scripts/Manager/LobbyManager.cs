@@ -195,7 +195,7 @@ public class LobbyManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void LoadGamePlaySceneServerRpc()
     {
-        NetworkManager.SceneManager.LoadScene("GamePlay", LoadSceneMode.Single);
+        NetworkManager.SceneManager.LoadScene("GamePlayNew", LoadSceneMode.Single);
     }
 
     [ServerRpc(RequireOwnership = false)]

@@ -393,7 +393,7 @@ public class Character : NetworkBehaviour
 
     private void HandleMovementSound()
     {
-        if (moveInput != Vector2.zero)
+        if (UI_InGame.instance.joystickGame.GetJoystickDirection() != Vector2.zero)
         {
             if (!sfxMovement.isPlaying)
             {
