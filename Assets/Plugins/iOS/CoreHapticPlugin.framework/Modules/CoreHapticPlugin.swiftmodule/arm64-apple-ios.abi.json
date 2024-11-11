@@ -9,10 +9,7 @@
         "name": "Foundation",
         "printedName": "Foundation",
         "declKind": "Import",
-        "moduleName": "CoreHapticPlugin",
-        "declAttributes": [
-          "RawDocComment"
-        ]
+        "moduleName": "CoreHapticPlugin"
       },
       {
         "kind": "Import",
@@ -24,7 +21,7 @@
       {
         "kind": "Function",
         "name": "PlayHaptic",
-        "printedName": "PlayHaptic(intensity:duration:)",
+        "printedName": "PlayHaptic(intensity:)",
         "children": [
           {
             "kind": "TypeNominal",
@@ -36,17 +33,11 @@
             "name": "Float",
             "printedName": "Swift.Float",
             "usr": "s:Sf"
-          },
-          {
-            "kind": "TypeNominal",
-            "name": "Float",
-            "printedName": "Swift.Float",
-            "usr": "s:Sf"
           }
         ],
         "declKind": "Func",
-        "usr": "c:(cm)PlayHapticWithIntensity:duration:",
-        "mangledName": "$s16CoreHapticPlugin04PlayB09intensity8durationySf_SftF",
+        "usr": "c:(cm)PlayHapticWithIntensity:",
+        "mangledName": "$s16CoreHapticPlugin04PlayB09intensityySf_tF",
         "moduleName": "CoreHapticPlugin",
         "declAttributes": [
           "AccessControl",
@@ -127,5 +118,13 @@
     ],
     "json_format_version": 8
   },
-  "ConstValues": []
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/CoreHapticPlugin\/CoreHapticPlugin\/CoreHapticPlugin.swift",
+      "kind": "BooleanLiteral",
+      "offset": 276,
+      "length": 5,
+      "value": "false"
+    }
+  ]
 }

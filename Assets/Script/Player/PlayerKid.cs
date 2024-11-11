@@ -116,26 +116,25 @@ public class PlayerKid : Character
         Debug.Log("Distance with pocong: " + distance);
 
         float intensity = Mathf.Lerp(maxIntensity, minIntensity, distance / maxDistance);
-
-        // Optionally, limit intensity within 0-1 range in case distance exceeds maxDistance
         intensity = Mathf.Clamp(intensity, minIntensity, maxIntensity);
 
-        // Use the intensity value with your haptic manager
-        // HapticManager.StartHaptic(intensity);
-        if (distance < 12f)
+        if (distance < maxDistance)
         {
-            // isNear = true;
             GameManager.instance.StartConHapticFeedback(intensity);
         }
+        // else if (distance > 4 && distance < 8)
+        // {
+        //     GameManager.instance.StartConHapticFeedback(0.5f);
+
+        // }
+        // else if (distance < 4)
+        // {
+        //     GameManager.instance.StartConHapticFeedback(0.8f);
+        // }
         else
         {
-            // isNear = false;
             GameManager.instance.StopConHapticFeedback();
         }
-        // if (isNear)
-        // {
-        //     GameManager.instance.StopConHapticFeedback();
-        // }
     }
 
     protected override void HandleMovement()

@@ -46,7 +46,7 @@ public class SwiftPlugin : MonoBehaviour
     //================================================================
     // HAPTIC FEEDBACK
     [DllImport("__Internal")]
-    private static extern void PlayHaptic(float intensity, float duration);
+    private static extern void PlayHaptic(float intensity);
 
     [DllImport("__Internal")]
     private static extern void StopHaptic();
@@ -138,9 +138,9 @@ public class SwiftPlugin : MonoBehaviour
     }
 
     // HAPTIC!
-    public void TriggerHapticFeedback(float intensity, float duration)
+    public void TriggerHapticFeedback(float intensity)
     {
-        PlayHaptic(intensity, duration);
+        PlayHaptic(intensity);
     }
 
     public void StartConHapticFeedback(float intensity)

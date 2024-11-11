@@ -399,12 +399,12 @@ public class GameManager : NetworkBehaviour
     //COREHAPTIC
     public void StartConHapticFeedback(float intensity)
     {
-        swiftPlugin.StartConHapticFeedback(intensity);
+        swiftPlugin.TriggerHapticFeedback(intensity);
     }
 
     public void StopConHapticFeedback()
     {
-        swiftPlugin.StopConHapticFeedback();
+        swiftPlugin.StopHapticFeedback();
     }
 
 }

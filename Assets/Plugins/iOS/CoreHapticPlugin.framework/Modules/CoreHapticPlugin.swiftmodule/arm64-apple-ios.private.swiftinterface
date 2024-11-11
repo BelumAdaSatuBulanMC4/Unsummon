@@ -9,7 +9,7 @@ import _Concurrency
 import _StringProcessing
 import _SwiftConcurrencyShims
 @_cdecl("PlayHaptic")
-public func PlayHaptic(intensity: Swift.Float, duration: Swift.Float)
+public func PlayHaptic(intensity: Swift.Float)
 @_cdecl("StartContinuousHaptic")
 public func StartContinuousHaptic(intensity: Swift.Float)
 @_cdecl("StopContinuousHaptic")
