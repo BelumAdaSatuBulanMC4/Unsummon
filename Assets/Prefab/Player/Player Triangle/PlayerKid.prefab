@@ -425,6 +425,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16384
   characterSpotLight: {fileID: 3603699217536006434}
+  volume: {fileID: 2748789683706857250, guid: 4abeb99d6d10a47f78772d1044c1850c, type: 3}
   knockBackDuration: 1
   knockBackPower: {x: 0, y: 0}
   spiritPrefab: {fileID: 4057405978394237103, guid: 9a7e79eac63824f04b49523f873166d1, type: 3}
@@ -605,8 +606,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8257506124747219733}
   - {fileID: 7577975530702083317}
+  - {fileID: 8257506124747219733}
   - {fileID: 5712358460163206507}
   - {fileID: 5536099300454643764}
   m_Father: {fileID: 0}
@@ -1476,6 +1477,10 @@ PrefabInstance:
       propertyPath: virtualCamera
       value: 
       objectReference: {fileID: 7271940849198757119}
+    - target: {fileID: 8523561776194980697, guid: b1ad364d8ba5b48ebb1ad75243c9ab26, type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -29,6 +29,12 @@ public class PlayerKid : Character
 
     [SerializeField] private GameObject buttonInteraction;
 
+    private Vector3 pocongPosition;
+    public float maxDistance = 12f;
+    public float minIntensity = 0f;
+    public float maxIntensity = 1f;
+    private bool isNear = false;
+
     protected override void Awake()
     {
         base.Awake();
@@ -69,6 +75,7 @@ public class PlayerKid : Character
         HandleAnimations();
         // HandleLocationChanged();
         // HandlePlayerCollision();
+        HandlePocongFear();
         HandleMovement();
         // PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
 
@@ -99,6 +106,34 @@ public class PlayerKid : Character
                     Physics2D.IgnoreCollision(myCollider, spirit);
                 }
             }
+        }
+    }
+
+    private void HandlePocongFear()
+    {
+        pocongPosition = PlayerManager.instance.GetPocongPosition();
+        float distance = Vector3.Distance(pocongPosition, transform.position);
+        Debug.Log("Distance with pocong: " + distance);
+
+        float intensity = Mathf.Lerp(maxIntensity, minIntensity, distance / maxDistance);
+        intensity = Mathf.Clamp(intensity, minIntensity, maxIntensity);
+
+        if (distance < maxDistance)
+        {
+            GameManager.instance.StartConHapticFeedback(intensity);
+        }
+        // else if (distance > 4 && distance < 8)
+        // {
+        //     GameManager.instance.StartConHapticFeedback(0.5f);
+
+        // }
+        // else if (distance < 4)
+        // {
+        //     GameManager.instance.StartConHapticFeedback(0.8f);
+        // }
+        else
+        {
+            GameManager.instance.StopConHapticFeedback();
         }
     }
 

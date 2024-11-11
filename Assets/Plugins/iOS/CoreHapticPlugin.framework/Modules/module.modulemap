@@ -1,0 +1,6 @@
+framework module CoreHapticPlugin {
+  umbrella header "CoreHapticPlugin.h"
+  export *
+
+  module * { export * }
+}

@@ -80,6 +80,7 @@ public class Pocong : Character
         // GetKidsPosition();
         // controller_UI.SetActive(IsOwner);
         HandleButtonInteraction();
+        PlayerManager.instance.UpdatePocongPositionServerRpc(transform.position);
     }
     // private void HandleLocationChanged()
     // {
