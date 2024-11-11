@@ -110,8 +110,8 @@ public class GamePlayManager : NetworkBehaviour
             Debug.Log($"Previous player: {totalPreviousPlayer}");
             Debug.Log($"Current player: {totalCurrentPlayer}");
             Debug.Log($"Total player: {totalPlayer}");
-            // if (i == randomPocongId && totalPlayer != 1)
-            if ((int)client.ClientId == 0)
+            if (i == randomPocongId && totalPlayer != 1)
+            // if ((int)client.ClientId == 0)
             // if (false)
             {
                 ShowRolePocongSceneClientRpc(new ClientRpcParams
