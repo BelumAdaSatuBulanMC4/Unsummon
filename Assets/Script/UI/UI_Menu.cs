@@ -32,18 +32,13 @@ public class UI_Menu : MonoBehaviour
     {
         Debug.Log("Start - UI_Menu Fungsi berhasil dijalankan");
         // OPEN UI
-
         // CLOSE UI
-        fadeEffect.ScreenFade(0, 4f);
         close_UI_JoinLobby.onClick.AddListener(() => CloseUI(UI_JoinLobby));
         close_UI_PopUpFull.onClick.AddListener(() => CloseUI(UI_PopUpFull));
         close_UI_PopUpRoomNotFound.onClick.AddListener(() => CloseUI(UI_PopUpRoomNotFound));
         close_UI_PopUpLostConnection.onClick.AddListener(() => CloseUI(UI_PopUpLostConnection));
 
-        // close_UI_HomeSettings.onClick.AddListener(() => CloseUI(UI_HomeSettings));
-        // close_UI_HomeSettings.onClick.AddListener(() => Debug.Log("Close UI berhasil ditekan"));
-        // close_UI_EditName.onClick.AddListener(() => CloseUI(UI_EditName));
-        // close_UI_EditName.onClick.AddListener(() => Debug.Log("Close UI berhasil ditekan"));
+        fadeEffect.ScreenFade(0, 4f);
     }
 
     public void ButtonJoin()

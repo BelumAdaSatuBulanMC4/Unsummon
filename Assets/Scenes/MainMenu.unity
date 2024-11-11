@@ -6850,7 +6850,7 @@ PrefabInstance:
     - target: {fileID: 729928017807493526, guid: 06170f720b08b47edb29d8bcd1a8a7e5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11500000, guid: dc675320846364481a816dfcd41709f7, type: 3}
     - target: {fileID: 729928017807493526, guid: 06170f720b08b47edb29d8bcd1a8a7e5, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: 
@@ -7163,6 +7163,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2970113059863074091, guid: b8a1d41f54fbd4c52ba6c27cffa600ef, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5915799095594581185, guid: b8a1d41f54fbd4c52ba6c27cffa600ef, type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
