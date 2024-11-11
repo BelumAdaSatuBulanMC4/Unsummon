@@ -30,6 +30,7 @@ public class UI_Menu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Start - UI_Menu Fungsi berhasil dijalankan");
         // OPEN UI
 
         // CLOSE UI
@@ -57,6 +58,7 @@ public class UI_Menu : MonoBehaviour
 
     public void CloseUI(GameObject UI)
     {
+        Debug.Log("CloseUI - berhasil dijalankan");
         UI.SetActive(false);
     }
 }
