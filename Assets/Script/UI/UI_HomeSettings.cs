@@ -10,13 +10,16 @@ public class UI_HomeSettings : MonoBehaviour
     [SerializeField] private Button editNameButton;
     [SerializeField] private GameObject UI_HomeSettingsObject;
     [SerializeField] private GameObject UI_EditNameObject;
+    [SerializeField] private GameObject UI_Tutorial;
     [SerializeField] private Button closeButton;
+    [SerializeField] private Button helpButton;
 
     // Start is called before the first frame update
     void Start()
     {
         editNameButton.onClick.AddListener(() => UI_EditNameObject.SetActive(true));
         closeButton.onClick.AddListener(() => UI_HomeSettingsObject.SetActive(false));
+        helpButton.onClick.AddListener(() => UI_Tutorial.SetActive(true));
     }
 
     void Update()
