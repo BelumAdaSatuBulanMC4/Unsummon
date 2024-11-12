@@ -79,7 +79,7 @@ public class Pocong : Character
         HandleMirrorInteraction();
         // GetKidsPosition();
         // controller_UI.SetActive(IsOwner);
-        HandleButtonInteraction();
+        // HandleButtonInteraction();
         PlayerManager.instance.UpdatePocongPositionServerRpc(transform.position);
     }
     // private void HandleLocationChanged()
@@ -107,20 +107,20 @@ public class Pocong : Character
         }
     }
 
-    private void HandleButtonInteraction()
-    {
-        // Debug.Log("POCONG BUTTON ");
-        if (currentItem != null && currentItem.isActivated)
-        {
-            Debug.LogWarning("is item null? " + currentItem == null);
-            buttonInteraction.SetActive(true);
-        }
-        else
-        {
-            Debug.LogWarning("is item null? " + currentItem == null);
-            buttonInteraction.SetActive(false);
-        }
-    }
+    // private void HandleButtonInteraction()
+    // {
+    //     // Debug.Log("POCONG BUTTON ");
+    //     if (currentItem != null && currentItem.isActivated)
+    //     {
+    //         Debug.LogWarning("is item null? " + currentItem == null);
+    //         buttonInteraction.SetActive(true);
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning("is item null? " + currentItem == null);
+    //         buttonInteraction.SetActive(false);
+    //     }
+    // }
 
     private void HandleKidInteraction()
     {

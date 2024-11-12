@@ -91,7 +91,7 @@ public class UI_InGame : MonoBehaviour
             DeActivatedButton();
         }
 
-        HandleButtonInteraction();
+        // HandleButtonInteraction();
     }
 
     public void SetAuthorCharacter(Character character)
