@@ -273,6 +273,11 @@ public class PlayerKid : Character
                 deadBody.GetComponent<NetworkObject>().Spawn();
 
                 GameObject spirit = Instantiate(spiritPrefab, transform.position, Quaternion.identity);
+
+                // UI_InGame.instance.SwitchToSpirit();
+                UI_InGame.instance.SetAuthorCharacter(spirit.GetComponentInChildren<Character>());
+                // UI_InGame.instance.InstantiateUIForCharacter(spirit.GetComponentInChildren<Character>());
+
                 PlayerSpirit newSpirit = spiritPrefab.GetComponent<PlayerSpirit>();
                 spirit.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
                 // UI_NoiseButton uiNoiseButton = FindObjectOfType<UI_NoiseButton>();  // Assuming you have only one UI_NoiseButton

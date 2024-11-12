@@ -437,6 +437,9 @@ MonoBehaviour:
     m_Bits: 2048
   controller_UI: {fileID: 6363562436477985309}
   buttonInteraction: {fileID: 6535000313946925059}
+  maxDistance: 12
+  minIntensity: 0
+  maxIntensity: 1
 --- !u!114 &674174689880832360
 MonoBehaviour:
   m_ObjectHideFlags: 0
