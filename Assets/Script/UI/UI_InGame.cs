@@ -58,7 +58,7 @@ public class UI_InGame : MonoBehaviour
 
     private void Update()
     {
-        // authorCharacter = FindAuthorCharacter();
+        authorCharacter = FindAuthorCharacter();
         joystickGame = FindObjectOfType<JoystickGame>();
         Debug.Log("new character is Update: " + authorCharacter);
         InstantiateUIForCharacter(authorCharacter);

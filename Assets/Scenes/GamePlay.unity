@@ -106099,11 +106099,11 @@ MonoBehaviour:
   UI_JoinLobby: {fileID: 0}
   UI_PopUpFull: {fileID: 0}
   UI_PopUpRoomNotFound: {fileID: 0}
-  UI_PopUpLostConnection: {fileID: 1862920489}
+  UI_PopUpLostConnection: {fileID: 0}
   close_UI_JoinLobby: {fileID: 0}
   close_UI_PopUpFull: {fileID: 0}
   close_UI_PopUpRoomNotFound: {fileID: 0}
-  close_UI_PopUpLostConnection: {fileID: 1862920487}
+  close_UI_PopUpLostConnection: {fileID: 0}
 --- !u!114 &1957539660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106178,8 +106178,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1862920488}
+  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -107027,21 +107026,10 @@ SceneRoots:
   - {fileID: 1120053245}
   - {fileID: 1442241216}
   - {fileID: 638743387}
-  - {fileID: 1889193552}
-  - {fileID: 875778447}
-  - {fileID: 1109200291}
-  - {fileID: 1090923572}
-  - {fileID: 644181298}
-  - {fileID: 788206693}
-  - {fileID: 790994725}
   - {fileID: 294309943}
   - {fileID: 1040015437}
   - {fileID: 1957539663}
-  - {fileID: 486399652}
-  - {fileID: 1070641362}
-  - {fileID: 1325479207}
-  - {fileID: 250679621}
-  - {fileID: 1374873493}
   - {fileID: 1008453862}
   - {fileID: 1142465623}
   - {fileID: 4645147221051049074}
+  - {fileID: 1427644589}
