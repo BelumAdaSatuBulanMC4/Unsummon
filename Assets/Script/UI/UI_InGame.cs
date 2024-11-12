@@ -25,6 +25,7 @@ public class UI_InGame : MonoBehaviour
 
     private GameObject currentInGameController;
     private Character authorCharacter;
+    private Character tempCharacter;
 
     private bool isOnHidingMiniGame = false;
 
@@ -59,6 +60,9 @@ public class UI_InGame : MonoBehaviour
     {
         // authorCharacter = FindAuthorCharacter();
         joystickGame = FindObjectOfType<JoystickGame>();
+        Debug.Log("new character is Update: " + authorCharacter);
+        InstantiateUIForCharacter(authorCharacter);
+
 
         if (authorCharacter != null)
         {
@@ -88,6 +92,12 @@ public class UI_InGame : MonoBehaviour
         }
 
         HandleButtonInteraction();
+    }
+
+    public void SetAuthorCharacter(Character character)
+    {
+        Debug.Log("new character is SetAuthorCharacter: " + character);
+        authorCharacter = character;
     }
 
     private void DeActivatedButton()
@@ -192,6 +202,12 @@ public class UI_InGame : MonoBehaviour
         }
     }
 
+    public void SwitchToSpirit()
+    {
+        UI_InGameKid.SetActive(false);
+        UI_InGameSpirit.SetActive(true);
+    }
+
     public void SwitchToSettings()
     {
         UI_InGameSettings.SetActive(true);
@@ -227,24 +243,28 @@ public class UI_InGame : MonoBehaviour
         return null;
     }
 
-    private void InstantiateUIForCharacter(Character character)
+    public void InstantiateUIForCharacter(Character character)
     {
+        Debug.Log("new character is di dalem InstantiateUI: " + character);
+
+        // if (tempCharacter != character)
+        // {
         if (character is PlayerKid)
         {
-            currentInGameController = UI_InGameKid;
+            // currentInGameController = UI_InGameKid;
             UI_InGameKid.SetActive(true);
             // Instantiate(currentInGameController, transform);
         }
         else if (character is Pocong)
         {
-            currentInGameController = UI_InGamePocong;
+            // currentInGameController = UI_InGamePocong;
             UI_InGamePocong.SetActive(true);
             // Instantiate(currentInGameController, transform);
         }
         else if (character is PlayerSpirit)
         {
             Debug.Log("InGame spirit " + character.ToString());
-            currentInGameController = UI_InGameSpirit;
+            // currentInGameController = UI_InGameSpirit;
             UI_InGameSpirit.SetActive(true);
             UI_InGameKid.SetActive(false);
             // Instantiate(currentInGameController, transform);
@@ -253,6 +273,8 @@ public class UI_InGame : MonoBehaviour
         {
             Debug.LogWarning("Unknown character type.");
         }
+        // tempCharacter = character;
+        // }
     }
 
     //================================================================

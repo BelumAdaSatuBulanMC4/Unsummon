@@ -125,7 +125,7 @@ public class Pocong : Character
     private void HandleKidInteraction()
     {
         detectedKids = Physics2D.OverlapCircleAll(kidCheck.position, kidCheckRadius, whatIsKid);
-        isKidDetected = detectedKids.Length > 0 ? true : false;
+        isKidDetected = detectedKids.Length > 0;
 
         // Debug.Log("Detected kids " + detectedKids.Length);
         // foreach (Collider2D kidCollider in detectedKids)
