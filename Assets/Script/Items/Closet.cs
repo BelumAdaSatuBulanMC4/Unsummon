@@ -36,6 +36,7 @@ public class Closet : MonoBehaviour
     {
         if (isUsed)
         {
+            Debug.Log("Closet deactive harusnya udh ga kelihatan!");
             UpdateUsedServerRpc(false);
             //panggil server rpc buat set dia ke false!
         }
