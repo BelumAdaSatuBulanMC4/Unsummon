@@ -262,7 +262,10 @@ public class UI_InGame : MonoBehaviour
         if (character is PlayerKid)
         {
             // currentInGameController = UI_InGameKid;
-            UI_InGameKid.SetActive(true);
+            if (!isOnHidingMiniGame)
+            {
+                UI_InGameKid.SetActive(true);
+            }
             // Instantiate(currentInGameController, transform);
         }
         else if (character is Pocong)
@@ -313,7 +316,7 @@ public class UI_InGame : MonoBehaviour
             hidingMechanics.CurrentCloset(authorCharacter.GetCurrentCloset());
         }
 
-        // isOnHidingMiniGame = true;
+        isOnHidingMiniGame = true;
         authorCharacter.GetCurrentCloset().ClosetActivated();
         authorCharacter.HideTheCharacter(true);
         UI_InGameKid.SetActive(false);
@@ -334,7 +337,7 @@ public class UI_InGame : MonoBehaviour
             instantiatedHidingMechanics = null; // Clear the reference
         }
 
-        // isOnHidingMiniGame = false;
+        isOnHidingMiniGame = false;
         // Debug.Log("kelihatan? apakah karakter null : " + authorCharacter == null);
         // Debug.Log("kelihatan gak???????????????????????? DUA");
         // Debug.Log("harusnya UI InGameKid udah kelihatan lagi!");
