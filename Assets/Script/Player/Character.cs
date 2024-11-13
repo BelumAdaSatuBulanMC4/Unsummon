@@ -71,11 +71,19 @@ public class Character : NetworkBehaviour
     protected float hidingCoolDownTimer;
     private Vignette vignette;
 
+    //set visible di sini ya
+    private Renderer rendererCharacter;
+    private CapsuleCollider2D colliderCharacter;
+
+
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         inputPlayer = new InputActions();
         AudioSource[] audioSources = GetComponents<AudioSource>();
+        rendererCharacter = GetComponentInChildren<Renderer>();
+        colliderCharacter = GetComponent<CapsuleCollider2D>();
         sfxMovement = audioSources[0];
         sfxPocongKill = audioSources[1];
         sfxMovement.clip = sfxMovementClip;
@@ -126,6 +134,7 @@ public class Character : NetworkBehaviour
     }
     protected virtual void Update()
     {
+        Debug.Log("collider is " + colliderCharacter + " and " + rendererCharacter);
         if (!IsOwner) { return; }
         Debug.Log($"PlayerID: {OwnerClientId} adalah {typeChar}");
         if (typeChar == "Player" || typeChar == "Pocong")
@@ -285,6 +294,18 @@ public class Character : NetworkBehaviour
 
     public void HideTheCharacter(bool isHiding)
     {
+        // Renderer[] renderers = gameObject.GetComponentsInChildren<Renderer>();
+        // foreach (Renderer renderer in renderers)
+        // {
+        //     renderer.enabled = false;
+        // }
+
+        // Collider[] colliders = gameObject.GetComponents<Collider>();
+        // foreach (Collider collider in colliders)
+        // {
+        //     collider.enabled = false;
+        // }
+
         if (isHiding)
         {
             Debug.Log("Harusnya karakter GAK kelihatan lagi!");
@@ -312,7 +333,12 @@ public class Character : NetworkBehaviour
     [ClientRpc]
     private void HideCharacterClientRpc(bool isHiding)
     {
-        gameObject.SetActive(isHiding);
+        // gameObject.SetActive(isHiding);
+        if (rendererCharacter != null && colliderCharacter != null)
+        {
+            rendererCharacter.enabled = isHiding;
+            colliderCharacter.enabled = isHiding;
+        }
     }
 
     public void interactItemButton()
