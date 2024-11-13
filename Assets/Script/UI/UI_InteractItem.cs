@@ -93,7 +93,7 @@ public class UI_InteractItem : MonoBehaviour
     private void HandleButtonInteraction()
     {
         // Debug.Log("POCONG BUTTON ");
-        if (chara.GetTypeChar() == "Pocong")
+        if (type == "Pocong")
         {
             if (chara.GetCurrentItem() != null && chara.GetCurrentItem().isActivated)
             {
@@ -109,7 +109,7 @@ public class UI_InteractItem : MonoBehaviour
             }
         }
 
-        if (chara.GetTypeChar() == "Player")
+        if (type == "Kid")
         {
             if (chara.GetCurrentItem() != null && !chara.GetCurrentItem().isActivated)
             {
@@ -138,9 +138,9 @@ public class UI_InteractItem : MonoBehaviour
 
     public void InteractedWithItem()
     {
-        Debug.Log($"InteractedWithItem - Masuk fungsi InteractedWithItem");
-        Debug.Log($"InteractedWithItem - GetTypeChar: {chara.GetTypeChar()}");
-        if (chara.GetTypeChar() == "Player")
+        // Debug.Log($"InteractedWithItem - Masuk fungsi InteractedWithItem");
+        // Debug.Log($"InteractedWithItem - GetTypeChar: {chara.GetTypeChar()}");
+        if (type == "Kid")
         {
             // Debug.Log("cek!");
             if (!chara.GetCurrentItem().isActivated)
@@ -150,7 +150,7 @@ public class UI_InteractItem : MonoBehaviour
                 UI_MiniGame.instance.CurrentItem(chara.GetCurrentItem());
             }
         }
-        else if (chara.GetTypeChar() == "Pocong")
+        else if (type == "Pocong")
         {
             Debug.Log($"InteractedWithItem - Masuk Else If Pocong");
             if (chara.GetCurrentItem().isActivated)
