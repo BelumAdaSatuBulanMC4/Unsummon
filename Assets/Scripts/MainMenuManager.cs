@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
@@ -22,8 +23,14 @@ public class MainMenuManager : MonoBehaviour
     {
         Debug.Log($"{DataPersistence.LoadUsername()}");
         createRoomButton.onClick.AddListener(StartHost);
-        // createRoomButton.onClick.AddListener(() => OpenUI(UI_PopUpFull));
         joinRoomButton.onClick.AddListener(StartClient);
+
+        if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient)
+        {
+            Debug.Log("Start MainMenuManager - Host sudah berjalan, matikan terlebih dahulu.");
+            NetworkManager.Singleton.Shutdown();
+        }
+
         try
         {
             await UnityServices.InitializeAsync();
