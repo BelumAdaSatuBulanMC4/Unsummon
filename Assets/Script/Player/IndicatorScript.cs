@@ -96,7 +96,7 @@ public class IndicatorScript : MonoBehaviour
     private Character FindAuthorCharacter()
     {
         Character[] allCharacters = FindObjectsOfType<Character>();
-        Debug.Log("jumlah author " + allCharacters.Length);
+        // Debug.Log("jumlah author " + allCharacters.Length);
         foreach (Character character in allCharacters)
         {
             if (character.GetIsAuthor())

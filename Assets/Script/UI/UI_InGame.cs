@@ -96,7 +96,7 @@ public class UI_InGame : MonoBehaviour
 
     public void SetAuthorCharacter(Character character)
     {
-        Debug.Log("new character is SetAuthorCharacter: " + character);
+        // Debug.Log("new character is SetAuthorCharacter: " + character);
         authorCharacter = character;
     }
 
@@ -192,10 +192,10 @@ public class UI_InGame : MonoBehaviour
     {
         if (authorCharacter.GetTypeChar() == "Player")
         {
-            Debug.Log("Interact sama closet!");
+            // Debug.Log("Interact sama closet!");
             if (!authorCharacter.GetCurrentCloset().isUsed)
             {
-                Debug.Log("Harusnya sih hiding UI muncul");
+                // Debug.Log("Harusnya sih hiding UI muncul");
                 UI_InGame.instance.OpenHidingMechanics();
                 // UI_HidingMechanics.instance.CurrentCloset(authorCharacter.GetCurrentCloset());
             }
@@ -231,21 +231,31 @@ public class UI_InGame : MonoBehaviour
 
     private Character FindAuthorCharacter()
     {
+        Debug.Log("author character is null or not?" + authorCharacter == null);
         Character[] allCharacters = FindObjectsOfType<Character>();
-        Debug.Log("jumlah author " + allCharacters.Length);
-        foreach (Character character in allCharacters)
+        // Debug.Log("jumlah author " + allCharacters.Length);
+        if (authorCharacter == null && allCharacters.Length > 0)
         {
-            if (character.GetIsAuthor())
+            foreach (Character character in allCharacters)
             {
-                return character;
+                if (character.GetIsAuthor())
+                {
+                    return character;
+                }
             }
         }
+        else if (authorCharacter != null && allCharacters.Length > 0)
+        {
+            return authorCharacter;
+        }
+
+        Debug.Log("jumlah author " + allCharacters.Length);
         return null;
     }
 
     public void InstantiateUIForCharacter(Character character)
     {
-        Debug.Log("new character is di dalem InstantiateUI: " + character);
+        // Debug.Log("new character is di dalem InstantiateUI: " + character);
 
         // if (tempCharacter != character)
         // {
@@ -263,7 +273,7 @@ public class UI_InGame : MonoBehaviour
         }
         else if (character is PlayerSpirit)
         {
-            Debug.Log("InGame spirit " + character.ToString());
+            // Debug.Log("InGame spirit " + character.ToString());
             // currentInGameController = UI_InGameSpirit;
             UI_InGameSpirit.SetActive(true);
             UI_InGameKid.SetActive(false);
@@ -291,10 +301,10 @@ public class UI_InGame : MonoBehaviour
             instantiatedHidingMechanics = Instantiate(UI_HidingMiniGame, transform.parent); // Set parent to UI container
             instantiatedHidingMechanics.SetActive(true);
         }
-        else
-        {
-            instantiatedHidingMechanics.SetActive(true); // Reactivate if already instantiated
-        }
+        // else
+        // {
+        //     instantiatedHidingMechanics.SetActive(true); // Reactivate if already instantiated
+        // }
 
         // Initialize UI_HidingMechanics with any required data
         UI_HidingMechanics hidingMechanics = instantiatedHidingMechanics.GetComponent<UI_HidingMechanics>();
@@ -311,16 +321,24 @@ public class UI_InGame : MonoBehaviour
 
     public void CloseHidingMechanics()
     {
+        // Debug.Log("Masuk ke CloseHidingMechanics, Minigame harusnya udh ga Kelihatan!");
+
         if (instantiatedHidingMechanics != null)
         {
+            Debug.Log("Masuk ke Destroy, Kelihatan! " + authorCharacter == null);
+            authorCharacter.GetCurrentCloset().ClosetDeActivated();
+            authorCharacter.ResetHidingCooldown();
+            authorCharacter.HideTheCharacter(false);
+            UI_InGameKid.SetActive(true);
             Destroy(instantiatedHidingMechanics);
             instantiatedHidingMechanics = null; // Clear the reference
         }
 
         // isOnHidingMiniGame = false;
-        authorCharacter.GetCurrentCloset().ClosetDeActivated();
-        authorCharacter.HideTheCharacter(false);
-        UI_InGameKid.SetActive(true);
+        // Debug.Log("kelihatan? apakah karakter null : " + authorCharacter == null);
+        // Debug.Log("kelihatan gak???????????????????????? DUA");
+        // Debug.Log("harusnya UI InGameKid udah kelihatan lagi!");
+        // HIDE here
     }
 
 }

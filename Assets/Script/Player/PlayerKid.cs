@@ -71,7 +71,10 @@ public class PlayerKid : Character
     protected override void Update()
     {
         if (!IsOwner) { return; }
+
+
         base.Update();
+        hidingCoolDownTimer -= Time.deltaTime;
         HandleAnimations();
         // HandleLocationChanged();
         // HandlePlayerCollision();
@@ -275,7 +278,7 @@ public class PlayerKid : Character
                 GameObject spirit = Instantiate(spiritPrefab, transform.position, Quaternion.identity);
 
                 // UI_InGame.instance.SwitchToSpirit();
-                UI_InGame.instance.SetAuthorCharacter(spirit.GetComponentInChildren<Character>());
+                UI_InGame.instance.SetAuthorCharacter(null);
                 // UI_InGame.instance.InstantiateUIForCharacter(spirit.GetComponentInChildren<Character>());
 
                 PlayerSpirit newSpirit = spiritPrefab.GetComponent<PlayerSpirit>();

@@ -65,6 +65,10 @@ public class Character : NetworkBehaviour
 
     [Header("Kamera")]
     [SerializeField] Volume volume;
+
+    [Header("Hiding info")]
+    [SerializeField] protected float hidingCoolDown;
+    protected float hidingCoolDownTimer;
     private Vignette vignette;
 
     protected virtual void Awake()
@@ -283,6 +287,8 @@ public class Character : NetworkBehaviour
     {
         if (isHiding)
         {
+            Debug.Log("Harusnya karakter GAK kelihatan lagi!");
+
             LatestPosition = transform.position;
             transform.position = currentCloset.transform.position;
             // gameObject.SetActive(false);
@@ -292,6 +298,7 @@ public class Character : NetworkBehaviour
         {
             // gameObject.SetActive(true);
             HideCharacterServerRpc(true);
+            Debug.Log("Harusnya karakter udh kelihatan lagi!");
             transform.position = LatestPosition;
         }
     }
@@ -409,4 +416,13 @@ public class Character : NetworkBehaviour
         }
     }
 
+    public float GetHidingCooldown()
+    {
+        return hidingCoolDownTimer;
+    }
+
+    public void ResetHidingCooldown()
+    {
+        hidingCoolDownTimer = hidingCoolDown;
+    }
 }

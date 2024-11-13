@@ -1302,7 +1302,7 @@ GameObject:
   - component: {fileID: 8592023791313484735}
   - component: {fileID: 6391116285497788663}
   - component: {fileID: 8425549270971621706}
-  - component: {fileID: 3730248675631136535}
+  - component: {fileID: 2216581780418398389}
   m_Layer: 5
   m_Name: HideButton
   m_TagString: Untagged
@@ -1412,21 +1412,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3730248675631136535
+--- !u!114 &2216581780418398389
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8362450617886668949}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b572f000899945fc87bc8328a561c66, type: 3}
+  m_Script: {fileID: 11500000, guid: c2f945e8258a54891a0752fcf707e03c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: Kid
   enabledColor: {r: 1, g: 1, b: 1, a: 1}
-  disabledColor: {r: 1, g: 1, b: 1, a: 0.6862745}
+  disabledColor: {r: 1, g: 1, b: 1, a: 0.5}
 --- !u!1001 &5574158398083350241
 PrefabInstance:
   m_ObjectHideFlags: 0

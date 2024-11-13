@@ -426,6 +426,7 @@ MonoBehaviour:
     m_Bits: 16384
   characterSpotLight: {fileID: 3603699217536006434}
   volume: {fileID: 2748789683706857250, guid: 4abeb99d6d10a47f78772d1044c1850c, type: 3}
+  hidingCoolDown: 8
   knockBackDuration: 1
   knockBackPower: {x: 0, y: 0}
   spiritPrefab: {fileID: 4057405978394237103, guid: 9a7e79eac63824f04b49523f873166d1, type: 3}
