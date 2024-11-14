@@ -56,14 +56,20 @@ public class HostManager : MonoBehaviour
         var relayServerData = new RelayServerData(allocation, "dtls");
         NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
 
-        Debug.Log($"server: {allocation.ConnectionData[0]} {allocation.ConnectionData[1]}");
-        Debug.Log($"server: {allocation.AllocationId}");
+        Debug.Log($"StartHost - server: {allocation.ConnectionData[0]} {allocation.ConnectionData[1]}");
+        Debug.Log($"StartHost - server: {allocation.AllocationId}");
 
         // codeRoomOutput.text = JoinCode;
 
+        // if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient)
+        // {
+        //     Debug.Log("StartHost - Host sudah berjalan, matikan terlebih dahulu.");
+        //     NetworkManager.Singleton.Shutdown();
+        // }
+
         if (NetworkManager.Singleton.StartHost())
         {
-            Debug.Log("Host started successfully!");
+            Debug.Log("StartHost - Host started successfully!");
             LobbyManager lobbyManager = FindObjectOfType<LobbyManager>();
             if (lobbyManager != null)
             {
@@ -72,7 +78,7 @@ public class HostManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Failed to start host!");
+            Debug.LogError("StartHost - Failed to start host!");
             lostConnection = true;
         }
     }

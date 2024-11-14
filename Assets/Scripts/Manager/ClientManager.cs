@@ -68,14 +68,16 @@ public class ClientManager : MonoBehaviour
 
         NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
 
+        // if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient)
+        // {
+        //     Debug.Log("StartClient - Host sudah berjalan, matikan terlebih dahulu.");
+        //     NetworkManager.Singleton.Shutdown();
+        // }
+
+
         if (NetworkManager.Singleton.StartClient())
         {
             Debug.Log("Client connect successfully!");
-            // LobbyManager lobbyManager = FindObjectOfType<LobbyManager>();
-            // if (lobbyManager != null)
-            // {
-            //     lobbyManager.UpdateRoomCode(codeRoom);
-            // }
         }
         else
         {
