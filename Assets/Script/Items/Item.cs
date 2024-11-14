@@ -15,11 +15,15 @@ public class Item : NetworkBehaviour
     private AudioSource audioSource;
     private Light2D light;
 
+    [SerializeField] private GameObject rendererOutline;
+    private CircleCollider2D colliderCircle;
+
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
         audioSource = GetComponent<AudioSource>();
         light = GetComponentInChildren<Light2D>();
+        colliderCircle = rendererOutline.GetComponent<CircleCollider2D>();
     }
 
     private void Start()
@@ -31,6 +35,15 @@ public class Item : NetworkBehaviour
         // else
         // {
         //     anim.SetFloat("isCandleActive", 0);
+        // }
+    }
+
+    public void ItemDetectedOutline(bool isDetected)
+    {
+        // if (IsOwner)
+        // {
+        rendererOutline.SetActive(isDetected);
+        Debug.Log("Harusnya masuk ke itemdetected " + rendererOutline + " dan " + isDetected);
         // }
     }
 

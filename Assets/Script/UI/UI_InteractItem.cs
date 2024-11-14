@@ -99,12 +99,14 @@ public class UI_InteractItem : MonoBehaviour
             {
                 Debug.LogWarning("is item null? " + chara.GetCurrentItem() == null);
                 // InteractButton.SetActive(true);
+                // chara.GetCurrentItem().ItemDetectedOutline(true);
                 EnableButton();
             }
             else
             {
                 Debug.LogWarning("is item null? " + chara.GetCurrentItem() == null);
                 // InteractButton.SetActive(false);
+                // chara.GetCurrentItem().ItemDetectedOutline(false);
                 DisableButton();
             }
         }
@@ -115,6 +117,7 @@ public class UI_InteractItem : MonoBehaviour
             {
                 Debug.Log("[ITEM] is item null? " + chara.GetCurrentItem() == null);
                 // InteractButton.SetActive(true);
+                // chara.GetCurrentItem().ItemDetectedOutline(true);
                 EnableButton();
             }
             // else if (chara.GetCurrentCloset() != null && !chara.GetCurrentCloset().isUsed)
@@ -130,6 +133,7 @@ public class UI_InteractItem : MonoBehaviour
             {
                 Debug.Log("[NULL] is item null? " + chara.GetCurrentItem() == null);
                 // InteractButton.SetActive(false);
+                // chara.GetCurrentItem().ItemDetectedOutline(false);
                 DisableButton();
                 // InteractButtonHiding.SetActive(false);
             }

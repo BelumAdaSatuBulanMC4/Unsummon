@@ -146,6 +146,16 @@ public class Character : NetworkBehaviour
         {
             HandleMovement();
         }
+
+        // if (IsOwner && currentItem == null)
+        // {
+        //     currentItem.ItemDetectedOutline(false);
+        // }
+        // else
+        // {
+        //     currentItem.ItemDetectedOutline(true);
+        // }
+
         HandleItemInteraction();
         // HandleClosetInteraction();
         HandleFlip();
@@ -210,6 +220,7 @@ public class Character : NetworkBehaviour
 
             if (detectedItems.Length == 0)
             {
+                // currentItem.ItemDetectedOutline(false);
                 currentItem = null;
             }
             else
@@ -221,6 +232,7 @@ public class Character : NetworkBehaviour
                     {
                         // InteractWithItem(item);
                         currentItem = item;
+                        // currentItem.ItemDetectedOutline(true);
                         // Debug.Log("item ada " + currentItem.isActivated);
                     }
                 }

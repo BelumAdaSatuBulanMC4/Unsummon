@@ -54,7 +54,7 @@ public class UI_HidingMechanics : MonoBehaviour
         SetRandomTargetPosition();
 
         // progressBar.value = 0.5f;
-        progressBarImage.fillAmount = .5f;
+        progressBarImage.fillAmount = 1f;
 
         StartCoroutine(UpdateRandomTargetPositionRoutine());
         // StartCoroutine(IncreaseProgressSpeedRoutine());
