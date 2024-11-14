@@ -29,7 +29,11 @@ public class PlayerKid : Character
 
     [SerializeField] private GameObject buttonInteraction;
 
-    [SerializeField] private GameObject characterLight2D;
+    private Vector3 pocongPosition;
+    public float maxDistance = 12f;
+    public float minIntensity = 0f;
+    public float maxIntensity = 1f;
+    private bool isNear = false;
 
     protected override void Awake()
     {
@@ -38,13 +42,13 @@ public class PlayerKid : Character
         myCollider = GetComponent<Collider2D>();
     }
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         anim = GetComponentInChildren<Animator>();
         StartCoroutine(RegisterKidWhenReady());
         myCollider = GetComponent<Collider2D>();
         isAuthor = IsOwner;
-        if (IsOwner) characterLight2D.SetActive(true);
     }
 
     private IEnumerator RegisterKidWhenReady()
@@ -67,10 +71,14 @@ public class PlayerKid : Character
     protected override void Update()
     {
         if (!IsOwner) { return; }
+
+
         base.Update();
+        hidingCoolDownTimer -= Time.deltaTime;
         HandleAnimations();
         // HandleLocationChanged();
-        HandlePlayerCollision();
+        // HandlePlayerCollision();
+        HandlePocongFear();
         HandleMovement();
         // PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
 
@@ -101,6 +109,34 @@ public class PlayerKid : Character
                     Physics2D.IgnoreCollision(myCollider, spirit);
                 }
             }
+        }
+    }
+
+    private void HandlePocongFear()
+    {
+        pocongPosition = PlayerManager.instance.GetPocongPosition();
+        float distance = Vector3.Distance(pocongPosition, transform.position);
+        Debug.Log("Distance with pocong: " + distance);
+
+        float intensity = Mathf.Lerp(maxIntensity, minIntensity, distance / maxDistance);
+        intensity = Mathf.Clamp(intensity, minIntensity, maxIntensity);
+
+        if (distance < maxDistance)
+        {
+            GameManager.instance.StartConHapticFeedback(intensity);
+        }
+        // else if (distance > 4 && distance < 8)
+        // {
+        //     GameManager.instance.StartConHapticFeedback(0.5f);
+
+        // }
+        // else if (distance < 4)
+        // {
+        //     GameManager.instance.StartConHapticFeedback(0.8f);
+        // }
+        else
+        {
+            GameManager.instance.StopConHapticFeedback();
         }
     }
 
@@ -219,6 +255,7 @@ public class PlayerKid : Character
     private void OnDrawGizmos()
     {
         DrawItemDetector();
+        DrawClosetDetector();
         Gizmos.DrawWireSphere(spiritCheck.position, spiritCheckRadius);
     }
 
@@ -239,6 +276,11 @@ public class PlayerKid : Character
                 deadBody.GetComponent<NetworkObject>().Spawn();
 
                 GameObject spirit = Instantiate(spiritPrefab, transform.position, Quaternion.identity);
+
+                // UI_InGame.instance.SwitchToSpirit();
+                UI_InGame.instance.SetAuthorCharacter(null);
+                // UI_InGame.instance.InstantiateUIForCharacter(spirit.GetComponentInChildren<Character>());
+
                 PlayerSpirit newSpirit = spiritPrefab.GetComponent<PlayerSpirit>();
                 spirit.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
                 // UI_NoiseButton uiNoiseButton = FindObjectOfType<UI_NoiseButton>();  // Assuming you have only one UI_NoiseButton

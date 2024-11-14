@@ -1,0 +1,130 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "TopLevel",
+    "printedName": "TopLevel",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "CoreHapticPlugin"
+      },
+      {
+        "kind": "Import",
+        "name": "CoreHaptics",
+        "printedName": "CoreHaptics",
+        "declKind": "Import",
+        "moduleName": "CoreHapticPlugin"
+      },
+      {
+        "kind": "Function",
+        "name": "PlayHaptic",
+        "printedName": "PlayHaptic(intensity:)",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "Float",
+            "printedName": "Swift.Float",
+            "usr": "s:Sf"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)PlayHapticWithIntensity:",
+        "mangledName": "$s16CoreHapticPlugin04PlayB09intensityySf_tF",
+        "moduleName": "CoreHapticPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl",
+          "RawDocComment"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "StartContinuousHaptic",
+        "printedName": "StartContinuousHaptic(intensity:)",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          },
+          {
+            "kind": "TypeNominal",
+            "name": "Float",
+            "printedName": "Swift.Float",
+            "usr": "s:Sf"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)StartContinuousHapticWithIntensity:",
+        "mangledName": "$s16CoreHapticPlugin015StartContinuousB09intensityySf_tF",
+        "moduleName": "CoreHapticPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "StopContinuousHaptic",
+        "printedName": "StopContinuousHaptic()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)StopContinuousHaptic",
+        "mangledName": "$s16CoreHapticPlugin014StopContinuousB0yyF",
+        "moduleName": "CoreHapticPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "StopHaptic",
+        "printedName": "StopHaptic()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)StopHaptic",
+        "mangledName": "$s16CoreHapticPlugin04StopB0yyF",
+        "moduleName": "CoreHapticPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/CoreHapticPlugin\/CoreHapticPlugin\/CoreHapticPlugin.swift",
+      "kind": "BooleanLiteral",
+      "offset": 276,
+      "length": 5,
+      "value": "false"
+    }
+  ]
+}

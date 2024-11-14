@@ -95,7 +95,7 @@ public class UI_MiniGame : MonoBehaviour
                     }
                     else
                     {
-                        instructionText.text = "Tap and Hold\nto light the candle";
+                        instructionText.text = "Tap and Hold to light the candle";
                         if (candleConditionValue >= 2f) // Lighting the candle at value 2
                         {
                             GameManager.instance.KidTurnedOnItem(item);

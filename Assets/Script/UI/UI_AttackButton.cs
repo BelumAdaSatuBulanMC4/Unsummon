@@ -42,7 +42,6 @@ public class UI_AttackButton : MonoBehaviour
                 StartCoroutine(DisableAttackForTeleport());
             }
 
-            // Check if attack is available and kid is detected, and teleport cooldown is not active
             if (!isAttackDisabled && chara.GetAttackCooldown() <= 0 && chara.GetIsKidDetected())
             {
                 EnableButton();
@@ -51,7 +50,14 @@ public class UI_AttackButton : MonoBehaviour
             else
             {
                 DisableButton();
-                buttonText.text = "";
+                if (Mathf.CeilToInt(chara.GetAttackCooldown()) <= 0)
+                {
+                    buttonText.text = "";
+                }
+                else
+                {
+                    buttonText.text = Mathf.CeilToInt(chara.GetAttackCooldown()).ToString(); ;
+                }
             }
         }
     }

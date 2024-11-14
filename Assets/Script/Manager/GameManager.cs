@@ -233,7 +233,7 @@ public class GameManager : NetworkBehaviour
     private Character FindAuthorCharacter()
     {
         Character[] allCharacters = FindObjectsOfType<Character>();
-        Debug.Log("jumlah author " + allCharacters.Length);
+        // Debug.Log("jumlah author " + allCharacters.Length);
         foreach (Character character in allCharacters)
         {
             if (character.GetIsAuthor())
@@ -365,6 +365,46 @@ public class GameManager : NetworkBehaviour
         audioSource.Stop();
         if (kidsWin) { audioSource.clip = kidsWinSound; audioSource.Play(); }
         else if (pocongWin) { audioSource.clip = pocongWinSound; audioSource.Play(); }
+    }
+
+    // =================================================================================
+    // COREMOTION!!
+
+    public void StartGyroCoreMotion()
+    {
+        swiftPlugin.StartGyro();
+    }
+
+    public void StopGyroCoreMotion()
+    {
+        swiftPlugin.StopGyro();
+    }
+
+    public double GetRollValueFromSwift()
+    {
+        return swiftPlugin.GetRollValue();
+    }
+
+    public double GetPitchValueFromSwift()
+    {
+        return swiftPlugin.GetPitchValue();
+    }
+
+    public double GetYawValueFromSwift()
+    {
+        return swiftPlugin.GetYawValue();
+    }
+
+    //================================================================
+    //COREHAPTIC
+    public void StartConHapticFeedback(float intensity)
+    {
+        swiftPlugin.TriggerHapticFeedback(intensity);
+    }
+
+    public void StopConHapticFeedback()
+    {
+        swiftPlugin.StopHapticFeedback();
     }
 
 }

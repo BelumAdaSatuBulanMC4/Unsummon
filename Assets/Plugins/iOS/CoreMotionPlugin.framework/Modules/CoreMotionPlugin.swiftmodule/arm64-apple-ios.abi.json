@@ -1,0 +1,173 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "TopLevel",
+    "printedName": "TopLevel",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "Foundation",
+        "printedName": "Foundation",
+        "declKind": "Import",
+        "moduleName": "CoreMotionPlugin",
+        "declAttributes": [
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "CoreMotion",
+        "printedName": "CoreMotion",
+        "declKind": "Import",
+        "moduleName": "CoreMotionPlugin"
+      },
+      {
+        "kind": "Function",
+        "name": "GetRoll",
+        "printedName": "GetRoll()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Double",
+            "printedName": "Swift.Double",
+            "usr": "s:Sd"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)GetRoll",
+        "mangledName": "$s16CoreMotionPlugin7GetRollSdyF",
+        "moduleName": "CoreMotionPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl",
+          "RawDocComment"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "GetPitch",
+        "printedName": "GetPitch()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Double",
+            "printedName": "Swift.Double",
+            "usr": "s:Sd"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)GetPitch",
+        "mangledName": "$s16CoreMotionPlugin8GetPitchSdyF",
+        "moduleName": "CoreMotionPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "GetYaw",
+        "printedName": "GetYaw()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Double",
+            "printedName": "Swift.Double",
+            "usr": "s:Sd"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)GetYaw",
+        "mangledName": "$s16CoreMotionPlugin6GetYawSdyF",
+        "moduleName": "CoreMotionPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "StartGyroUpdates",
+        "printedName": "StartGyroUpdates()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)StartGyroUpdates",
+        "mangledName": "$s16CoreMotionPlugin16StartGyroUpdatesyyF",
+        "moduleName": "CoreMotionPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      },
+      {
+        "kind": "Function",
+        "name": "StopGyroUpdates",
+        "printedName": "StopGyroUpdates()",
+        "children": [
+          {
+            "kind": "TypeNominal",
+            "name": "Void",
+            "printedName": "()"
+          }
+        ],
+        "declKind": "Func",
+        "usr": "c:(cm)StopGyroUpdates",
+        "mangledName": "$s16CoreMotionPlugin15StopGyroUpdatesyyF",
+        "moduleName": "CoreMotionPlugin",
+        "declAttributes": [
+          "AccessControl",
+          "CDecl"
+        ],
+        "funcSelfKind": "NonMutating"
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": [
+    {
+      "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/CoreMotionPlugin\/CoreMotionPlugin\/CoreMotionPlugin.swift",
+      "kind": "FloatLiteral",
+      "offset": 268,
+      "length": 3,
+      "value": "1.0"
+    },
+    {
+      "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/CoreMotionPlugin\/CoreMotionPlugin\/CoreMotionPlugin.swift",
+      "kind": "FloatLiteral",
+      "offset": 274,
+      "length": 4,
+      "value": "60.0"
+    },
+    {
+      "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/CoreMotionPlugin\/CoreMotionPlugin\/CoreMotionPlugin.swift",
+      "kind": "FloatLiteral",
+      "offset": 340,
+      "length": 3,
+      "value": "0.0"
+    },
+    {
+      "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/CoreMotionPlugin\/CoreMotionPlugin\/CoreMotionPlugin.swift",
+      "kind": "FloatLiteral",
+      "offset": 379,
+      "length": 3,
+      "value": "0.0"
+    },
+    {
+      "filePath": "\/Users\/fatakhillahkhaqo\/Documents\/Challenges\/CoreMotionPlugin\/CoreMotionPlugin\/CoreMotionPlugin.swift",
+      "kind": "FloatLiteral",
+      "offset": 416,
+      "length": 3,
+      "value": "0.0"
+    }
+  ]
+}

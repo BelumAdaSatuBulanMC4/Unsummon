@@ -44,7 +44,6 @@ public class Pocong : Character
     [SerializeField] private GameObject buttonInteraction;
 
     private bool isTeleported = false;
-    [SerializeField] private GameObject characterLight2D;
 
 
     protected override void Awake()
@@ -55,10 +54,10 @@ public class Pocong : Character
         myCollider = GetComponent<Collider2D>();
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         isAuthor = IsOwner;
-        if (IsOwner) characterLight2D.SetActive(true);
     }
 
     protected override void Update()
@@ -74,13 +73,14 @@ public class Pocong : Character
 
         HandleAnimations();
         // HandleTeleport();
-        HandlePlayerCollision();
+        // HandlePlayerCollision();
         // HandleLocationChanged();
         HandleKidInteraction();
         HandleMirrorInteraction();
-        GetKidsPosition();
+        // GetKidsPosition();
         // controller_UI.SetActive(IsOwner);
-        HandleButtonInteraction();
+        // HandleButtonInteraction();
+        PlayerManager.instance.UpdatePocongPositionServerRpc(transform.position);
     }
     // private void HandleLocationChanged()
     // {
@@ -107,25 +107,25 @@ public class Pocong : Character
         }
     }
 
-    private void HandleButtonInteraction()
-    {
-        // Debug.Log("POCONG BUTTON ");
-        if (currentItem != null && currentItem.isActivated)
-        {
-            Debug.LogWarning("is item null? " + currentItem == null);
-            buttonInteraction.SetActive(true);
-        }
-        else
-        {
-            Debug.LogWarning("is item null? " + currentItem == null);
-            buttonInteraction.SetActive(false);
-        }
-    }
+    // private void HandleButtonInteraction()
+    // {
+    //     // Debug.Log("POCONG BUTTON ");
+    //     if (currentItem != null && currentItem.isActivated)
+    //     {
+    //         Debug.LogWarning("is item null? " + currentItem == null);
+    //         buttonInteraction.SetActive(true);
+    //     }
+    //     else
+    //     {
+    //         Debug.LogWarning("is item null? " + currentItem == null);
+    //         buttonInteraction.SetActive(false);
+    //     }
+    // }
 
     private void HandleKidInteraction()
     {
         detectedKids = Physics2D.OverlapCircleAll(kidCheck.position, kidCheckRadius, whatIsKid);
-        isKidDetected = detectedKids.Length > 0 ? true : false;
+        isKidDetected = detectedKids.Length > 0;
 
         // Debug.Log("Detected kids " + detectedKids.Length);
         // foreach (Collider2D kidCollider in detectedKids)
@@ -385,6 +385,7 @@ public class Pocong : Character
     private void OnDrawGizmos()
     {
         DrawItemDetector();
+        DrawClosetDetector();
         Gizmos.DrawWireSphere(kidCheck.position, kidCheckRadius);
         Gizmos.DrawWireSphere(mirrorCheck.position, mirrorCheckRadius);
         Gizmos.DrawWireSphere(spiritCheck.position, spiritCheckRadius);
