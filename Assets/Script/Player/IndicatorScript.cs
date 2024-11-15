@@ -179,110 +179,75 @@ public class IndicatorScript : MonoBehaviour
     }
 
     // Method to update the position and visibility of an off-screen indicator
+    // void UpdateOffScreenIndicator(Vector3 kidPosition, GameObject indicator)
+    // {
+    //     Vector3 screenPosition = mainCamera.WorldToViewportPoint(kidPosition);
+
+    //     bool isOffScreen = screenPosition.x <= 0 || screenPosition.x >= 1 || screenPosition.y <= 0 || screenPosition.y >= 1;
+
+    //     if (isOffScreen)
+    //     {
+    //         indicator.SetActive(true);
+
+    //         // Adjust the position of the indicator within the viewport bounds
+    //         var spriteSizeInViewPort = mainCamera.WorldToViewportPoint(new Vector3(srWidth, srHeight, 0)) - mainCamera.WorldToViewportPoint(Vector3.zero);
+    //         screenPosition.x = Mathf.Clamp(screenPosition.x, edgeBuffer + spriteSizeInViewPort.x, 1 - (edgeBuffer + spriteSizeInViewPort.x));
+    //         screenPosition.y = Mathf.Clamp(screenPosition.y, edgeBuffer + spriteSizeInViewPort.y, 1 - (edgeBuffer + spriteSizeInViewPort.y));
+
+    //         Vector3 worldPosition = mainCamera.ViewportToWorldPoint(screenPosition);
+    //         worldPosition.z = 0; // Keep z as 0 to stay on the 2D plane
+    //         indicator.transform.position = worldPosition;
+
+    //         Vector3 direction = kidPosition - indicator.transform.position;
+    //         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+    //         indicator.transform.rotation = Quaternion.Euler(0, 0, angle - 90);
+    //     }
+    //     else
+    //     {
+    //         indicator.SetActive(false); // Hide indicator when the kid is on-screen
+    //     }
+    // }
+
     void UpdateOffScreenIndicator(Vector3 kidPosition, GameObject indicator)
     {
         Vector3 screenPosition = mainCamera.WorldToViewportPoint(kidPosition);
 
-        bool isOffScreen = screenPosition.x <= 0 || screenPosition.x >= 1 || screenPosition.y <= 0 || screenPosition.y >= 1;
+        // Center of the circular area in viewport coordinates (e.g., (0.5, 0.5) for screen center)
+        Vector2 center = new Vector2(0.5f, 0.5f);
 
-        if (isOffScreen)
+        // Radius of the circular area in viewport space
+        float radius = 0.4f; // 40% of the screen width/height
+
+        // Calculate the offset from the center
+        Vector2 offset = new Vector2(screenPosition.x - center.x, screenPosition.y - center.y);
+
+        // Check if the position is outside the circle
+        if (offset.magnitude > radius)
         {
             indicator.SetActive(true);
 
-            // Adjust the position of the indicator within the viewport bounds
-            var spriteSizeInViewPort = mainCamera.WorldToViewportPoint(new Vector3(srWidth, srHeight, 0)) - mainCamera.WorldToViewportPoint(Vector3.zero);
-            screenPosition.x = Mathf.Clamp(screenPosition.x, spriteSizeInViewPort.x, 1 - spriteSizeInViewPort.x);
-            screenPosition.y = Mathf.Clamp(screenPosition.y, spriteSizeInViewPort.y, 1 - spriteSizeInViewPort.y);
+            // Clamp the position to the circle's edge
+            offset = offset.normalized * radius;
 
+            // Adjust the screen position to stay within the circle
+            screenPosition.x = center.x + offset.x;
+            screenPosition.y = center.y + offset.y;
+
+            // Convert the adjusted viewport position back to world position
             Vector3 worldPosition = mainCamera.ViewportToWorldPoint(screenPosition);
-            worldPosition.z = 0; // Keep z as 0 to stay on the 2D plane
+            worldPosition.z = 0; // Keep z at 0 to stay on the 2D plane
             indicator.transform.position = worldPosition;
+
+            // Rotate the indicator to point toward the kid
+            Vector3 direction = kidPosition - indicator.transform.position;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            indicator.transform.rotation = Quaternion.Euler(0, 0, angle - 90); // Adjust angle as needed
         }
         else
         {
-            indicator.SetActive(false); // Hide indicator when the kid is on-screen
+            indicator.SetActive(false); // Hide indicator if within the circular area
         }
     }
+
+
 }
-
-
-// public class IndicatorScript : MonoBehaviour
-// {
-//     public GameObject offScreenIndicatorPrefab;
-//     public GameObject currentCharacter;
-//     public Camera mainCamera;
-//     public float edgeBuffer = 0.1f;
-//     public float detectionRange = 8f;
-//     private List<GameObject> players;
-//     private List<GameObject> activeIndicators = new List<GameObject>();
-
-//     private SpriteRenderer sr;
-//     private float srWidth;
-//     private float srHeight;
-
-//     void Start()
-//     {
-//         players = new List<GameObject>(GameObject.FindGameObjectsWithTag("Kids"));
-//         sr = offScreenIndicatorPrefab.GetComponent<SpriteRenderer>();
-
-//         var bounds = sr.bounds;
-//         srHeight = bounds.size.y / 2f;
-//         srWidth = bounds.size.x / 2f;
-
-//         foreach (GameObject player in players)
-//         {
-//             if (player != gameObject)
-//             {
-//                 GameObject indicator = Instantiate(offScreenIndicatorPrefab);
-//                 indicator.SetActive(false);
-//                 activeIndicators.Add(indicator);
-//             }
-//         }
-//     }
-
-//     void Update()
-//     {
-//         for (int i = 0; i < players.Count; i++)
-//         {
-//             if (players[i] != gameObject && players[i] != null)
-//             {
-//                 float distanceToPlayer = Vector3.Distance(players[i].transform.position, currentCharacter.transform.position);
-//                 Debug.Log("distance to player : " + distanceToPlayer);
-
-//                 if (distanceToPlayer <= detectionRange)
-//                 {
-//                     UpdateOffScreenIndicator(players[i], activeIndicators[i]);
-//                 }
-//                 else
-//                 {
-//                     activeIndicators[i].SetActive(false);
-//                 }
-//             }
-//         }
-//     }
-
-//     void UpdateOffScreenIndicator(GameObject player, GameObject indicator)
-//     {
-//         Vector3 screenPosition = mainCamera.WorldToViewportPoint(player.transform.position);
-
-//         bool isOffScreen = screenPosition.x <= 0 || screenPosition.x >= 1 || screenPosition.y <= 0 || screenPosition.y >= 1;
-
-//         if (isOffScreen)
-//         {
-//             indicator.SetActive(true);
-
-//             // Adjust the position of the indicator within the viewport bounds
-//             var spriteSizeInViewPort = mainCamera.WorldToViewportPoint(new Vector3(srWidth, srHeight, 0)) - mainCamera.WorldToViewportPoint(Vector3.zero);
-//             screenPosition.x = Mathf.Clamp(screenPosition.x, spriteSizeInViewPort.x, 1 - spriteSizeInViewPort.x);
-//             screenPosition.y = Mathf.Clamp(screenPosition.y, spriteSizeInViewPort.y, 1 - spriteSizeInViewPort.y);
-
-//             Vector3 worldPosition = mainCamera.ViewportToWorldPoint(screenPosition);
-//             worldPosition.z = 0; // Keep z as 0 to stay on the 2D plane
-//             indicator.transform.position = worldPosition;
-//         }
-//         else
-//         {
-//             indicator.SetActive(false); // Hide indicator when the player is on-screen
-//         }
-//     }
-// }

@@ -418,6 +418,14 @@ MonoBehaviour:
   mySelf: {fileID: 4057405978394237103}
   sfxMovementClip: {fileID: 8300000, guid: 2f546fd74eaf746009b0e76b1870b9f6, type: 3}
   sfxPocongKillClip: {fileID: 8300000, guid: bb6579fbefafc4835aec27b1e3839f9a, type: 3}
+  closetCheck: {fileID: 0}
+  closetCheckRadius: 0
+  whatIsCloset:
+    serializedVersion: 2
+    m_Bits: 0
+  characterSpotLight: {fileID: 0}
+  volume: {fileID: 0}
+  hidingCoolDown: 0
   knockBackDuration: 1
   knockBackPower: {x: 0, y: 0}
   spiritPrefab: {fileID: 4057405978394237103, guid: f03b9b1c32ed948d39cf5cb073f6ae29, type: 3}
@@ -429,6 +437,9 @@ MonoBehaviour:
     m_Bits: 2048
   controller_UI: {fileID: 6363562436477985309}
   buttonInteraction: {fileID: 6535000313946925059}
+  maxDistance: 12
+  minIntensity: 0
+  maxIntensity: 1
 --- !u!114 &8815068478096702067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -698,7 +709,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 2089060487
-  m_SortingLayer: 11
+  m_SortingLayer: 12
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 61452036459dc49ed9df033c85cdc0d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
