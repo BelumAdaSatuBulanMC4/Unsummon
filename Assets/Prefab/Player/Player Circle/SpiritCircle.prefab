@@ -429,7 +429,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAuthor: 0
-  moveSpeed: 5
+  moveSpeed: 10
   itemCheck: {fileID: 0}
   itemCheckRadius: 0
   whatIsItem:

@@ -8,6 +8,7 @@ using Unity.Networking.Transport.Relay;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ClientManager : MonoBehaviour
 {
@@ -82,6 +83,7 @@ public class ClientManager : MonoBehaviour
         else
         {
             Debug.LogError("Failed to start client!");
+            SceneManager.LoadScene("MainMenu");
         }
     }
 }

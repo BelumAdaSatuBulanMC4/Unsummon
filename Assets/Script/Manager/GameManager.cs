@@ -11,7 +11,7 @@ public class GameManager : NetworkBehaviour
 {
     public static GameManager instance;
     private int totalItems = 5;
-    private int totalKids;
+    public int totalKids;
     private int activeItems = 0;
     private int killedKids = 0;
     private bool kidsWin;
@@ -243,6 +243,12 @@ public class GameManager : NetworkBehaviour
         }
         return null;
     }
+
+    public Character GetTypeOwnerCharacter()
+    {
+        return currentChar;
+    }
+
 
     public bool GetPocongWin() => pocongWin;
     public bool GetKidsWin() => kidsWin;

@@ -78,8 +78,13 @@ public class PlayerKid : Character
         HandleAnimations();
         // HandleLocationChanged();
         // HandlePlayerCollision();
-        HandlePocongFear();
         HandleMovement();
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            HandlePocongFear();
+            Debug.Log("Update Character.cs: If iOS berhasil dipanggil");
+        }
+
         // PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
 
         // HandleButtonInteraction();
@@ -204,8 +209,11 @@ public class PlayerKid : Character
         GameManager.instance.UpdateKilledKids();
 
         KidKilledServerRpc(OwnerClientId);
+        // GamePlayManager.instance.UpdatePlayerCharacterListServerRpc(OwnerClientId, CharacterType.Spirit);
+        GamePlayManager.instance.debugOutput.text += "\nGettingKilled -  berhasil dijalankan";
         // spirit.GetComponentInChildren<PlayerSpirit>().SetAuthor(isAuthor);
         // }
+        GamePlayManager.instance.DebugTesting();
 
     }
 
@@ -284,7 +292,8 @@ public class PlayerKid : Character
                 PlayerSpirit newSpirit = spiritPrefab.GetComponent<PlayerSpirit>();
                 spirit.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
                 // UI_NoiseButton uiNoiseButton = FindObjectOfType<UI_NoiseButton>();  // Assuming you have only one UI_NoiseButton
-
+                GamePlayManager.instance.UpdatePlayerCharacterListClientRpc(clientId, CharacterType.Spirit);
+                GamePlayManager.instance.debugOutput.text += "\nKidKilledServerRpc -  berhasil dijalankan";
                 // if (uiNoiseButton != null)
                 // {
                 //     uiNoiseButton.AssignPlayerSpirit(newSpirit); // Call a method to assign the spirit

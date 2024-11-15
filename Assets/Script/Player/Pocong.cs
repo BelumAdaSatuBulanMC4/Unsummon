@@ -154,7 +154,7 @@ public class Pocong : Character
         // else mirrorSelectedPosition = new Vector3(0, 0);
     }
 
-    void killTheKid(PlayerKid kid)
+    void KillTheKid(PlayerKid kid)
     {
         Debug.Log("BERHASIL NGEKILLL");
         sfxPocongKill.loop = false;
@@ -238,7 +238,7 @@ public class Pocong : Character
                 if (kid != null)
                 {
                     Debug.Log("before kill");
-                    killTheKid(kid);
+                    KillTheKid(kid);
                 }
             }
             // Perform attack

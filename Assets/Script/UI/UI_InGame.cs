@@ -15,11 +15,13 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private GameObject UI_InGamePocong;
     [SerializeField] private GameObject UI_InGameKid;
     [SerializeField] private GameObject UI_InGameSpirit;
+    [SerializeField] private GameObject UI_OtherPlayerLeave;
     [SerializeField] private GameObject InteractButton;
     [SerializeField] private GameObject InteractButtonHiding;
 
     [SerializeField] private GameObject UI_NoiseButton;
     [SerializeField] private GameObject UI_HidingMiniGame;
+    [SerializeField] private Button close_UI_OtherPlayerLeave;
     private GameObject instantiatedHidingMechanics;
     public JoystickGame joystickGame;
 
@@ -45,6 +47,7 @@ public class UI_InGame : MonoBehaviour
     {
         authorCharacter = FindAuthorCharacter();
         InstantiateUIForCharacter(authorCharacter);
+        close_UI_OtherPlayerLeave.onClick.AddListener(() => UI_OtherPlayerLeave.SetActive(false));
         // if (authorCharacter != null)
         // {
         //     InstantiateUIForCharacter(authorCharacter);

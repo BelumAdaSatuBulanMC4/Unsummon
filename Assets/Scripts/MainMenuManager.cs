@@ -45,6 +45,15 @@ public class MainMenuManager : MonoBehaviour
             Debug.Log(e);
             return;
         }
+
+#if UNITY_IOS
+        Debug.Log("Start - MainMenuManager: If iOS berhasil dipanggil UNITY_IOS");
+#endif
+
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            Debug.Log("Start - MainMenuManager: If iOS berhasil dipanggil RuntimePlatform");
+        }
     }
 
     public void StartHost()

@@ -3,10 +3,13 @@ using Unity.Netcode;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using Unity.Netcode.Transports.UTP;
+using System.Collections.Generic;
+using System;
+using TMPro;
 
 public class GamePlayManager : NetworkBehaviour
 {
+    public static GamePlayManager instance;
     [SerializeField] private GameObject[] playerKidPrefabs;
     public GameObject playerKidPrefab;
     public GameObject playerPocongPrefab;
@@ -17,35 +20,40 @@ public class GamePlayManager : NetworkBehaviour
     [SerializeField] GameObject rolePocongScene;
 
     [Header("Error")]
-    [SerializeField] private GameObject UI_PopUpLostConnection;
+    [SerializeField] private GameObject UI_OtherPlayerLeave;
 
     private int totalPreviousPlayer;
     private int totalCurrentPlayer;
 
     [SerializeField] private Button leaveButton;
-    private int totalPreviousPersonalLeave = 0;
-    private int totalCurrentPersonalLeave = 0;
-    private bool personalLeave = false;
+    private readonly List<PlayerCharacter> playerCharacterList = new();
+
+    public TextMeshProUGUI debugOutput;
+    [SerializeField] private GameObject debugObject;
+    [SerializeField] private Button debugButton;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
-        leaveButton.onClick.AddListener(OnLeaveButtonPressed);
-        if (IsHost)
+        debugButton.onClick.AddListener(() =>
         {
-            totalPreviousPlayer = NetworkManager.Singleton.ConnectedClientsList.Count;
-            // UpdateTotalPlayersClientRpc(totalPreviousPlayer);
-        }
-        NetworkManager.Singleton.OnClientDisconnectCallback += OnPlayerLeave;
+            bool isActive = debugObject.activeSelf;
+            debugObject.SetActive(!isActive);
+        });
+        leaveButton.onClick.AddListener(OnLeaveButtonPressed);
+        // NetworkManager.Singleton.OnClientDisconnectCallback += OnPlayerLeave;
+        debugOutput.text += $"\nStart GamePlayManager - berhasil dijalankan";
     }
 
     private void OnLeaveButtonPressed()
     {
         Debug.Log($"OnLeaveButtonPressed - Terdapat player yang sengaja AFK");
-        SetPersonalLeaveServerRpc(true);
-        // AddPersonalLeaveServerRpc();
         NetworkManager.Singleton.Shutdown();
         SceneManager.LoadScene("MainMenu");
-        // SetLeavePersonalServerRpc(false);
     }
 
     private void Update()
@@ -53,35 +61,12 @@ public class GamePlayManager : NetworkBehaviour
         totalCurrentPlayer = NetworkManager.Singleton.ConnectedClientsList.Count;
         Debug.Log($"Update - Jumlah player sebelumnya: {totalPreviousPlayer}");
         Debug.Log($"Update - Jumlah player sekarang: {totalCurrentPlayer}");
-        if (IsHost)
-        {
-            if (personalLeave)
-            {
-                totalPreviousPlayer--;
-                personalLeave = false;
-            }
-            // if (totalPreviousPersonalLeave > totalCurrentPersonalLeave)
-            // {
-            //     totalPreviousPersonalLeave = totalCurrentPersonalLeave;
-            //     totalPreviousPlayer--;
-            // }
-            // if (totalPreviousPlayer != totalCurrentPlayer)
-            if (totalPreviousPlayer > totalCurrentPlayer)
-            {
-                Debug.Log($"Update - CLIENT DISCONNECT");
-                // ReturnToMainMenuClientRpc();
-                totalPreviousPlayer = totalCurrentPlayer;
-                NotifyPlayerClientRpc();
-                StartCoroutine(WaitingReturnToMainMenu(7f));
-            }
-        }
     }
 
     private void OnPlayerLeave(ulong clientId)
-    {
-        Debug.Log($"OnPlayerLeave - Player leave dengan ID: {clientId}");
-        Debug.Log($"OnPlayerLeave - OwnerClientID: {OwnerClientId}");
-        Debug.Log($"OnPlayerLeave - IsHost: {IsHost}");
+    {   // Hanya dieksekusi oleh HOST
+        HandlePlayerLeave(clientId);
+        debugOutput.text += $"\nOnPlayerLeave - berhasil dijalankan";
     }
 
     // Fungsi yang dipanggil setelah scene GamePlay di-load
@@ -89,6 +74,7 @@ public class GamePlayManager : NetworkBehaviour
     {
         if (IsServer)
         {
+            NetworkManager.Singleton.OnClientDisconnectCallback += OnPlayerLeave;
             SpawnPlayers();
         }
     }
@@ -96,6 +82,19 @@ public class GamePlayManager : NetworkBehaviour
     public override void OnNetworkDespawn()
     {
         base.OnNetworkDespawn();
+        if (IsServer)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnPlayerLeave;
+        }
+    }
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        if (IsServer)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnPlayerLeave;
+        }
     }
 
     // Spawn semua pemain di posisi yang sama
@@ -103,7 +102,7 @@ public class GamePlayManager : NetworkBehaviour
     {
         if (!IsServer) return;
         int totalPlayer = NetworkManager.ConnectedClients.Count;
-        int randomPocongId = Random.Range(0, totalPlayer);
+        int randomPocongId = UnityEngine.Random.Range(0, totalPlayer);
         int i = 0;
         foreach (var client in NetworkManager.ConnectedClientsList)
         {
@@ -124,6 +123,7 @@ public class GamePlayManager : NetworkBehaviour
 
                 GameObject playerInstance = Instantiate(playerPocongPrefab, spawnPocongPosition, Quaternion.identity);
                 playerInstance.GetComponent<NetworkObject>().SpawnAsPlayerObject(client.ClientId);
+                AddPlayerCharacterListClientRpc(client.ClientId, CharacterType.Pocong);
             }
             else
             {
@@ -137,10 +137,27 @@ public class GamePlayManager : NetworkBehaviour
                         TargetClientIds = new ulong[] { client.ClientId }
                     }
                 });
+                AddPlayerCharacterListClientRpc(client.ClientId, CharacterType.Kid);
             }
             i++;
         }
     }
+
+
+    private void HandlePlayerLeave(ulong clienId)
+    {
+        if (!IsHost) return;
+        Debug.Log("HandlePlayerLeave - Berhasil dijalanlan");
+        debugOutput.text += $"\nHandlePlayerLeave - berhasil dijalankan";
+        RemovePlayerCharacterListClientRpc(clienId);
+    }
+
+    public void DebugTesting()
+    {
+        Debug.Log("DebugTesting - berhasil dijalankan");
+        debugOutput.text += $"\nDebugTesting - berhasil dijalankan";
+    }
+
 
     // ====================================== START COUROTINE ======================================
     private IEnumerator DisableSceneAfterDelay(GameObject scene, float delay)
@@ -150,24 +167,8 @@ public class GamePlayManager : NetworkBehaviour
     }
 
 
-    private IEnumerator WaitingReturnToMainMenu(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        ReturnToMainMenuClientRpc();
-    }
-
     // ====================================== SERVER RPC ======================================
-    [ServerRpc]
-    private void AddPersonalLeaveServerRpc()
-    {
-        totalCurrentPersonalLeave++;
-    }
 
-    [ServerRpc]
-    private void SetPersonalLeaveServerRpc(bool isPersonalLeave)
-    {
-        personalLeave = isPersonalLeave;
-    }
 
     // ====================================== CLIENT RPC ======================================
     [ClientRpc]
@@ -184,30 +185,108 @@ public class GamePlayManager : NetworkBehaviour
         StartCoroutine(DisableSceneAfterDelay(roleKidScene, 5f));
     }
 
-    // Server membuat semua client berpindah ke MainMenu
-    [ClientRpc]
-    private void ReturnToMainMenuClientRpc()
-    {
-        SceneManager.LoadScene("MainMenu");
-    }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void NotifyPlayerServerRpc()
+    [ClientRpc]
+    private void AddPlayerCharacterListClientRpc(ulong clientId, CharacterType typeChar)
     {
-        NotifyPlayerClientRpc();
+        PlayerCharacter player = new(clientId, typeChar);
+        playerCharacterList.Add(player);
+        Debug.Log($"AddPlayerCharacterListClienRpc - Player berhasil ditambahkan {clientId} tipe: {typeChar}");
     }
 
     [ClientRpc]
-    private void NotifyPlayerClientRpc()
+    public void UpdatePlayerCharacterListClientRpc(ulong clientId, CharacterType typeChar)
     {
-        Debug.Log("CLIENT DAPET NOTIF ADA YG DISCONNECT");
-        UI_PopUpLostConnection.SetActive(true);
+        debugOutput.text += $"\nUpdatePlayerCharacterListClientRpc - berhasil dijalankan";
+        try
+        {
+            PlayerCharacter player = playerCharacterList.Find(p => p.clientId == clientId);
+            // player.typeChar = typeChar;
+            playerCharacterList.Remove(player);
+            PlayerCharacter newPlayer = new(clientId, typeChar);
+            playerCharacterList.Add(newPlayer);
+            debugOutput.text += $"\nUpdatePlayerCharacterListClientRpc - {clientId} tipe {typeChar} diupdate\n";
+            Debug.Log($"UpdatePlayerCharacterListClientRpc - Player ID {clientId} berhasil diperbarui menjadi tipe: {typeChar}");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"UpdatePlayerCharacterListClientRpc - Player gagal diupdate: {ex.Message}.");
+        }
+
+        foreach (var player in playerCharacterList)
+        {
+
+            debugOutput.text += $"-ID: {player.clientId}, Type: {player.typeChar} ";
+        }
+
     }
 
-    // [ClientRpc]
-    // private void UpdateTotalPlayersClientRpc(int totalPlayers)
-    // {
-    //     totalPreviousPlayer = totalPlayers;
-    // }
 
+    [ClientRpc]
+    private void RemovePlayerCharacterListClientRpc(ulong clientId)
+    {
+        try
+        {
+            PlayerCharacter player = playerCharacterList.Find(player => player.clientId == clientId);
+            if (player.typeChar == CharacterType.Kid)
+            {
+                Debug.Log($"RemovePlayerCharacterListClientRpc - Player adalah Kid");
+                debugOutput.text += $"\nRemovePlayerCharacterListClientRpc - Player adalah Kid";
+                GameManager.instance.totalKids--;
+            }
+            else if (player.typeChar == CharacterType.Pocong)
+            {
+                Debug.Log($"RemovePlayerCharacterListClientRpc - Player adalah Pocong");
+                debugOutput.text += $"\nRemovePlayerCharacterListClientRpc - Player adalah Pocong";
+                // NetworkManager.Singleton.Shutdown();
+                SceneManager.LoadScene("MainMenu");
+            }
+            else if (player.typeChar == CharacterType.Spirit)
+            {
+                Debug.Log($"RemovePlayerCharacterListClientRpc - Player adalah Spirit");
+                debugOutput.text += $"\nRemovePlayerCharacterListClientRpc - Player adalah Spirit";
+                // NetworkManager.Singleton.Shutdown();
+                // SceneManager.LoadScene("MainMenu");
+            }
+            debugOutput.text += $"\nRemovePlayerCharacterListClientRpc - {clientId} tipe {player.typeChar} dihapus";
+            playerCharacterList.Remove(player);
+            UI_OtherPlayerLeave.SetActive(true);
+            // GameManager.instance.totalKids--;
+            Debug.Log($"RemovePlayerCharacterListClientRpc - Player berhasil dihapus ID: {clientId}.");
+        }
+        catch (Exception ex)
+        {
+            debugOutput.text += $"\nRemovePlayerCharacterListClientRpc - Gagal dihapus: {ex.Message}";
+            Debug.LogError($"RemovePlayerCharacterListClientRpc - Player gagal dihapus: {ex.Message}.");
+
+        }
+
+    }
+
+
+}
+
+public struct PlayerCharacter : INetworkSerializable
+{
+    public ulong clientId;
+    public CharacterType typeChar;
+
+    // Constructor to initialize the struct
+    public PlayerCharacter(ulong id, CharacterType typeCharParams)
+    {
+        clientId = id;
+        typeChar = typeCharParams;
+    }
+
+    // Implementasi INetworkSerializable
+    public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
+    {
+        serializer.SerializeValue(ref clientId);
+        serializer.SerializeValue(ref typeChar);
+    }
+}
+
+public enum CharacterType
+{
+    Pocong, Kid, Spirit
 }
