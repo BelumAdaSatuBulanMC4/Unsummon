@@ -6,6 +6,7 @@ using Unity.Networking.Transport.Relay;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HostManager : MonoBehaviour
 {
@@ -80,6 +81,7 @@ public class HostManager : MonoBehaviour
         {
             Debug.LogError("StartHost - Failed to start host!");
             lostConnection = true;
+            SceneManager.LoadScene("MainMenu");
         }
     }
 }
