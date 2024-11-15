@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Runtime.Serialization.Formatters;
 
 public class UI_MiniGame : MonoBehaviour
 {
@@ -12,9 +13,12 @@ public class UI_MiniGame : MonoBehaviour
     [SerializeField] TMP_Text candleText;
     [SerializeField] TMP_Text instructionText;
     [SerializeField] GameObject imageAnimated;
+    [SerializeField] GameObject scrollAnimated;
     [SerializeField] Image progressBar;
+    [SerializeField] Image progressBarPocong;
 
     private Animator anim;
+    private Animator scrollAnim;
 
     private bool isHoldingButton = false;
     private float holdTime = 0f;
@@ -37,6 +41,7 @@ public class UI_MiniGame : MonoBehaviour
             Destroy(gameObject);
         }
         anim = imageAnimated.GetComponent<Animator>();
+        scrollAnim = scrollAnimated.GetComponent<Animator>();
     }
 
     private void Start()
@@ -66,6 +71,7 @@ public class UI_MiniGame : MonoBehaviour
             candleButton.interactable = false; // Disable the button
             if (isSpeechReady)
             {
+                scrollAnimated.SetActive(true);
                 StartVoiceRecognitionForCurse(item); // Start speech recognition
                 IsVoiceCorrect();
             }
@@ -85,17 +91,17 @@ public class UI_MiniGame : MonoBehaviour
                 // Scale hold time to range from startConditionValue to 5
                 candleConditionValue = Mathf.Clamp((holdTime / maxHoldTime) * 5f + startConditionValue, startConditionValue, 5f);
                 anim.SetFloat("CandleCondition", candleConditionValue);
-                instructionText.text = "value : " + candleConditionValue;
+                // instructionText.text = "value : " + candleConditionValue;
 
                 if (item != null)
                 {
                     if (item.isActivated)
                     {
-                        if (progressBar.fillAmount != 1)
+                        if (progressBarPocong.fillAmount != 1)
                         {
-                            progressBar.fillAmount = (candleConditionValue - 2) / 2;
+                            progressBarPocong.fillAmount = (candleConditionValue - 2) / 2;
                         }
-                        // instructionText.text = "Hold to snuff out the candle";
+                        instructionText.text = "Hold to snuff out the candle";
                         if (candleConditionValue >= 4f) // Snuffing the candle at value 4
                         {
                             GameManager.instance.PocongTurnedOffItem(item);
@@ -108,7 +114,7 @@ public class UI_MiniGame : MonoBehaviour
                         {
                             progressBar.fillAmount = candleConditionValue / 2;
                         }
-                        // instructionText.text = "Tap and Hold to light the candle";
+                        instructionText.text = "Tap and Hold to light the candle";
                         if (candleConditionValue >= 2f) // Lighting the candle at value 2
                         {
                             GameManager.instance.KidTurnedOnItem(item);
@@ -127,9 +133,9 @@ public class UI_MiniGame : MonoBehaviour
 
                     if (item.isActivated)
                     {
-                        if (progressBar.fillAmount != 1)
+                        if (progressBarPocong.fillAmount != 1)
                         {
-                            progressBar.fillAmount = (candleConditionValue - 2) / 2;
+                            progressBarPocong.fillAmount = (candleConditionValue - 2) / 2;
                         }
                     }
                     else
@@ -140,7 +146,7 @@ public class UI_MiniGame : MonoBehaviour
                         }
                     }
 
-                    instructionText.text = "value : " + candleConditionValue;
+                    // instructionText.text = "value : " + candleConditionValue;
                     anim.SetFloat("CandleCondition", candleConditionValue);
                 }
             }
@@ -159,15 +165,18 @@ public class UI_MiniGame : MonoBehaviour
         if (recognizedText.ToLower().Contains("buka") && item.isCursed)
         {
             // item.RemoveCurse();  // Remove the curse if the word is correctly recognized
-            instructionText.text = "Correct! You said 'Buka'";
+            instructionText.text = "Correct! You said 'Pulang'";
             GameManager.instance.KidTurnedOnItem(item);
             GameManager.instance.CancelVoiceRecognition();
-            StartCoroutine(WaitAndDeactivate());
+            // scrollAnim.SetInteger("Scroll", 1);
+            StartCoroutine(WaitScrollGone());
+            // StartCoroutine(WaitAndDeactivate());
             // StartCoroutine(WaitBeforeEnablingInteraction(3f));
         }
         else
         {
-            instructionText.text = "Say 'Buka' to break the curse.";
+            scrollAnim.SetInteger("Scroll", 2);
+            instructionText.text = "Say 'Pulang' to break the curse.";
         }
     }
 
@@ -194,7 +203,16 @@ public class UI_MiniGame : MonoBehaviour
         item = newItem;
         // Set initial candle condition value based on the item's activation status
         startConditionValue = item.isActivated ? 2f : 0f;
+        if (item.isActivated)
+        {
+            instructionText.text = "Hold to snuff out the candle";
+        }
+        else
+        {
+            instructionText.text = "Tap and Hold to light the candle";
+        }
         progressBar.fillAmount = 0;
+        progressBarPocong.fillAmount = 0;
         candleConditionValue = startConditionValue; // Start the candle condition at this value
         anim.SetFloat("CandleCondition", candleConditionValue); // Set the animator condition to start from this value
     }
@@ -202,6 +220,7 @@ public class UI_MiniGame : MonoBehaviour
     public void CancelMiniGame()
     {
         gameObject.SetActive(false);
+        CancelVoiceRecognitionzure();
     }
 
     public void CancelVoiceRecognitionzure()
@@ -237,13 +256,50 @@ public class UI_MiniGame : MonoBehaviour
         if (item.isActivated)
         {
             isSpeechReady = true;
+            instructionText.text = "Hold to snuff out the candle";
         }
         else
         {
             isSpeechReady = false;
+            instructionText.text = "Tap and Hold to light the candle";
         }
 
         // Deactivate the mini-game UI
+        gameObject.SetActive(false);
+    }
+
+    private IEnumerator WaitScrollGone()
+    {
+        // Step 1: Start the scroll animation
+        // scrollAnim.SetInteger("Scroll", 1);
+
+        // // Wait for 1 second to let the animation play
+        // yield return new WaitForSeconds(1f);
+
+        // Step 2: Change the animation condition
+        scrollAnim.SetBool("ScrollCondition", true);
+
+        // Wait for another 1 second for the second part of the animation
+        yield return new WaitForSeconds(1.7f);
+
+        // Step 3: Update the instruction text based on item activation state
+        isHoldingButton = false;
+        if (item.isActivated)
+        {
+            isSpeechReady = true;
+            instructionText.text = "Hold to snuff out the candle";
+        }
+        else
+        {
+            isSpeechReady = false;
+            instructionText.text = "Tap and Hold to light the candle";
+        }
+
+        // Step 4: Wait for an additional 1 second before deactivating the UI
+        // yield return new WaitForSeconds(1f);
+
+        // Step 5: Deactivate the mini-game UI
+        scrollAnimated.SetActive(false);
         gameObject.SetActive(false);
     }
 }

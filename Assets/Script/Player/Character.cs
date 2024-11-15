@@ -134,7 +134,7 @@ public class Character : NetworkBehaviour
     }
     protected virtual void Update()
     {
-        Debug.Log("collider is " + colliderCharacter + " and " + rendererCharacter);
+        // Debug.Log("collider is " + colliderCharacter + " and " + rendererCharacter);
         if (!IsOwner) { return; }
         Debug.Log($"PlayerID: {OwnerClientId} adalah {typeChar}");
         if (typeChar == "Player" || typeChar == "Pocong")
