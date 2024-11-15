@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -387,11 +384,33 @@ public class Character : NetworkBehaviour
         Vector2 joystickGame = UI_InGame.instance.joystickGame.GetJoystickDirection();
         if (dashTime > 0)
         {
-            rb.velocity = new Vector2(joystickGame.x * moveSpeed * dashSpeed, joystickGame.y * moveSpeed * dashSpeed);
+            if (Application.platform == RuntimePlatform.IPhonePlayer)
+            {
+                rb.velocity = new Vector2(joystickGame.x * moveSpeed * dashSpeed, joystickGame.y * moveSpeed * dashSpeed);
+
+            }
+            else
+            {
+
+                rb.velocity = new Vector2(moveInput.x * moveSpeed * dashSpeed, moveInput.y * moveSpeed * dashSpeed);
+            }
+
+
         }
         else
         {
-            rb.velocity = new Vector2(joystickGame.x * moveSpeed, joystickGame.y * moveSpeed);
+            if (Application.platform == RuntimePlatform.IPhonePlayer)
+            {
+
+                rb.velocity = new Vector2(joystickGame.x * moveSpeed, joystickGame.y * moveSpeed);
+            }
+            else
+            {
+
+                rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
+            }
+
+
         }
     }
     private void HandleFlip()
@@ -438,7 +457,7 @@ public class Character : NetworkBehaviour
 
     private void HandleMovementSound()
     {
-        if (UI_InGame.instance.joystickGame.GetJoystickDirection() != Vector2.zero)
+        if (UI_InGame.instance.joystickGame.GetJoystickDirection() != Vector2.zero || moveInput != Vector2.zero)
         {
             if (!sfxMovement.isPlaying)
             {

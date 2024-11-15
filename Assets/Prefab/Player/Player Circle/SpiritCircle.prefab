@@ -429,7 +429,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isAuthor: 0
-  moveSpeed: 5
+  moveSpeed: 10
   itemCheck: {fileID: 0}
   itemCheckRadius: 0
   whatIsItem:
@@ -448,6 +448,7 @@ MonoBehaviour:
     m_Bits: 0
   characterSpotLight: {fileID: 6189999029408268683}
   volume: {fileID: 0}
+  hidingCoolDown: 0
   noiseCooldown: 5
   noiseTime: 5
   controller_UI: {fileID: 0}
