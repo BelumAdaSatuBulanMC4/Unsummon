@@ -74,8 +74,8 @@ public class GameManager : NetworkBehaviour
     {
         // FindAllPlayerKids();
         Debug.Log($"Achive items : {activeItems}/{totalItems}");
-        kidsWin = activeItems == totalItems;
-        pocongWin = killedKids == totalKids;
+        kidsWin = activeItems >= totalItems;
+        pocongWin = killedKids >= totalKids;
         if (kidsWin || pocongWin)
         {
             EndGame();
@@ -242,6 +242,11 @@ public class GameManager : NetworkBehaviour
             }
         }
         return null;
+    }
+
+    public String GetTypeCharacter()
+    {
+        return currentChar.GetTypeChar();
     }
 
     public Character GetTypeOwnerCharacter()
