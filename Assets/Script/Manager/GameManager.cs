@@ -244,6 +244,11 @@ public class GameManager : NetworkBehaviour
         return null;
     }
 
+    public String GetTypeCharacter()
+    {
+        return currentChar.GetTypeChar();
+    }
+
     public Character GetTypeOwnerCharacter()
     {
         return currentChar;

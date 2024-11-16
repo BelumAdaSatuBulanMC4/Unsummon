@@ -62,7 +62,10 @@ public class IndicatorScript : MonoBehaviour
         // Dynamically handle additions and removals in kidPositions
         SyncIndicatorsWithKidPositions();
         // Update existing indicators
-        UpdateIndicators();
+        if (GameManager.instance.GetTypeCharacter() == "Pocong")
+        {
+            UpdateIndicators();
+        }
     }
 
     // Method to initialize indicators based on kidPositions in PlayerManager
