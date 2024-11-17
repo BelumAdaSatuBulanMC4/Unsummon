@@ -142,6 +142,9 @@ public class HostManager : MonoBehaviour
     {
         try
         {
+            lobbyId ??= PlayerInfo.Instance.CurrentLobbyId;
+            Debug.Log($"DeleteLobbyAsync - CurrentLobbyID Host: {lobbyId}");
+            Debug.Log($"DeleteLobbyAsync - CurrentLobbyID: {PlayerInfo.Instance.CurrentLobbyId}");
             await Lobbies.Instance.DeleteLobbyAsync(lobbyId);
             Debug.Log("DeleteLobbyAsync - Successfully delete lobby.");
         }
@@ -157,9 +160,6 @@ public class HostManager : MonoBehaviour
         Debug.Log("RemovePlayerFromLobby - berhasil dijalankan.");
         try
         {
-            // Lobby lobby = await Lobbies.Instance.GetLobbyAsync(lobbyId);
-            // string playerId = PlayerInfo.Instance.PlayerId;
-            // await Lobbies.Instance.RemovePlayerAsync(lobbyId, playerId);
             Debug.Log($"RemovePlayerFromLobby Join -  LobbyID: {currentLobbyId}");
             await Lobbies.Instance.RemovePlayerAsync(currentLobbyId, playerId);
             Debug.Log("RemovePlayerFromLobby - Successfully remove player from lobby.");
