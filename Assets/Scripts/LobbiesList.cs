@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
@@ -73,7 +74,6 @@ public class LobbiesList : MonoBehaviour
         isRefreshing = false;
     }
 
-    // public async void JoinAsync(Lobby lobby)
     public async void JoinAsync(Lobby lobby)
     {
         if (isJoining) { return; }
@@ -82,6 +82,14 @@ public class LobbiesList : MonoBehaviour
 
         try
         {
+
+            var currentLobby = await Lobbies.Instance.GetLobbyAsync(lobby.Id);
+            if (currentLobby.Players.Exists(player => player.Id == AuthenticationService.Instance.PlayerId))
+            {
+                Debug.Log("JoinAsync - Player sudah pernah bergabung dengan lobby ini.");
+                return;
+            }
+
             Lobby joiningLobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobby.Id);
             string joinCode = joiningLobby.Data["JoinCode"].Value;
 

@@ -17,6 +17,7 @@ public class ClientManager : MonoBehaviour
     public bool roomNotFound = false;
     public bool roomFull = false;
     public bool lostConnection = false;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)

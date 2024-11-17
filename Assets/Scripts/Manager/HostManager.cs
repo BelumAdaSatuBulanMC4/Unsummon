@@ -130,4 +130,43 @@ public class HostManager : MonoBehaviour
             yield return delay;
         }
     }
+
+    public string GetLobbyId()
+    {
+        if (lobbyId != null) return lobbyId;
+        else return null;
+    }
+
+
+    public async void DeleteLobbyAsync()
+    {
+        try
+        {
+            await Lobbies.Instance.DeleteLobbyAsync(lobbyId);
+            Debug.Log("DeleteLobbyAsync - Successfully delete lobby.");
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.LogError($"DeleteLobbyAsync - Failed delete lobby: {e.Message}");
+        }
+    }
+
+    // public async void RemovePlayerFromLobby(string playerId)
+    public async Task RemovePlayerFromLobby(string playerId, string currentLobbyId)
+    {
+        Debug.Log("RemovePlayerFromLobby - berhasil dijalankan.");
+        try
+        {
+            // Lobby lobby = await Lobbies.Instance.GetLobbyAsync(lobbyId);
+            // string playerId = PlayerInfo.Instance.PlayerId;
+            // await Lobbies.Instance.RemovePlayerAsync(lobbyId, playerId);
+            Debug.Log($"RemovePlayerFromLobby Join -  LobbyID: {currentLobbyId}");
+            await Lobbies.Instance.RemovePlayerAsync(currentLobbyId, playerId);
+            Debug.Log("RemovePlayerFromLobby - Successfully remove player from lobby.");
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.LogError($"RemovePlayerFromLobby - Failed remove player from lobby: {e.Message}");
+        }
+    }
 }
