@@ -22,6 +22,7 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private GameObject UI_NoiseButton;
     [SerializeField] private GameObject UI_HidingMiniGame;
     [SerializeField] private Button close_UI_OtherPlayerLeave;
+    [SerializeField] private GameObject animatedKilledScreen;
     private GameObject instantiatedHidingMechanics;
     public JoystickGame joystickGame;
 
@@ -30,6 +31,8 @@ public class UI_InGame : MonoBehaviour
     private Character tempCharacter;
 
     private bool isOnHidingMiniGame = false;
+
+    private bool isNowKilled = false;
 
     private void Awake()
     {
@@ -190,6 +193,18 @@ public class UI_InGame : MonoBehaviour
         }
     }
 
+    private IEnumerator WaitAndSpawnDeadBody()
+    {
+        // SetKilledScreen(true);
+        animatedKilledScreen.SetActive(true);
+        UI_GameInfo.SetActive(false);
+        // Wait for 2 seconds
+        yield return new WaitForSeconds(1f);
+
+        animatedKilledScreen.SetActive(false);
+        UI_GameInfo.SetActive(true);
+    }
+
     /// BIKIN BUAT INTERACTION WITH CLOSET HERE!
     public void InteractedWithCloset()
     {
@@ -203,6 +218,26 @@ public class UI_InGame : MonoBehaviour
                 // UI_HidingMechanics.instance.CurrentCloset(authorCharacter.GetCurrentCloset());
             }
         }
+    }
+
+    public void SetKilledScreen(bool isKilled)
+    {
+        isNowKilled = isKilled;
+        Debug.Log("DIBUNUH!" + isNowKilled);
+        StartCoroutine(WaitEating());
+        // Character authChar = FindAuthorCharacter();
+        // if (authChar is PlayerSpirit)
+        // {
+        // animatedKilledScreen.SetActive(isKilled);
+        // UI_GameInfo.SetActive(!isKilled);
+        // }
+    }
+
+    private IEnumerator WaitEating()
+    {
+        yield return new WaitForSeconds(1);
+        isNowKilled = false;
+        Debug.Log("DIBUNUH! setelah 1 detigggggKh" + isNowKilled);
     }
 
     public void SwitchToSpirit()
@@ -282,6 +317,7 @@ public class UI_InGame : MonoBehaviour
             // Debug.Log("InGame spirit " + character.ToString());
             // currentInGameController = UI_InGameSpirit;
             UI_InGameSpirit.SetActive(true);
+            animatedKilledScreen.SetActive(isNowKilled);
             UI_InGameKid.SetActive(false);
             // Instantiate(currentInGameController, transform);
         }

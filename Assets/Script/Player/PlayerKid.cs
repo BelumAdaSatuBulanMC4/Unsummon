@@ -11,7 +11,7 @@ public class PlayerKid : Character
     private Collider2D myCollider;
 
     [Header("KnockBack")]
-    [SerializeField] private float knockBackDuration = 1;
+    [SerializeField] private float knockBackDuration = 1.5f;
     [SerializeField] private Vector2 knockBackPower;
     private bool isKnocked;
 
@@ -201,47 +201,64 @@ public class PlayerKid : Character
     {
         // Debug.Log("the player has been killed");
         // Transform kidTransform = transform;
+        rb.constraints = RigidbodyConstraints2D.FreezePosition;
+
         sfxPocongKill.loop = false;
         sfxPocongKill.Play();
         // if (isAuthor)
         // {
         // CameraManager.instance.CameraShake();
-        GameManager.instance.UpdateKilledKids();
 
         KidKilledServerRpc(OwnerClientId);
+        // StartCoroutine(WaitForPlayersUpdate());
+        GameManager.instance.UpdateKilledKids();
+        // UI_InGame.instance.SetKilledScreen(true);
+
         // GamePlayManager.instance.UpdatePlayerCharacterListServerRpc(OwnerClientId, CharacterType.Spirit);
+        // GameManager.instance.UpdateKilledKids();
         GamePlayManager.instance.debugOutput.text += "\nGettingKilled -  berhasil dijalankan";
+
         // spirit.GetComponentInChildren<PlayerSpirit>().SetAuthor(isAuthor);
         // }
         GamePlayManager.instance.DebugTesting();
 
     }
 
+    private IEnumerator WaitForPlayersUpdate()
+    {
+        yield return new WaitForSeconds(2.5f);
+        KidKilledServerRpc(OwnerClientId);
+    }
+
     public void Knocked(float sourceOfDamage)
     {
-        float knockbackDir = 1;
+        GettingKilled();
+        // float knockbackDir = 1;
+        // // rb.velocity = new Vector2(0, 0);
 
-        if (transform.position.x < sourceOfDamage)
-        {
-            knockbackDir = -1;
-        }
+        // if (transform.position.x < sourceOfDamage)
+        // {
+        //     knockbackDir = -1;
+        // }
 
-        if (isKnocked)
-        {
-            return;
-        }
-        StartCoroutine(KnockedRoutine());
-        rb.velocity = new Vector2(knockBackPower.x * knockbackDir, knockBackPower.y);
+        // if (isKnocked)
+        // {
+        //     return;
+        // }
+        // StartCoroutine(KnockedRoutine());
+        // rb.velocity = new Vector2(knockBackPower.x * knockbackDir, knockBackPower.y);
     }
 
     private IEnumerator KnockedRoutine()
     {
         isKnocked = true;
+        isNowKilled = true;
         anim.SetBool("isHit", isKnocked);
 
         yield return new WaitForSeconds(knockBackDuration);
 
         isKnocked = false;
+        isNowKilled = false;
         anim.SetBool("isHit", isKnocked);
         GettingKilled();
     }
@@ -284,16 +301,24 @@ public class PlayerKid : Character
                 deadBody.GetComponent<NetworkObject>().Spawn();
 
                 GameObject spirit = Instantiate(spiritPrefab, transform.position, Quaternion.identity);
+                // UI_InGame.instance.SetKilledScreen(true);
+                // StartCoroutine(WaitAndSpawnDeadBody());
 
                 // UI_InGame.instance.SwitchToSpirit();
+
                 UI_InGame.instance.SetAuthorCharacter(null);
+
                 // UI_InGame.instance.InstantiateUIForCharacter(spirit.GetComponentInChildren<Character>());
 
                 PlayerSpirit newSpirit = spiritPrefab.GetComponent<PlayerSpirit>();
                 spirit.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
+
+
                 // UI_NoiseButton uiNoiseButton = FindObjectOfType<UI_NoiseButton>();  // Assuming you have only one UI_NoiseButton
+
                 GamePlayManager.instance.UpdatePlayerCharacterListClientRpc(clientId, CharacterType.Spirit);
                 GamePlayManager.instance.debugOutput.text += "\nKidKilledServerRpc -  berhasil dijalankan";
+
                 // if (uiNoiseButton != null)
                 // {
                 //     uiNoiseButton.AssignPlayerSpirit(newSpirit); // Call a method to assign the spirit
@@ -301,6 +326,15 @@ public class PlayerKid : Character
                 // CameraManager.instance.ChangeCameraFollow(spirit.transform);
             }
         }
+    }
+
+    private IEnumerator WaitAndSpawnDeadBody()
+    {
+        UI_InGame.instance.SetKilledScreen(true);
+        // Wait for 2 seconds
+        yield return new WaitForSeconds(1f);
+
+        UI_InGame.instance.SetKilledScreen(false);
     }
 
     // [ClientRpc]

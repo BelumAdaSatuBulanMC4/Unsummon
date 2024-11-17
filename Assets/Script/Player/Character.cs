@@ -71,6 +71,7 @@ public class Character : NetworkBehaviour
     //set visible di sini ya
     private Renderer rendererCharacter;
     private CapsuleCollider2D colliderCharacter;
+    protected bool isNowKilled = false;
 
 
 
@@ -382,35 +383,38 @@ public class Character : NetworkBehaviour
     protected virtual void HandleMovement()
     {
         Vector2 joystickGame = UI_InGame.instance.joystickGame.GetJoystickDirection();
-        if (dashTime > 0)
+        if (!isNowKilled)
         {
-            if (Application.platform == RuntimePlatform.IPhonePlayer)
+            if (dashTime > 0)
             {
-                rb.velocity = new Vector2(joystickGame.x * moveSpeed * dashSpeed, joystickGame.y * moveSpeed * dashSpeed);
+                if (Application.platform == RuntimePlatform.IPhonePlayer)
+                {
+                    rb.velocity = new Vector2(joystickGame.x * moveSpeed * dashSpeed, joystickGame.y * moveSpeed * dashSpeed);
+
+                }
+                else
+                {
+
+                    rb.velocity = new Vector2(moveInput.x * moveSpeed * dashSpeed, moveInput.y * moveSpeed * dashSpeed);
+                }
+
 
             }
             else
             {
+                if (Application.platform == RuntimePlatform.IPhonePlayer)
+                {
 
-                rb.velocity = new Vector2(moveInput.x * moveSpeed * dashSpeed, moveInput.y * moveSpeed * dashSpeed);
+                    rb.velocity = new Vector2(joystickGame.x * moveSpeed, joystickGame.y * moveSpeed);
+                }
+                else
+                {
+
+                    rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
+                }
+
+
             }
-
-
-        }
-        else
-        {
-            if (Application.platform == RuntimePlatform.IPhonePlayer)
-            {
-
-                rb.velocity = new Vector2(joystickGame.x * moveSpeed, joystickGame.y * moveSpeed);
-            }
-            else
-            {
-
-                rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
-            }
-
-
         }
     }
     private void HandleFlip()
