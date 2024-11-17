@@ -34,6 +34,8 @@ public class LobbyItem : MonoBehaviour
     {
         Debug.Log("LobbyItem Join - berhasil diklik");
         lobbiesList.JoinAsync(lobby);
+        PlayerInfo.Instance.ChangeCurrentLobbyId(lobby.Id);
+        Debug.Log($"LobbyItem Join -  LobbyID: {lobby.Id}");
         // SceneManager.LoadScene("LobbyRoom");
     }
 }

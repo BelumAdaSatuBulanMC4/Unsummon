@@ -39,6 +39,7 @@ public class MainMenuManager : MonoBehaviour
             await UnityServices.InitializeAsync();
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
             Debug.Log($"Player ID: {AuthenticationService.Instance.PlayerId}");
+            PlayerInfo.Instance.SetPlayerId(AuthenticationService.Instance.PlayerId);
         }
         catch (Exception e)
         {

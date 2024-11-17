@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using Unity.Services.Lobbies;
+using Unity.Services.Lobbies.Models;
 
 public class LobbyManager : NetworkBehaviour
 {
@@ -129,11 +131,13 @@ public class LobbyManager : NetworkBehaviour
         }
     }
 
-    public void OnBackButtonPressed()
+    public async void OnBackButtonPressed()
     {
         // Shutdown NetworkManager ketika kembali ke Main Menu
         if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsHost)
         {
+            // LeaveLobbyAsync();
+            HostManager.Instance.DeleteLobbyAsync(); // perlu await??
             NetworkManager.Singleton.Shutdown();
             Debug.Log("OnBackButtonPressed - NetworkManager in Host shut down successfully.");
             try
@@ -148,11 +152,48 @@ public class LobbyManager : NetworkBehaviour
         }
         else if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsClient)
         {
+            await HostManager.Instance.RemovePlayerFromLobby(PlayerInfo.Instance.PlayerId, PlayerInfo.Instance.CurrentLobbyId);
+            // LeaveLobbyAsync();
             NetworkManager.Singleton.Shutdown();
             Debug.Log("OnBackButtonPressed - NetworkManager in Client shut down successfully.");
             SceneManager.LoadScene("MainMenu");
         }
     }
+
+    // private async void LeaveLobbyAsync()
+    // {
+    //     try
+    //     {
+    //         string lobbyId = HostManager.Instance.GetLobbyId();
+    //         Lobby lobby = await Lobbies.Instance.GetLobbyAsync(lobbyId);
+    //         string playerId = PlayerInfo.Instance.PlayerId;
+    //         await Lobbies.Instance.RemovePlayerAsync(lobbyId, playerId);
+    //         // List<string> lobbies = await Lobbies.Instance.GetJoinedLobbiesAsync();
+    //         foreach (var player in lobby.Players)
+    //         {
+    //             Debug.Log($"LeaveLobbyAsync - PlayerID: {player.Id}");
+    //         }
+    //         Debug.Log("LeaveLobbyAsync - Successfully remove player from lobby.");
+    //     }
+    //     catch (LobbyServiceException e)
+    //     {
+    //         Debug.LogError($"LeaveLobbyAsync - Failed remove player from lobby: {e.Message}");
+    //     }
+    // }
+
+    // private async void DeleteLobbyAsync()
+    // {
+    //     try
+    //     {
+    //         string lobbyId = HostManager.Instance.GetLobbyId();
+    //         await Lobbies.Instance.DeleteLobbyAsync(lobbyId);
+    //         Debug.Log("DeleteLobbyAsync - Successfully delete lobby.");
+    //     }
+    //     catch (LobbyServiceException e)
+    //     {
+    //         Debug.LogError($"DeleteLobbyAsync - Failed delete lobby: {e.Message}");
+    //     }
+    // }
 
     public void UpdateRoomCode(string roomCode)
     {
