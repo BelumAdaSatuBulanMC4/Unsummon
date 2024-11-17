@@ -49,7 +49,7 @@ public class WinningCondition : NetworkBehaviour
         Debug.Log($"Host: {IsHost} dan Client: {IsClient}");
         if (NetworkManager.Singleton != null)
         {
-            HostManager.Instance.DeleteLobbyAsync();
+            // HostManager.Instance.DeleteLobbyAsync();
             NetworkManager.Singleton.Shutdown();
             Debug.Log("NetworkManager shut down successfully and return to MainMenu.");
             SceneManager.LoadScene("MainMenu");

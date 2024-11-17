@@ -47,6 +47,7 @@ public class GamePlayManager : NetworkBehaviour
         leaveButton.onClick.AddListener(OnLeaveButtonPressed);
         // NetworkManager.Singleton.OnClientDisconnectCallback += OnPlayerLeave;
         debugOutput.text += $"\nStart GamePlayManager - berhasil dijalankan";
+        HostManager.Instance.DeleteLobbyAsync();
     }
 
     private void OnLeaveButtonPressed()
