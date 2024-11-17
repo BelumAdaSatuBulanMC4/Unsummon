@@ -42,7 +42,7 @@ public class MainMenuManager : MonoBehaviour
         }
         catch (Exception e)
         {
-            Debug.Log(e);
+            Debug.Log($"Start MainMenuManager - login failed: {e.Message}");
             return;
         }
 

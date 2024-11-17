@@ -1,8 +1,12 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
 using Unity.Networking.Transport.Relay;
+using Unity.Services.Lobbies;
+using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
@@ -13,6 +17,9 @@ public class HostManager : MonoBehaviour
     public static HostManager Instance { get; private set; }
     public string JoinCode;
     public bool lostConnection = false;
+    private int maxConnections = 5;
+    private string lobbyId;
+    private string hostName;
 
     private void Awake()
     {
@@ -25,6 +32,7 @@ public class HostManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+        hostName = DataPersistence.LoadUsername();
     }
     // public async Task StartHost()
     public async void StartHost()
@@ -33,11 +41,11 @@ public class HostManager : MonoBehaviour
         Allocation allocation;
         try
         {
-            allocation = await RelayService.Instance.CreateAllocationAsync(5);
+            allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
         }
         catch (RelayServiceException ex)
         {
-            Debug.Log($"Relay create allocation failed {ex.Message}");
+            Debug.Log($"StartHost - Relay create allocation failed: {ex.Message}");
             lostConnection = true;
             throw;
         }
@@ -49,7 +57,7 @@ public class HostManager : MonoBehaviour
         }
         catch (RelayServiceException ex)
         {
-            Debug.Log($"Relay join code request failed: {ex.Message}");
+            Debug.LogError($"StartHost - Relay join code request failed: {ex.Message}");
             lostConnection = true;
             throw;
         }
@@ -59,6 +67,33 @@ public class HostManager : MonoBehaviour
 
         Debug.Log($"StartHost - server: {allocation.ConnectionData[0]} {allocation.ConnectionData[1]}");
         Debug.Log($"StartHost - server: {allocation.AllocationId}");
+
+        try
+        {
+            var createLobbyOptions = new CreateLobbyOptions
+            {
+                IsPrivate = false,
+                Data = new Dictionary<string, DataObject>()
+                {
+                    {
+                        "JoinCode", new DataObject(
+                            visibility: DataObject.VisibilityOptions.Member,
+                            value: JoinCode
+                        )
+                    }
+                }
+            };
+
+            Lobby lobby = await Lobbies.Instance.CreateLobbyAsync(hostName, maxConnections, createLobbyOptions);
+            lobbyId = lobby.Id;
+            Debug.Log("HostManager try CreateLobby - berhasil dijalankan");
+            StartCoroutine(HeartbeatLobbyCoroutine(15));
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.LogError($"StartHost - CreateLobbyOptions failed: {e.Message}");
+            throw;
+        }
 
         // codeRoomOutput.text = JoinCode;
 
@@ -82,6 +117,17 @@ public class HostManager : MonoBehaviour
             Debug.LogError("StartHost - Failed to start host!");
             lostConnection = true;
             SceneManager.LoadScene("MainMenu");
+        }
+    }
+
+    private IEnumerator HeartbeatLobbyCoroutine(float waitTimeSeconds)
+    {
+        var delay = new WaitForSecondsRealtime(waitTimeSeconds);
+        while (true)
+        {
+            Lobbies.Instance.SendHeartbeatPingAsync(lobbyId);
+            Debug.Log("HostManager HeartbeatLobbyCoroutine - berhasil dijalankan");
+            yield return delay;
         }
     }
 }
