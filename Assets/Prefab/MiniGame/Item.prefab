@@ -94,7 +94,8 @@ GameObject:
   - component: {fileID: 6305432250074456266}
   - component: {fileID: 14943878238325176}
   - component: {fileID: 5365859186210245966}
-  m_Layer: 0
+  - component: {fileID: 3497069038481356603}
+  m_Layer: 13
   m_Name: CandleOutline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,7 +112,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.5, y: -3.06, z: 0}
-  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 897384059013099403}
@@ -215,6 +216,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eced77c7e8b024789bb1b3fb29733d80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &3497069038481356603
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4249021212918779884}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a3b352b2b58f841b693d2e2d37eef23c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5114084766020054922
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,7 +465,6 @@ MonoBehaviour:
   isCursed: 0
   onCandle: {fileID: 8300000, guid: 05dfd28b65ac74d20957b1ad1d1d40e1, type: 3}
   offCandle: {fileID: 8300000, guid: 552281b7c88654ea7a026e818b311c11, type: 3}
-  rendererOutline: {fileID: 4249021212918779884}
 --- !u!114 &7943144022509488621
 MonoBehaviour:
   m_ObjectHideFlags: 0

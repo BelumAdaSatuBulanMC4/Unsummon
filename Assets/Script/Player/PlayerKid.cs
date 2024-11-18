@@ -33,7 +33,7 @@ public class PlayerKid : Character
     public float maxDistance = 12f;
     public float minIntensity = 0f;
     public float maxIntensity = 1f;
-    private bool isNear = false;
+    private bool isHiding = false;
 
     protected override void Awake()
     {
@@ -62,6 +62,18 @@ public class PlayerKid : Character
         Debug.Log("Player manager berhasil diintansiasi");
     }
 
+    protected void HidingCharacter(bool hiding)
+    {
+        if (hiding)
+        {
+            PlayerManager.instance.RegisterKid(this);
+        }
+        else
+        {
+            PlayerManager.instance.UnregisterKid(this);
+        }
+    }
+
     public override void OnDestroy()
     {
         base.OnDestroy();
@@ -76,6 +88,7 @@ public class PlayerKid : Character
         base.Update();
         hidingCoolDownTimer -= Time.deltaTime;
         HandleAnimations();
+        HidingCharacter(UI_InGame.instance.GetIsHiding());
         // HandleLocationChanged();
         // HandlePlayerCollision();
         HandleMovement();

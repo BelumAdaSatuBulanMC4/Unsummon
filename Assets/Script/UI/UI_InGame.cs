@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,12 +25,19 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private GameObject UI_HidingMiniGame;
     [SerializeField] private Button close_UI_OtherPlayerLeave;
     [SerializeField] private GameObject animatedKilledScreen;
+
+    [SerializeField] private GameObject UI_MiniMap;
     private GameObject instantiatedHidingMechanics;
     public JoystickGame joystickGame;
 
     private GameObject currentInGameController;
     private Character authorCharacter;
     private Character tempCharacter;
+
+    // private Vector3[] candleLocationOnMap;
+    private List<Vector3> candleLocationOnMap = new List<Vector3>();
+    private List<Vector3> cursedLocationOnMap = new List<Vector3>();
+
 
     private bool isOnHidingMiniGame = false;
 
@@ -252,6 +261,16 @@ public class UI_InGame : MonoBehaviour
 
     }
 
+    public void SwitchToMiniMap()
+    {
+        UI_MiniMap.SetActive(true);
+    }
+
+    public void CloseMiniMap()
+    {
+        UI_MiniMap.SetActive(false);
+    }
+
     public void CloseSettings()
     {
         UI_InGameSettings.SetActive(false);
@@ -381,6 +400,49 @@ public class UI_InGame : MonoBehaviour
         // Debug.Log("kelihatan gak???????????????????????? DUA");
         // Debug.Log("harusnya UI InGameKid udah kelihatan lagi!");
         // HIDE here
+    }
+
+    public bool GetIsHiding()
+    {
+        return isOnHidingMiniGame;
+    }
+
+    //MINIMAP
+
+    public Vector3 GetAuthorCharacterPosition()
+    {
+        return authorCharacter.transform.position;
+    }
+
+    public String GetAuthorCharacterType()
+    {
+        return authorCharacter.GetTypeChar();
+    }
+
+    public void RegisterCandleToMap(Vector3 position)
+    {
+        if (!candleLocationOnMap.Contains(position))
+        {
+            candleLocationOnMap.Add(position);
+        }
+    }
+
+    public List<Vector3> GetCandleRegistered()
+    {
+        return candleLocationOnMap;
+    }
+
+    public void RegisterCurseToMap(Vector3 position)
+    {
+        if (!cursedLocationOnMap.Contains(position))
+        {
+            cursedLocationOnMap.Add(position);
+        }
+    }
+
+    public List<Vector3> GetCurseRegistered()
+    {
+        return cursedLocationOnMap;
     }
 
 }
