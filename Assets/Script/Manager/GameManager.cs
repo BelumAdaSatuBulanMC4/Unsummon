@@ -106,7 +106,7 @@ public class GameManager : NetworkBehaviour
         }
 
         string recognizedText = swiftPlugin.GetTranscribedTextFromSwift();
-        if (recognizedText.ToLower().Contains("buka"))
+        if (recognizedText.ToLower().Contains("pulang"))
         {
             cursedItem.RemoveCurse(); // Remove the curse if the word is correctly recognized
             feedbackCallback?.Invoke("Correct! You said 'Buka'", true); // Trigger callback for correct feedback

@@ -69,9 +69,12 @@ public class Character : NetworkBehaviour
     private Vignette vignette;
 
     //set visible di sini ya
-    private Renderer rendererCharacter;
-    private CapsuleCollider2D colliderCharacter;
-
+    protected Renderer rendererCharacter;
+    protected CapsuleCollider2D colliderCharacter;
+    protected bool isNowKilled = false;
+    protected bool isTeleported = false;
+    protected bool isHidingNow { get; private set; }
+    public bool IsTransitioning { get; private set; }
 
 
     protected virtual void Awake()
@@ -143,6 +146,7 @@ public class Character : NetworkBehaviour
         {
             HandleMovement();
         }
+        Debug.Log("Di dalem Hidecharacter SERVER luar" + isHidingNow);
 
         // if (IsOwner && currentItem == null)
         // {
@@ -160,15 +164,33 @@ public class Character : NetworkBehaviour
         HandleMovementSound();
     }
 
+    protected bool HidingNow()
+    {
+        return isHidingNow;
+    }
+
     private void OnDisable()
     {
         inputPlayer.Disable();
     }
 
     public string GetCurrentLocation() => currentlocation;
-    public void CurrentLocationChanged(string loc)
+    public void CurrentLocationChanged(string location, bool isEntering)
     {
-        currentlocation = loc;
+        if (isEntering)
+        {
+            IsTransitioning = true;
+            currentlocation = location;
+            // Handle logic for entering the room
+            Debug.Log($"Entered: {location}");
+        }
+        else
+        {
+            IsTransitioning = false;
+            currentlocation = location;
+            // Handle logic for exiting to "Yard"
+            Debug.Log($"Exited to: {location}");
+        }
     }
 
     public string GetTypeChar()
@@ -315,10 +337,12 @@ public class Character : NetworkBehaviour
         //     collider.enabled = false;
         // }
 
+
+
         if (isHiding)
         {
-            Debug.Log("Harusnya karakter GAK kelihatan lagi!");
-
+            // isHidingNow = true;
+            // Debug.Log("Harusnya karakter GAK kelihatan lagi! HidingCharacter " + isHidingNow);
             LatestPosition = transform.position;
             transform.position = currentCloset.transform.position;
             // gameObject.SetActive(false);
@@ -328,7 +352,8 @@ public class Character : NetworkBehaviour
         {
             // gameObject.SetActive(true);
             HideCharacterServerRpc(true);
-            Debug.Log("Harusnya karakter udh kelihatan lagi!");
+            // isHidingNow = false;
+            // Debug.Log("Harusnya karakter udh kelihatan lagi! HidingCharacter " + isHidingNow);
             transform.position = LatestPosition;
         }
     }
@@ -343,6 +368,8 @@ public class Character : NetworkBehaviour
     private void HideCharacterClientRpc(bool isHiding)
     {
         // gameObject.SetActive(isHiding);
+        isHidingNow = !isHiding;
+        Debug.Log("Di dalem Hidecharacter SERVER" + isHidingNow);
         if (rendererCharacter != null && colliderCharacter != null)
         {
             rendererCharacter.enabled = isHiding;
@@ -382,35 +409,38 @@ public class Character : NetworkBehaviour
     protected virtual void HandleMovement()
     {
         Vector2 joystickGame = UI_InGame.instance.joystickGame.GetJoystickDirection();
-        if (dashTime > 0)
+        if (!isNowKilled || !isTeleported)
         {
-            if (Application.platform == RuntimePlatform.IPhonePlayer)
+            if (dashTime > 0)
             {
-                rb.velocity = new Vector2(joystickGame.x * moveSpeed * dashSpeed, joystickGame.y * moveSpeed * dashSpeed);
+                if (Application.platform == RuntimePlatform.IPhonePlayer)
+                {
+                    rb.velocity = new Vector2(joystickGame.x * moveSpeed * dashSpeed, joystickGame.y * moveSpeed * dashSpeed);
+
+                }
+                else
+                {
+
+                    rb.velocity = new Vector2(moveInput.x * moveSpeed * dashSpeed, moveInput.y * moveSpeed * dashSpeed);
+                }
+
 
             }
             else
             {
+                if (Application.platform == RuntimePlatform.IPhonePlayer)
+                {
 
-                rb.velocity = new Vector2(moveInput.x * moveSpeed * dashSpeed, moveInput.y * moveSpeed * dashSpeed);
+                    rb.velocity = new Vector2(joystickGame.x * moveSpeed, joystickGame.y * moveSpeed);
+                }
+                else
+                {
+
+                    rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
+                }
+
+
             }
-
-
-        }
-        else
-        {
-            if (Application.platform == RuntimePlatform.IPhonePlayer)
-            {
-
-                rb.velocity = new Vector2(joystickGame.x * moveSpeed, joystickGame.y * moveSpeed);
-            }
-            else
-            {
-
-                rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
-            }
-
-
         }
     }
     private void HandleFlip()

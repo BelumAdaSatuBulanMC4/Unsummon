@@ -40,6 +40,13 @@ public class PlayerSpirit : Character
         spiritCollider = GetComponent<Collider2D>();
     }
 
+    protected override void Start()
+    {
+        base.Start();
+        UI_InGame.instance.SetKilledScreen(true);
+        // StartCoroutine(WaitAndSpawnDeadBody());
+    }
+
     protected override void Update()
     {
         if (!IsOwner) { return; };
@@ -114,6 +121,8 @@ public class PlayerSpirit : Character
         // noiseCooldownTimer = noiseCooldown;
         isMakingNoise = false;
     }
+
+
 
     private void HandleAnimations()
     {

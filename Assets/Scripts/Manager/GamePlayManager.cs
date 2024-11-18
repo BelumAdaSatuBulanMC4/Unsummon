@@ -13,8 +13,8 @@ public class GamePlayManager : NetworkBehaviour
     [SerializeField] private GameObject[] playerKidPrefabs;
     public GameObject playerKidPrefab;
     public GameObject playerPocongPrefab;
-    private Vector3 spawnKidPosition = new(-40f, -10f, 0); // Posisi Spawn playerKid
-    private Vector3 spawnPocongPosition = new(-36f, -14f, 0); // Posisi Spawn playerKid
+    private Vector3 spawnKidPosition = new(22.45f, -23.59f, 0); // Posisi Spawn playerKid
+    private Vector3 spawnPocongPosition = new(28.19f, -24.32f, 0); // Posisi Spawn playerKid
 
     [SerializeField] GameObject roleKidScene;
     [SerializeField] GameObject rolePocongScene;

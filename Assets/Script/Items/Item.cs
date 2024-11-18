@@ -15,15 +15,15 @@ public class Item : NetworkBehaviour
     private AudioSource audioSource;
     private Light2D light;
 
-    [SerializeField] private GameObject rendererOutline;
+    // [SerializeField] private GameObject rendererOutline;
     private CircleCollider2D colliderCircle;
 
     private void Awake()
     {
-        anim = GetComponentInChildren<Animator>();
+        anim = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
         light = GetComponentInChildren<Light2D>();
-        colliderCircle = rendererOutline.GetComponent<CircleCollider2D>();
+        // colliderCircle = rendererOutline.GetComponent<CircleCollider2D>();
     }
 
     private void Start()
@@ -42,8 +42,8 @@ public class Item : NetworkBehaviour
     {
         // if (IsOwner)
         // {
-        rendererOutline.SetActive(isDetected);
-        Debug.Log("Harusnya masuk ke itemdetected " + rendererOutline + " dan " + isDetected);
+        // rendererOutline.SetActive(isDetected);
+        // Debug.Log("Harusnya masuk ke itemdetected " + rendererOutline + " dan " + isDetected);
         // }
     }
 
@@ -90,6 +90,7 @@ public class Item : NetworkBehaviour
         {
             audioSource.PlayOneShot(onCandle);
             SetActivatedStateServerRpc(true);
+            UpdateCandleToMap();
             SetCursedStateServerRpc(false);
         }
         // if (!isCursed && !isActivated)
@@ -106,6 +107,7 @@ public class Item : NetworkBehaviour
         {
             audioSource.PlayOneShot(offCandle);
             SetActivatedStateServerRpc(false);
+            UpdateCurseToMap();
             SetCursedStateServerRpc(true);
         }
         // if (isActivated)
@@ -137,6 +139,8 @@ public class Item : NetworkBehaviour
     {
         CurseDectivatedServerRpc();
     }
+
+
 
     //================================================================
 
@@ -256,4 +260,16 @@ public class Item : NetworkBehaviour
     {
         anim.SetFloat("isCandleActive", 0);
     }
+
+    //Update the candle to map
+    public void UpdateCandleToMap()
+    {
+        UI_InGame.instance.RegisterCandleToMap(transform.position);
+    }
+
+    public void UpdateCurseToMap()
+    {
+        UI_InGame.instance.RegisterCurseToMap(transform.position);
+    }
 }
+
