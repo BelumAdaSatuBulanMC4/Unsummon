@@ -18,6 +18,7 @@ public class LobbyManager : NetworkBehaviour
     [SerializeField] private Button startButton;
     [SerializeField] private GameObject startButtonObject;
     [SerializeField] private Button backButton;
+    [SerializeField] private Button backForceButton;
     [SerializeField] private GameObject backButtonObject;
     [SerializeField] private TextMeshProUGUI codeRoomOutput;
     private int totalPreviousPlayer;
@@ -30,6 +31,11 @@ public class LobbyManager : NetworkBehaviour
         Debug.Log("LobbyManager Active");
         startButton.onClick.AddListener(OnStartButtonPressed);
         backButton.onClick.AddListener(OnBackButtonPressed);
+        backForceButton.onClick.AddListener(() =>
+        {
+            // NetworkManager.Singleton.Shutdown();
+            SceneManager.LoadScene("MainMenu");
+        });
         NetworkManager.Singleton.OnClientConnectedCallback += OnPlayerJoined;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnPlayerLeave;
         if (IsHost)

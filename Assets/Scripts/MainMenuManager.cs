@@ -26,12 +26,6 @@ public class MainMenuManager : MonoBehaviour
         createRoomButton.onClick.AddListener(StartHost);
         joinRoomButton.onClick.AddListener(StartClient);
 
-        if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient)
-        {
-            Debug.Log("Start MainMenuManager - Host sudah berjalan, matikan terlebih dahulu.");
-            NetworkManager.Singleton.Shutdown();
-        }
-
         try
         {
             await UnityServices.InitializeAsync();
@@ -52,6 +46,21 @@ public class MainMenuManager : MonoBehaviour
         if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
             Debug.Log("Start - MainMenuManager: If iOS berhasil dipanggil RuntimePlatform");
+        }
+    }
+
+    private void Update()
+    {
+        if (NetworkManager.Singleton.IsHost)
+        {
+            Debug.Log("MainMenuManager Update - Host sudah berjalan, matikan terlebih dahulu.");
+            HostManager.Instance.DeleteLobbyAsync();
+            NetworkManager.Singleton.Shutdown();
+        }
+        else if (NetworkManager.Singleton.IsClient)
+        {
+            Debug.Log("MainMenuManager Update - Client sudah berjalan, matikan terlebih dahulu.");
+            NetworkManager.Singleton.Shutdown();
         }
     }
 
