@@ -72,7 +72,7 @@ public class Character : NetworkBehaviour
     private Renderer rendererCharacter;
     private CapsuleCollider2D colliderCharacter;
     protected bool isNowKilled = false;
-
+    public bool IsTransitioning { get; private set; }
 
 
     protected virtual void Awake()
@@ -167,9 +167,22 @@ public class Character : NetworkBehaviour
     }
 
     public string GetCurrentLocation() => currentlocation;
-    public void CurrentLocationChanged(string loc)
+    public void CurrentLocationChanged(string location, bool isEntering)
     {
-        currentlocation = loc;
+        if (isEntering)
+        {
+            IsTransitioning = true;
+            currentlocation = location;
+            // Handle logic for entering the room
+            Debug.Log($"Entered: {location}");
+        }
+        else
+        {
+            IsTransitioning = false;
+            currentlocation = location;
+            // Handle logic for exiting to "Yard"
+            Debug.Log($"Exited to: {location}");
+        }
     }
 
     public string GetTypeChar()
