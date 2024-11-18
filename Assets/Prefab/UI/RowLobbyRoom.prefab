@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7813710705071199002}
   - component: {fileID: 5552712123763525221}
   - component: {fileID: 4906487512610862776}
+  - component: {fileID: 5644235757191713945}
   m_Layer: 5
   m_Name: RowLobbyRoom
   m_TagString: Untagged
@@ -96,6 +97,21 @@ MonoBehaviour:
   lobbyPlayersText: {fileID: 7489316787967123197}
   codeRoomText: {fileID: 359749396509207186}
   joinButton: {fileID: 5155748097583067475}
+--- !u!114 &5644235757191713945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3963673167850392480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8e795057fc864092b29dc37d07bb7fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSound: {fileID: 8300000, guid: 8604403ea05c4411cb5940d073bd0643, type: 3}
+  buttons:
+  - {fileID: 5155748097583067475}
 --- !u!1 &4609403941060448803
 GameObject:
   m_ObjectHideFlags: 0

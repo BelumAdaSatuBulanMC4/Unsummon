@@ -100,6 +100,7 @@ public class HostManager : MonoBehaviour
         // if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient)
         // {
         //     Debug.Log("StartHost - Host sudah berjalan, matikan terlebih dahulu.");
+        //     // DeleteLobbyAsync();
         //     NetworkManager.Singleton.Shutdown();
         // }
 
