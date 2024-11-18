@@ -18,6 +18,7 @@ public class LobbiesList : MonoBehaviour
     [SerializeField] private GameObject UI_PopUpFull;
     [SerializeField] private GameObject UI_PopUpRoomNotFound;
     [SerializeField] private GameObject UI_PopUpLostConnection;
+    [SerializeField] private GameObject UI_PopUpErrorJoinLobby;
     private bool isRefreshing;
     private bool isJoining;
 
@@ -118,6 +119,7 @@ public class LobbiesList : MonoBehaviour
         catch (LobbyServiceException e)
         {
             Debug.LogError($"JoinAsync - try JoinLobbyByIdAsync failed: {e.Message}");
+            UI_PopUpErrorJoinLobby.SetActive(true);
         }
 
         isJoining = false;

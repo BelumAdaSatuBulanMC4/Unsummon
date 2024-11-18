@@ -162,7 +162,7 @@ public class UI_MiniGame : MonoBehaviour
     {
         string recognizedText = GameManager.instance.GetTheSpeech();
 
-        if (recognizedText.ToLower().Contains("buka") && item.isCursed)
+        if (recognizedText.ToLower().Contains("pulang") && item.isCursed)
         {
             // item.RemoveCurse();  // Remove the curse if the word is correctly recognized
             instructionText.text = "Correct! You said 'Pulang'";

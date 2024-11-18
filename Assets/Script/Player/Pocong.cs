@@ -43,7 +43,7 @@ public class Pocong : Character
 
     [SerializeField] private GameObject buttonInteraction;
 
-    private bool isTeleported = false;
+    // private bool isTeleported = false;
 
 
     protected override void Awake()
@@ -77,7 +77,7 @@ public class Pocong : Character
         // HandleLocationChanged();
         HandleKidInteraction();
         HandleMirrorInteraction();
-        // GetKidsPosition();
+        GetKidsPosition();
         // controller_UI.SetActive(IsOwner);
         // HandleButtonInteraction();
         PlayerManager.instance.UpdatePocongPositionServerRpc(transform.position);
@@ -182,13 +182,13 @@ public class Pocong : Character
             Dictionary<ulong, Vector3> kidPositions = PlayerManager.instance.GetKidPositionsNET();
             Debug.Log("isi dari kid positions: " + kidPositions.Count);
 
-            foreach (var kidPosition in kidPositions)
-            {
-                ulong kidId = kidPosition.Key;
-                Vector3 position = kidPosition.Value;
+            // foreach (var kidPosition in kidPositions)
+            // {
+            //     ulong kidId = kidPosition.Key;
+            //     Vector3 position = kidPosition.Value;
 
-                Debug.Log($"Kid {kidId} is at position {position}");
-            }
+            //     Debug.Log($"Kid {kidId} is at position {position}");
+            // }
         }
     }
 
@@ -229,7 +229,7 @@ public class Pocong : Character
     }
     private void AttackAbility()
     {
-        if (attackCooldownTimer < 0)
+        if (attackCooldownTimer < 0 && !isTeleported)
         {
             Debug.Log("masuk attack ability");
             foreach (Collider2D kidCollider in detectedKids)
@@ -266,7 +266,7 @@ public class Pocong : Character
     private IEnumerator TeleportRoutineMirror(Vector3 mirror)
     {
         anim.SetBool("isTeleport", true);
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(10f);
 
         // Vector3 tempPocongPosition = mirror;
         transform.position = mirror;
@@ -281,16 +281,19 @@ public class Pocong : Character
 
     private IEnumerator TeleportRoutine(PlayerKid kid)
     {
-        anim.SetBool("isTeleport", true);
+        // anim.SetBool("isTeleport", true);
+        AnimatedTeleportServerRpc(true);
         yield return new WaitForSeconds(.4f);
 
-        Vector3 tempPocongPosition = transform.position;
-        transform.position = kid.transform.position;
-        kid.ChangeLocation(tempPocongPosition);
-        kid.transform.position = tempPocongPosition;
+        Vector3 tempPocongPosition = new Vector3(kid.transform.position.x, kid.transform.position.y - 5, kid.transform.position.z);
+        transform.position = tempPocongPosition;
+        // kid.ChangeLocation(tempPocongPosition);
+        // kid.transform.position = tempPocongPosition;
 
         // Once the blink animation is done, set isBlink to false
-        anim.SetBool("isTeleport", false);
+        // anim.SetBool("isTeleport", false);
+        AnimatedTeleportServerRpc(false);
+
         // yield return new WaitForSeconds(5f);
         isTeleported = false;
     }
@@ -302,29 +305,40 @@ public class Pocong : Character
         if (teleportCooldownTimer < 0 && isMirrorDetected)
         {
 
-            GameObject[] allMirrorPosition = GameManager.instance.GetAllMirrors();
-            Debug.Log($"TeleportAblity - mirrorSelectedPostition: {mirrorSelected}");
-            for (int i = 0; i < allMirrorPosition.Length; i++)
+            // GameObject[] allMirrorPosition = GameManager.instance.GetAllMirrors();
+            // Debug.Log($"TeleportAblity - mirrorSelectedPostition: {mirrorSelected}");
+            // for (int i = 0; i < allMirrorPosition.Length; i++)
+            // {
+            //     Debug.Log($"TeleportAblity - for di mirror: {allMirrorPosition[i]}");
+            //     if (allMirrorPosition[i] == mirrorSelected)
+            //     {
+            //         Debug.Log("TeleportAbility - Berhasil mendapatkan mirror yang sama dengan yang diselect");
+            //         Debug.Log($"TeleportAbility - i:{i} dan allMirrorPosition.Length: {allMirrorPosition.Length - 1}");
+            //         if (i == (allMirrorPosition.Length - 1)) nextMirrorPosition = allMirrorPosition[0].transform.position;
+            //         else nextMirrorPosition = allMirrorPosition[i + 1].transform.position;
+            //         break;
+            //     }
+            // }
+            // // int randomIndex = Random.Range(0, allMirrorPosition.Length);
+            // // TeleportAnimationMirror(allMirrorPosition[randomIndex]);
+
+            // Debug.Log($"TeleportAblity - nextMirror: {nextMirrorPosition}");
+            // if (nextMirrorPosition != null) TeleportAnimationMirror(nextMirrorPosition);
+            // // if (nextMirror != null) TeleportAnimationMirror(allMirrorPosition[0]);
+
+            // // Reset the cooldown timer
+            // teleportCooldownTimer = teleportCooldown;
+            List<PlayerKid> allKids = PlayerManager.instance.GetAllKids();
+            PlayerKid kidToSwap = ChooseKidToSwap(allKids);
+
+            if (kidToSwap != null)
             {
-                Debug.Log($"TeleportAblity - for di mirror: {allMirrorPosition[i]}");
-                if (allMirrorPosition[i] == mirrorSelected)
-                {
-                    Debug.Log("TeleportAbility - Berhasil mendapatkan mirror yang sama dengan yang diselect");
-                    Debug.Log($"TeleportAbility - i:{i} dan allMirrorPosition.Length: {allMirrorPosition.Length - 1}");
-                    if (i == (allMirrorPosition.Length - 1)) nextMirrorPosition = allMirrorPosition[0].transform.position;
-                    else nextMirrorPosition = allMirrorPosition[i + 1].transform.position;
-                    break;
-                }
+                SwapPositions(kidToSwap);
             }
-            // int randomIndex = Random.Range(0, allMirrorPosition.Length);
-            // TeleportAnimationMirror(allMirrorPosition[randomIndex]);
-
-            Debug.Log($"TeleportAblity - nextMirror: {nextMirrorPosition}");
-            if (nextMirrorPosition != null) TeleportAnimationMirror(nextMirrorPosition);
-            // if (nextMirror != null) TeleportAnimationMirror(allMirrorPosition[0]);
-
-            // Reset the cooldown timer
-            teleportCooldownTimer = teleportCooldown;
+            else
+            {
+                Debug.Log("No Kid selected for swapping.");
+            }
         }
         else
         {
@@ -390,6 +404,19 @@ public class Pocong : Character
         Gizmos.DrawWireSphere(mirrorCheck.position, mirrorCheckRadius);
         Gizmos.DrawWireSphere(spiritCheck.position, spiritCheckRadius);
 
+    }
+
+    [ServerRpc]
+    private void AnimatedTeleportServerRpc(bool isKilling)
+    {
+        anim.SetBool("isTeleport", isKilling);
+        AnimatedTeleportClientRpc(isKilling);
+    }
+
+    [ClientRpc]
+    private void AnimatedTeleportClientRpc(bool isKilling)
+    {
+        anim.SetBool("isTeleport", isKilling);
     }
 
     [ServerRpc]

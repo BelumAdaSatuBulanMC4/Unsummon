@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,6 +24,9 @@ public class UI_InGame : MonoBehaviour
     [SerializeField] private GameObject UI_NoiseButton;
     [SerializeField] private GameObject UI_HidingMiniGame;
     [SerializeField] private Button close_UI_OtherPlayerLeave;
+    [SerializeField] private GameObject animatedKilledScreen;
+
+    [SerializeField] private GameObject UI_MiniMap;
     private GameObject instantiatedHidingMechanics;
     public JoystickGame joystickGame;
 
@@ -29,7 +34,14 @@ public class UI_InGame : MonoBehaviour
     private Character authorCharacter;
     private Character tempCharacter;
 
+    // private Vector3[] candleLocationOnMap;
+    private List<Vector3> candleLocationOnMap = new List<Vector3>();
+    private List<Vector3> cursedLocationOnMap = new List<Vector3>();
+
+
     private bool isOnHidingMiniGame = false;
+
+    private bool isNowKilled = false;
 
     private void Awake()
     {
@@ -190,6 +202,18 @@ public class UI_InGame : MonoBehaviour
         }
     }
 
+    private IEnumerator WaitAndSpawnDeadBody()
+    {
+        // SetKilledScreen(true);
+        animatedKilledScreen.SetActive(true);
+        UI_GameInfo.SetActive(false);
+        // Wait for 2 seconds
+        yield return new WaitForSeconds(1f);
+
+        animatedKilledScreen.SetActive(false);
+        UI_GameInfo.SetActive(true);
+    }
+
     /// BIKIN BUAT INTERACTION WITH CLOSET HERE!
     public void InteractedWithCloset()
     {
@@ -205,6 +229,26 @@ public class UI_InGame : MonoBehaviour
         }
     }
 
+    public void SetKilledScreen(bool isKilled)
+    {
+        isNowKilled = isKilled;
+        Debug.Log("DIBUNUH!" + isNowKilled);
+        StartCoroutine(WaitEating());
+        // Character authChar = FindAuthorCharacter();
+        // if (authChar is PlayerSpirit)
+        // {
+        // animatedKilledScreen.SetActive(isKilled);
+        // UI_GameInfo.SetActive(!isKilled);
+        // }
+    }
+
+    private IEnumerator WaitEating()
+    {
+        yield return new WaitForSeconds(1);
+        isNowKilled = false;
+        Debug.Log("DIBUNUH! setelah 1 detigggggKh" + isNowKilled);
+    }
+
     public void SwitchToSpirit()
     {
         UI_InGameKid.SetActive(false);
@@ -215,6 +259,16 @@ public class UI_InGame : MonoBehaviour
     {
         UI_InGameSettings.SetActive(true);
 
+    }
+
+    public void SwitchToMiniMap()
+    {
+        UI_MiniMap.SetActive(true);
+    }
+
+    public void CloseMiniMap()
+    {
+        UI_MiniMap.SetActive(false);
     }
 
     public void CloseSettings()
@@ -282,6 +336,7 @@ public class UI_InGame : MonoBehaviour
             // Debug.Log("InGame spirit " + character.ToString());
             // currentInGameController = UI_InGameSpirit;
             UI_InGameSpirit.SetActive(true);
+            animatedKilledScreen.SetActive(isNowKilled);
             UI_InGameKid.SetActive(false);
             // Instantiate(currentInGameController, transform);
         }
@@ -345,6 +400,49 @@ public class UI_InGame : MonoBehaviour
         // Debug.Log("kelihatan gak???????????????????????? DUA");
         // Debug.Log("harusnya UI InGameKid udah kelihatan lagi!");
         // HIDE here
+    }
+
+    public bool GetIsHiding()
+    {
+        return isOnHidingMiniGame;
+    }
+
+    //MINIMAP
+
+    public Vector3 GetAuthorCharacterPosition()
+    {
+        return authorCharacter.transform.position;
+    }
+
+    public String GetAuthorCharacterType()
+    {
+        return authorCharacter.GetTypeChar();
+    }
+
+    public void RegisterCandleToMap(Vector3 position)
+    {
+        if (!candleLocationOnMap.Contains(position))
+        {
+            candleLocationOnMap.Add(position);
+        }
+    }
+
+    public List<Vector3> GetCandleRegistered()
+    {
+        return candleLocationOnMap;
+    }
+
+    public void RegisterCurseToMap(Vector3 position)
+    {
+        if (!cursedLocationOnMap.Contains(position))
+        {
+            cursedLocationOnMap.Add(position);
+        }
+    }
+
+    public List<Vector3> GetCurseRegistered()
+    {
+        return cursedLocationOnMap;
     }
 
 }

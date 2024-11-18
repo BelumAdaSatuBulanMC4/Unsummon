@@ -11,6 +11,7 @@ public class UI_Menu : MonoBehaviour
     [SerializeField] private GameObject UI_PopUpFull;
     [SerializeField] private GameObject UI_PopUpRoomNotFound;
     [SerializeField] private GameObject UI_PopUpLostConnection;
+    [SerializeField] private GameObject UI_PopUpErrorJoinLobby;
 
     [Header("GameObject UI")]
     [SerializeField] private GameObject UI_JoinRoom;
@@ -41,6 +42,7 @@ public class UI_Menu : MonoBehaviour
     [SerializeField] private Button close_UI_PopUpFull;
     [SerializeField] private Button close_UI_PopUpRoomNotFound;
     [SerializeField] private Button close_UI_PopUpLostConnection;
+    [SerializeField] private Button close_UI_PopUpErrorJoinLobby;
     // [SerializeField] private Button close_UI_EditName;
     private UI_FadeEffect fadeEffect;
 
@@ -71,6 +73,7 @@ public class UI_Menu : MonoBehaviour
         close_UI_Settings.onClick.AddListener(() => CloseUI(UI_Settings));
         close_UI_Credits.onClick.AddListener(() => CloseUI(UI_Credits));
         close_UI_Help.onClick.AddListener(() => CloseUI(UI_Help));
+        close_UI_PopUpErrorJoinLobby.onClick.AddListener(() => CloseUI(UI_PopUpErrorJoinLobby));
 
         fadeEffect.ScreenFade(0, 4f);
     }

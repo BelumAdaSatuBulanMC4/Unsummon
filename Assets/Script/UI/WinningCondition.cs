@@ -69,18 +69,19 @@ public class WinningCondition : NetworkBehaviour
     {
         Debug.Log("Tombol Home ditekan");
         Debug.Log($"Host: {IsHost} dan Client: {IsClient}");
-        if (NetworkManager.Singleton != null)
-        {
-            // HostManager.Instance.DeleteLobbyAsync();
-            NetworkManager.Singleton.Shutdown();
-            Debug.Log("NetworkManager shut down successfully and return to MainMenu.");
-            SceneManager.LoadScene("MainMenu");
-        }
-        else
-        {
-            Debug.Log("NetworkManager NULL and return to MainMenu");
-            SceneManager.LoadScene("MainMenu");
-        }
+        SceneManager.LoadScene("MainMenu");
+        // if (NetworkManager.Singleton != null)
+        // {
+        //     // HostManager.Instance.DeleteLobbyAsync();
+        //     NetworkManager.Singleton.Shutdown();
+        //     Debug.Log("NetworkManager shut down successfully and return to MainMenu.");
+        //     SceneManager.LoadScene("MainMenu");
+        // }
+        // else
+        // {
+        //     Debug.Log("NetworkManager NULL and return to MainMenu");
+        //     SceneManager.LoadScene("MainMenu");
+        // }
     }
 
     private void OnPlayAgainButtonPressed()

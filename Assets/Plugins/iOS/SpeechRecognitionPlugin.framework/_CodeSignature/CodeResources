@@ -14,11 +14,11 @@
 		</data>
 		<key>Modules/SpeechRecognitionPlugin.swiftmodule/Project/arm64-apple-ios.swiftsourceinfo</key>
 		<data>
-		KN77E4W+hsguUn/qrrsUkyAruRI=
+		sfOH1kU7UNRDgZQxPHjJMt8FXKI=
 		</data>
 		<key>Modules/SpeechRecognitionPlugin.swiftmodule/arm64-apple-ios.abi.json</key>
 		<data>
-		Tpt56XT54VKuIO5HJzgB7qHKUzk=
+		nt0JyuR58X3yoIPG7ua9kzQ3iD8=
 		</data>
 		<key>Modules/SpeechRecognitionPlugin.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
 		<data>
@@ -34,7 +34,7 @@
 		</data>
 		<key>Modules/SpeechRecognitionPlugin.swiftmodule/arm64-apple-ios.swiftmodule</key>
 		<data>
-		F1fbnARBEXYARPKMwVFFDQdYQqQ=
+		4rAXUzLmOyZa9twdHpbDel4/j9U=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -54,14 +54,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			pMu+Kl5HD3pnfsK0dJ3sQC08aYnlgbUoUNyRpOHl4F8=
+			coScOesvZn/SGO147C7b1PVYsing5oASbtdhwFQHsbw=
 			</data>
 		</dict>
 		<key>Modules/SpeechRecognitionPlugin.swiftmodule/arm64-apple-ios.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			W3a4YMualex73oGNyM6DRZWCf5HRhIYtdyowxC2/gsU=
+			EgoGkGVB3M4meZRpledRt4yZ4rwRQAfNyL1xfMYMKUY=
 			</data>
 		</dict>
 		<key>Modules/SpeechRecognitionPlugin.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
@@ -89,7 +89,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			JQYcuSpmBHECEfv/m23t3002SrMjJtnKDEZPURluJDk=
+			BYsWv0Ry0r+cKMlSxzj/54gN7BxsEEuws6kK1WA9aec=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
