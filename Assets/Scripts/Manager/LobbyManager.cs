@@ -50,6 +50,10 @@ public class LobbyManager : NetworkBehaviour
         if (IsHost)
         {
             totalCurrentPlayer = NetworkManager.Singleton.ConnectedClientsList.Count;
+            if (totalCurrentPlayer >= 3)
+            {
+                startButtonObject.SetActive(true);
+            }
         }
         if (totalPreviousPlayer != totalCurrentPlayer)
         {
@@ -86,7 +90,7 @@ public class LobbyManager : NetworkBehaviour
         if (IsServer)
         {
             loadingScreen.SetActive(false);
-            startButtonObject.SetActive(true);
+            // startButtonObject.SetActive(true);
             backButtonObject.SetActive(true);
             Debug.Log($"OnPlayerJoined - Username server: {DataPersistence.LoadUsername()}");
             UpdateRoomCodeClientRpc(codeRoomOutput.text);

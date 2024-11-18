@@ -235,7 +235,7 @@ public class PlayerKid : Character
 
         // GamePlayManager.instance.UpdatePlayerCharacterListServerRpc(OwnerClientId, CharacterType.Spirit);
         // GameManager.instance.UpdateKilledKids();
-        GamePlayManager.instance.debugOutput.text += "\nGettingKilled -  berhasil dijalankan";
+        // GamePlayManager.instance.debugOutput.text += "\nGettingKilled -  berhasil dijalankan";
 
         // spirit.GetComponentInChildren<PlayerSpirit>().SetAuthor(isAuthor);
         // }
@@ -336,7 +336,7 @@ public class PlayerKid : Character
                 // UI_NoiseButton uiNoiseButton = FindObjectOfType<UI_NoiseButton>();  // Assuming you have only one UI_NoiseButton
 
                 GamePlayManager.instance.UpdatePlayerCharacterListClientRpc(clientId, CharacterType.Spirit);
-                GamePlayManager.instance.debugOutput.text += "\nKidKilledServerRpc -  berhasil dijalankan";
+                // GamePlayManager.instance.debugOutput.text += "\nKidKilledServerRpc -  berhasil dijalankan";
 
                 // if (uiNoiseButton != null)
                 // {
