@@ -7,6 +7,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class WinningCondition : NetworkBehaviour
 {
@@ -18,10 +19,31 @@ public class WinningCondition : NetworkBehaviour
 
     [SerializeField] private Button homeButton;
     [SerializeField] private Button playAgainButton;
+    [SerializeField] private VideoPlayer kidWinVideo;
+    [SerializeField] private VideoPlayer pocongWinVideo;
+    [SerializeField] private RenderTexture videoWinTexture;
 
     private bool isKidsWin;
     private bool isPocongWin;
     private string whoAreYou;
+
+    private void OnEnable()
+    {
+        Debug.Log("OnEnable WinningCondition - berhasil dijalankan");
+        if (GameManager.instance.IsKidsWin())
+        // if (true)
+        {
+            kidWinVideo.targetTexture = videoWinTexture;
+            kidWinVideo.Play();
+            Debug.Log("OnEnable KidsWin - berhasil play video harusnya");
+        }
+        else if (GameManager.instance.IsPocongWin())
+        {
+            pocongWinVideo.targetTexture = videoWinTexture;
+            pocongWinVideo.Play();
+            Debug.Log("OnEnable PocongWin - berhasil play video harusnya");
+        }
+    }
 
     void Start()
     {

@@ -82,6 +82,19 @@ public class GameManager : NetworkBehaviour
         }
     }
 
+    public bool IsPocongWin()
+    {
+        Debug.Log($"IsPocongWin - result: {pocongWin}");
+        return pocongWin;
+    }
+
+    public bool IsKidsWin()
+    {
+        Debug.Log($"IsKidsWin - result: {kidsWin}");
+        return kidsWin;
+    }
+
+
     public GameObject[] GetAllMirrors()
     {
         return mirrorTeleports;

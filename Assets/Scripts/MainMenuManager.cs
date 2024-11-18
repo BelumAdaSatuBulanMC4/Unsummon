@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using Unity.Netcode;
 using Unity.Services.Authentication;
@@ -51,6 +52,11 @@ public class MainMenuManager : MonoBehaviour
 
     private void Update()
     {
+        CheckIfPlayerStillJoinAsync();
+    }
+
+    private async void CheckIfPlayerStillJoinAsync()
+    {
         if (NetworkManager.Singleton.IsHost)
         {
             Debug.Log("MainMenuManager Update - Host sudah berjalan, matikan terlebih dahulu.");
@@ -60,6 +66,7 @@ public class MainMenuManager : MonoBehaviour
         else if (NetworkManager.Singleton.IsClient)
         {
             Debug.Log("MainMenuManager Update - Client sudah berjalan, matikan terlebih dahulu.");
+            await HostManager.Instance.RemovePlayerFromLobby(PlayerInfo.Instance.PlayerId, PlayerInfo.Instance.CurrentLobbyId);
             NetworkManager.Singleton.Shutdown();
         }
     }
