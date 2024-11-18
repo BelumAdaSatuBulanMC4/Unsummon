@@ -64,7 +64,13 @@ public class PlayerKid : Character
 
     protected void HidingCharacter(bool hiding)
     {
-        if (hiding)
+        Debug.Log("Di dalem Hidecharacter SERVER anak" + HidingNow());
+
+        // Debug.Log("sekarang dia hide HidingCharacter " + currentCloset.isUsed);
+        // Debug.Log("sekarang dia UI() HidingCharacter " + hiding);
+        // Debug.Log("sekarang dia Hiding() HidingCharacter " + UI_InGame.instance.GetIsHiding());
+
+        if (!isHidingNow)
         {
             PlayerManager.instance.RegisterKid(this);
         }
@@ -439,5 +445,15 @@ public class PlayerKid : Character
     //     }
     // }
 
+
+    public void RegisterTheKid()
+    {
+        PlayerManager.instance.RegisterKid(this);
+    }
+
+    public void UnRegisterTheKid()
+    {
+        PlayerManager.instance.UnregisterKid(this);
+    }
 
 }

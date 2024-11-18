@@ -43,7 +43,7 @@ public class Pocong : Character
 
     [SerializeField] private GameObject buttonInteraction;
 
-    private bool isTeleported = false;
+    // private bool isTeleported = false;
 
 
     protected override void Awake()
@@ -229,7 +229,7 @@ public class Pocong : Character
     }
     private void AttackAbility()
     {
-        if (attackCooldownTimer < 0)
+        if (attackCooldownTimer < 0 && !isTeleported)
         {
             Debug.Log("masuk attack ability");
             foreach (Collider2D kidCollider in detectedKids)
@@ -266,7 +266,7 @@ public class Pocong : Character
     private IEnumerator TeleportRoutineMirror(Vector3 mirror)
     {
         anim.SetBool("isTeleport", true);
-        yield return new WaitForSeconds(.4f);
+        yield return new WaitForSeconds(10f);
 
         // Vector3 tempPocongPosition = mirror;
         transform.position = mirror;
@@ -285,10 +285,10 @@ public class Pocong : Character
         AnimatedTeleportServerRpc(true);
         yield return new WaitForSeconds(.4f);
 
-        Vector3 tempPocongPosition = transform.position;
-        transform.position = kid.transform.position;
-        kid.ChangeLocation(tempPocongPosition);
-        kid.transform.position = tempPocongPosition;
+        Vector3 tempPocongPosition = new Vector3(kid.transform.position.x, kid.transform.position.y - 5, kid.transform.position.z);
+        transform.position = tempPocongPosition;
+        // kid.ChangeLocation(tempPocongPosition);
+        // kid.transform.position = tempPocongPosition;
 
         // Once the blink animation is done, set isBlink to false
         // anim.SetBool("isTeleport", false);

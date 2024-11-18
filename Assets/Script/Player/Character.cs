@@ -69,9 +69,11 @@ public class Character : NetworkBehaviour
     private Vignette vignette;
 
     //set visible di sini ya
-    private Renderer rendererCharacter;
-    private CapsuleCollider2D colliderCharacter;
+    protected Renderer rendererCharacter;
+    protected CapsuleCollider2D colliderCharacter;
     protected bool isNowKilled = false;
+    protected bool isTeleported = false;
+    protected bool isHidingNow { get; private set; }
     public bool IsTransitioning { get; private set; }
 
 
@@ -144,6 +146,7 @@ public class Character : NetworkBehaviour
         {
             HandleMovement();
         }
+        Debug.Log("Di dalem Hidecharacter SERVER luar" + isHidingNow);
 
         // if (IsOwner && currentItem == null)
         // {
@@ -159,6 +162,11 @@ public class Character : NetworkBehaviour
         HandleFlip();
         SendPositionToServerServerRpc();
         HandleMovementSound();
+    }
+
+    protected bool HidingNow()
+    {
+        return isHidingNow;
     }
 
     private void OnDisable()
@@ -329,10 +337,12 @@ public class Character : NetworkBehaviour
         //     collider.enabled = false;
         // }
 
+
+
         if (isHiding)
         {
-            Debug.Log("Harusnya karakter GAK kelihatan lagi!");
-
+            // isHidingNow = true;
+            // Debug.Log("Harusnya karakter GAK kelihatan lagi! HidingCharacter " + isHidingNow);
             LatestPosition = transform.position;
             transform.position = currentCloset.transform.position;
             // gameObject.SetActive(false);
@@ -342,7 +352,8 @@ public class Character : NetworkBehaviour
         {
             // gameObject.SetActive(true);
             HideCharacterServerRpc(true);
-            Debug.Log("Harusnya karakter udh kelihatan lagi!");
+            // isHidingNow = false;
+            // Debug.Log("Harusnya karakter udh kelihatan lagi! HidingCharacter " + isHidingNow);
             transform.position = LatestPosition;
         }
     }
@@ -357,6 +368,8 @@ public class Character : NetworkBehaviour
     private void HideCharacterClientRpc(bool isHiding)
     {
         // gameObject.SetActive(isHiding);
+        isHidingNow = !isHiding;
+        Debug.Log("Di dalem Hidecharacter SERVER" + isHidingNow);
         if (rendererCharacter != null && colliderCharacter != null)
         {
             rendererCharacter.enabled = isHiding;
@@ -396,7 +409,7 @@ public class Character : NetworkBehaviour
     protected virtual void HandleMovement()
     {
         Vector2 joystickGame = UI_InGame.instance.joystickGame.GetJoystickDirection();
-        if (!isNowKilled)
+        if (!isNowKilled || !isTeleported)
         {
             if (dashTime > 0)
             {
