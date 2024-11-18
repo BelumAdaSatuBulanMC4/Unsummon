@@ -17,6 +17,7 @@ public class ClientManager : MonoBehaviour
     public bool roomNotFound = false;
     public bool roomFull = false;
     public bool lostConnection = false;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -43,8 +44,7 @@ public class ClientManager : MonoBehaviour
         }
         catch (RelayServiceException ex)
         {
-            Debug.LogError($"JOIN RELAY FAILED: {ex}");
-            Debug.LogError(ex.ErrorCode);
+            Debug.LogError($"StartClient - try JoinAllocationAsync failed: {ex.Message}");
             if (
                 ex.ErrorCode == (int)RelayExceptionReason.AllocationNotFound ||
                 ex.ErrorCode == (int)RelayExceptionReason.JoinCodeNotFound ||

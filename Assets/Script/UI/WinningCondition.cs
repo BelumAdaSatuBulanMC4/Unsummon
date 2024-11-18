@@ -47,23 +47,9 @@ public class WinningCondition : NetworkBehaviour
     {
         Debug.Log("Tombol Home ditekan");
         Debug.Log($"Host: {IsHost} dan Client: {IsClient}");
-        // NetworkManager.Singleton.Shutdown();
-        // SceneManager.LoadScene("MainMenu");
-        // if (IsHost)
-        // {
-        //     Debug.Log("Tombol Home ditekan oleh Host");
-        //     NetworkManager.Singleton.Shutdown();
-        //     ReturnToMainMenuClientRpc();
-        // }
-        // else if (IsClient)
-        // {
-        //     Debug.Log("Tombol Home ditekan oleh client");
-        //     NetworkManager.Singleton.Shutdown();
-        //     SceneManager.LoadScene("MainMenu");
-        // }
-        // Shutdown NetworkManager ketika kembali ke Main Menu
         if (NetworkManager.Singleton != null)
         {
+            // HostManager.Instance.DeleteLobbyAsync();
             NetworkManager.Singleton.Shutdown();
             Debug.Log("NetworkManager shut down successfully and return to MainMenu.");
             SceneManager.LoadScene("MainMenu");

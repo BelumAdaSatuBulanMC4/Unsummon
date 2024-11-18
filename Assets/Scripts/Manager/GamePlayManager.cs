@@ -47,10 +47,12 @@ public class GamePlayManager : NetworkBehaviour
         leaveButton.onClick.AddListener(OnLeaveButtonPressed);
         // NetworkManager.Singleton.OnClientDisconnectCallback += OnPlayerLeave;
         debugOutput.text += $"\nStart GamePlayManager - berhasil dijalankan";
+        HostManager.Instance.DeleteLobbyAsync();
     }
 
     private void OnLeaveButtonPressed()
     {
+        HostManager.Instance.DeleteLobbyAsync();
         Debug.Log($"OnLeaveButtonPressed - Terdapat player yang sengaja AFK");
         NetworkManager.Singleton.Shutdown();
         SceneManager.LoadScene("MainMenu");

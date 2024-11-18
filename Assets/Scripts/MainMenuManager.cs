@@ -15,34 +15,27 @@ public class MainMenuManager : MonoBehaviour
 
     [SerializeField] private Button createRoomButton;
     [SerializeField] private Button joinRoomButton;
-    [SerializeField] private Button settingButton;
+
     [SerializeField] private GameObject UI_PopUpFull;
     [SerializeField] private GameObject UI_PopUpRoomNotFound;
     [SerializeField] private GameObject UI_PopUpLostConnection;
-    [SerializeField] private GameObject UI_Settings;
 
     private async void Start()
     {
         Debug.Log($"{DataPersistence.LoadUsername()}");
-        settingButton.onClick.AddListener(() => UI_Settings.SetActive(true));
         createRoomButton.onClick.AddListener(StartHost);
         joinRoomButton.onClick.AddListener(StartClient);
-
-        if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient)
-        {
-            Debug.Log("Start MainMenuManager - Host sudah berjalan, matikan terlebih dahulu.");
-            NetworkManager.Singleton.Shutdown();
-        }
 
         try
         {
             await UnityServices.InitializeAsync();
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
             Debug.Log($"Player ID: {AuthenticationService.Instance.PlayerId}");
+            PlayerInfo.Instance.SetPlayerId(AuthenticationService.Instance.PlayerId);
         }
         catch (Exception e)
         {
-            Debug.Log(e);
+            Debug.Log($"Start MainMenuManager - login failed: {e.Message}");
             return;
         }
 
@@ -53,6 +46,21 @@ public class MainMenuManager : MonoBehaviour
         if (Application.platform == RuntimePlatform.IPhonePlayer)
         {
             Debug.Log("Start - MainMenuManager: If iOS berhasil dipanggil RuntimePlatform");
+        }
+    }
+
+    private void Update()
+    {
+        if (NetworkManager.Singleton.IsHost)
+        {
+            Debug.Log("MainMenuManager Update - Host sudah berjalan, matikan terlebih dahulu.");
+            HostManager.Instance.DeleteLobbyAsync();
+            NetworkManager.Singleton.Shutdown();
+        }
+        else if (NetworkManager.Singleton.IsClient)
+        {
+            Debug.Log("MainMenuManager Update - Client sudah berjalan, matikan terlebih dahulu.");
+            NetworkManager.Singleton.Shutdown();
         }
     }
 
