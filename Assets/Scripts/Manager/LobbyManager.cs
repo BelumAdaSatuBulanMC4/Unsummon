@@ -21,6 +21,8 @@ public class LobbyManager : NetworkBehaviour
     [SerializeField] private Button backForceButton;
     [SerializeField] private GameObject backButtonObject;
     [SerializeField] private TextMeshProUGUI codeRoomOutput;
+    [SerializeField] private Color enabledColor = new Color(1f, 1f, 1f, 1f);
+    [SerializeField] private Color disabledColor = new Color(1f, 1f, 1f, 0.5f);
     private int totalPreviousPlayer;
     private int totalCurrentPlayer;
 
@@ -52,7 +54,8 @@ public class LobbyManager : NetworkBehaviour
             totalCurrentPlayer = NetworkManager.Singleton.ConnectedClientsList.Count;
             if (totalCurrentPlayer >= 3)
             {
-                startButtonObject.SetActive(true);
+                EnableButton(startButton);
+                // startButtonObject.SetActive(true);
             }
         }
         if (totalPreviousPlayer != totalCurrentPlayer)
@@ -90,7 +93,8 @@ public class LobbyManager : NetworkBehaviour
         if (IsServer)
         {
             loadingScreen.SetActive(false);
-            // startButtonObject.SetActive(true);
+            startButtonObject.SetActive(true);
+            DisableButton(startButton);
             backButtonObject.SetActive(true);
             Debug.Log($"OnPlayerJoined - Username server: {DataPersistence.LoadUsername()}");
             UpdateRoomCodeClientRpc(codeRoomOutput.text);
@@ -301,6 +305,19 @@ public class LobbyManager : NetworkBehaviour
             playerDataList.Add(player);
         }
         UpdatePlayerUI();
+    }
+
+    // ==== HELPER ===
+    private void EnableButton(Button button)
+    {
+        button.interactable = true;
+        button.GetComponent<Image>().color = enabledColor;
+    }
+
+    private void DisableButton(Button button)
+    {
+        button.interactable = false;
+        button.GetComponent<Image>().color = disabledColor;
     }
 
 
