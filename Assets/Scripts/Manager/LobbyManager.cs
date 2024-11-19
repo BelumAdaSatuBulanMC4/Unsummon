@@ -21,6 +21,7 @@ public class LobbyManager : NetworkBehaviour
     [SerializeField] private Button backForceButton;
     [SerializeField] private GameObject backButtonObject;
     [SerializeField] private TextMeshProUGUI codeRoomOutput;
+    [SerializeField] private GameObject waitingHostStart;
     [SerializeField] private Color enabledColor = new Color(1f, 1f, 1f, 1f);
     [SerializeField] private Color disabledColor = new Color(1f, 1f, 1f, 0.5f);
     private int totalPreviousPlayer;
@@ -89,6 +90,7 @@ public class LobbyManager : NetworkBehaviour
         {
             loadingScreen.SetActive(false);
             backButtonObject.SetActive(true);
+            waitingHostStart.SetActive(true);
         }
         if (IsServer)
         {
