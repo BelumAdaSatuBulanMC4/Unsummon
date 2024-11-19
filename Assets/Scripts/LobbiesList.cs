@@ -19,8 +19,10 @@ public class LobbiesList : MonoBehaviour
     [SerializeField] private GameObject UI_PopUpRoomNotFound;
     [SerializeField] private GameObject UI_PopUpLostConnection;
     [SerializeField] private GameObject UI_PopUpErrorJoinLobby;
+    [SerializeField] private GameObject textNoRoomAvailable;
     private bool isRefreshing;
     private bool isJoining;
+    private int totalRoomAvailable;
 
 
     private void OnEnable()
@@ -65,7 +67,10 @@ public class LobbiesList : MonoBehaviour
                 LobbyItem lobbyItemInstance = Instantiate(lobbyItemPrefab, lobbyItemParent);
                 lobbyItemInstance.Initialise(this, lobby);
             }
-            Debug.Log("LobbiesList RefreshList - berhasil dijalankan");
+            totalRoomAvailable = lobbies.Results.Count;
+            if (totalRoomAvailable == 0) textNoRoomAvailable.SetActive(true);
+            else textNoRoomAvailable.SetActive(false);
+            Debug.Log($"LobbiesList RefreshList - berhasil dijalankan, total lobby: {totalRoomAvailable}");
         }
         catch (LobbyServiceException e)
         {
