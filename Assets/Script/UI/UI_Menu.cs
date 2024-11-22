@@ -29,6 +29,8 @@ public class UI_Menu : MonoBehaviour
     [SerializeField] private Button open_UI_Settings;
     [SerializeField] private Button open_UI_Credits;
     [SerializeField] private Button open_UI_Help;
+    [SerializeField] private Button open_UI_EnterCodeTemp;
+
     // Close Button
     [Header("Close UI")]
     [SerializeField] private Button close_UI_JoinRoom;
@@ -43,6 +45,7 @@ public class UI_Menu : MonoBehaviour
     [SerializeField] private Button close_UI_PopUpRoomNotFound;
     [SerializeField] private Button close_UI_PopUpLostConnection;
     [SerializeField] private Button close_UI_PopUpErrorJoinLobby;
+    [SerializeField] private Button close_UI_EnterCodeTemp;
     // [SerializeField] private Button close_UI_EditName;
     private UI_FadeEffect fadeEffect;
 
@@ -62,6 +65,7 @@ public class UI_Menu : MonoBehaviour
         open_UI_Settings.onClick.AddListener(() => OpenUI(UI_Settings));
         open_UI_Credits.onClick.AddListener(() => OpenUI(UI_Credits));
         open_UI_Help.onClick.AddListener(() => OpenUI(UI_Help));
+        open_UI_EnterCodeTemp.onClick.AddListener(() => OpenUI(UI_EnterCode));
         // CLOSE UI ERROR
         close_UI_PopUpFull.onClick.AddListener(() => CloseUI(UI_PopUpFull));
         close_UI_PopUpRoomNotFound.onClick.AddListener(() => CloseUI(UI_PopUpRoomNotFound));
@@ -74,6 +78,7 @@ public class UI_Menu : MonoBehaviour
         close_UI_Credits.onClick.AddListener(() => CloseUI(UI_Credits));
         close_UI_Help.onClick.AddListener(() => CloseUI(UI_Help));
         close_UI_PopUpErrorJoinLobby.onClick.AddListener(() => CloseUI(UI_PopUpErrorJoinLobby));
+        close_UI_EnterCodeTemp.onClick.AddListener(() => CloseUI(UI_EnterCode));
 
         fadeEffect.ScreenFade(0, 4f);
     }
