@@ -418,8 +418,10 @@ PlayerSettings:
   enableCrashReportAPI: 0
   cameraUsageDescription: 
   locationUsageDescription: 
-  microphoneUsageDescription: 'Aplikasi ini memerlukan akses ke mikrofon untuk merekam
-    suara Anda. '
+  microphoneUsageDescription: 'This game requires access to your microphone to enhance
+    your in-game experience, such as enabling voice chat or voice commands. Your
+    audio will only be used within the game and will not be recorded, stored, or
+    shared without your consent. '
   bluetoothUsageDescription: 
   macOSTargetOSVersion: 10.13.0
   switchNMETAOverride: 
