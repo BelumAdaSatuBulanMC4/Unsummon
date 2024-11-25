@@ -79,6 +79,7 @@ public class UI_InGame : MonoBehaviour
         InstantiateUIForCharacter(authorCharacter);
 
 
+
         if (authorCharacter != null)
         {
             if (authorCharacter.GetTypeChar() == "Player")
@@ -417,6 +418,11 @@ public class UI_InGame : MonoBehaviour
     public String GetAuthorCharacterType()
     {
         return authorCharacter.GetTypeChar();
+    }
+
+    public bool GetAuthorCharacterIsOwner()
+    {
+        return authorCharacter.GetIsAuthor();
     }
 
     public void RegisterCandleToMap(Vector3 position)
