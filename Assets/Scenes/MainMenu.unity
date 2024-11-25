@@ -517,7 +517,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -111.1}
+  m_AnchoredPosition: {x: 0, y: -89}
   m_SizeDelta: {x: 130.5038, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &37180321
@@ -3900,7 +3900,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &425829627
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4541,7 +4541,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &484701297
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6229,7 +6229,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2138311148}
         m_TargetAssemblyTypeName: UI_SetUsername, Assembly-CSharp
-        m_MethodName: OnNextButtonClicked
+        m_MethodName: OnSaveButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7435,7 +7435,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -9}
+  m_AnchoredPosition: {x: 0, y: 47}
   m_SizeDelta: {x: 98.724, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &887855473
@@ -10462,7 +10462,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1319760357
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16366,7 +16366,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1902662749
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17478,7 +17478,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -60}
+  m_AnchoredPosition: {x: 0, y: -20}
   m_SizeDelta: {x: 99.7306, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2006648591
