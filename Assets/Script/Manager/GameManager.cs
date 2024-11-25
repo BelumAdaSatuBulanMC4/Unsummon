@@ -30,6 +30,7 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private GameObject result;
     [SerializeField] private GameObject[] candleLocs;
     [SerializeField] private GameObject[] mirrorTeleports;
+    [SerializeField] private Transform[] closetLocs;
     Character currentChar;
 
     [Header("Audio in GamePlay")]
@@ -98,6 +99,11 @@ public class GameManager : NetworkBehaviour
     public GameObject[] GetAllMirrors()
     {
         return mirrorTeleports;
+    }
+
+    public Transform[] GetAllClosets()
+    {
+        return closetLocs;
     }
 
     public void StartSpeechRecognitionForCurseRemoval(Item cursedItem, System.Action<string, bool> feedbackCallback)

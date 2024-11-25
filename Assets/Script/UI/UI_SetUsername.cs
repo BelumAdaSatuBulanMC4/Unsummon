@@ -82,7 +82,7 @@ public class UI_SetUsername : MonoBehaviour
 
     public void OnSaveButtonClicked()
     {
-        string newUsername = inputUsernameField.text;
+        string newUsername = "Player";
         DataPersistence.EditUsername(newUsername);
     }
 
