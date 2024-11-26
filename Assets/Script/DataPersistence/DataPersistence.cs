@@ -25,7 +25,7 @@ public class DataPersistence : MonoBehaviour
         else
         {
             // Set defaults if file doesn't exist
-            userData.username = "username";
+            userData.username = "NoName";
             userData.isFirstTime = true;
             SaveUserData(userData.username);
             Debug.Log("Default user data created and saved.");

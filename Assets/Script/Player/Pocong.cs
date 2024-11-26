@@ -284,9 +284,29 @@ public class Pocong : Character
         // anim.SetBool("isTeleport", true);
         AnimatedTeleportServerRpc(true);
         yield return new WaitForSeconds(.4f);
+        Transform closetLocation;
+        bool teleported = false;
+        foreach (Transform closetLocs in GameManager.instance.GetAllClosets())
+        {
+            Debug.Log("Kid transform x: " + kid.transform.position.x + ", y:" + kid.transform.position.y);
+            Debug.Log("Closet transform x: " + closetLocs.position.x + " y:" + closetLocs.position.y);
 
-        Vector3 tempPocongPosition = new Vector3(kid.transform.position.x, kid.transform.position.y - 5, kid.transform.position.z);
-        transform.position = tempPocongPosition;
+            if (kid.transform.position.x >= closetLocs.position.x - 1 && kid.transform.position.x <= closetLocs.position.x + 2 && !teleported)
+            {
+                closetLocation = closetLocs;
+                Debug.Log("transform kid and clsoet sama!");
+                // Vector3 tempPocongPosition = new Vector3(kid.transform.position.x, kid.transform.position.y - 5, kid.transform.position.z);
+                transform.position = new Vector3(kid.transform.position.x, kid.transform.position.y - 5, kid.transform.position.z); ;
+                teleported = true;
+            }
+        }
+        // Vector3 tempPocongPosition = new Vector3(kid.transform.position.x, kid.transform.position.y - 5, kid.transform.position.z);
+        if (!teleported)
+        {
+            transform.position = new Vector3(kid.transform.position.x, kid.transform.position.y, kid.transform.position.z);
+            teleported = true;
+        }
+
         // kid.ChangeLocation(tempPocongPosition);
         // kid.transform.position = tempPocongPosition;
 

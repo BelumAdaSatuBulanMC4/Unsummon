@@ -168,7 +168,11 @@ public class LobbyManager : NetworkBehaviour
         }
         else if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsClient)
         {
-            await HostManager.Instance.RemovePlayerFromLobby(PlayerInfo.Instance.PlayerId, PlayerInfo.Instance.CurrentLobbyId);
+            if (PlayerInfo.Instance.CurrentLobbyId != null)
+            {
+                await HostManager.Instance.RemovePlayerFromLobby(PlayerInfo.Instance.PlayerId, PlayerInfo.Instance.CurrentLobbyId);
+
+            }
             // LeaveLobbyAsync();
             NetworkManager.Singleton.Shutdown();
             Debug.Log("OnBackButtonPressed - NetworkManager in Client shut down successfully.");
@@ -216,6 +220,26 @@ public class LobbyManager : NetworkBehaviour
         codeRoomOutput.text = roomCode.ToLower();
     }
 
+    // private void UpdatePlayerUI()
+    // {
+    //     Debug.Log("Current connected clients:");
+    //     foreach (var client in playerDataList)
+    //     {
+    //         Debug.Log($"- ClientID: {client.clientId} Name: {client.username}");
+    //     }
+    //     for (int i = 0; i < playerJoin.Length; i++)
+    //     {
+    //         playerJoin[i].SetActive(false);
+    //         playerName[i].text = "Waiting";
+    //     }
+    //     for (int i = 0; i < playerDataList.Count; i++)
+    //     {
+    //         playerJoin[i].SetActive(true);
+    //         // playerName[i].text = $"Player {i + 1}";
+    //         playerName[i].text = playerDataList[i].username.ToString(); ;
+    //     }
+    // }
+
     private void UpdatePlayerUI()
     {
         Debug.Log("Current connected clients:");
@@ -231,10 +255,19 @@ public class LobbyManager : NetworkBehaviour
         for (int i = 0; i < playerDataList.Count; i++)
         {
             playerJoin[i].SetActive(true);
-            // playerName[i].text = $"Player {i + 1}";
-            playerName[i].text = playerDataList[i].username.ToString(); ;
+
+            // Check if the player is the local player
+            if (playerDataList[i].clientId == NetworkManager.Singleton.LocalClientId)
+            {
+                playerName[i].text = "You";
+            }
+            else
+            {
+                playerName[i].text = playerDataList[i].username;
+            }
         }
     }
+
 
     private void SendPlayerDataToNewClient(ulong clientId)
     {

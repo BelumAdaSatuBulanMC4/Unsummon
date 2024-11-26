@@ -65,89 +65,92 @@ public class UI_MiniGame : MonoBehaviour
 
     private void Update()
     {
-        if (item.isCursed)
+        if (UI_InGame.instance.GetAuthorCharacterIsOwner())
         {
-            Debug.Log("The item is now cursed!!!!");
-            candleButton.interactable = false; // Disable the button
-            if (isSpeechReady)
+            if (item.isCursed)
             {
-                scrollAnimated.SetActive(true);
-                StartVoiceRecognitionForCurse(item); // Start speech recognition
-                IsVoiceCorrect();
-            }
-            // instructionText.text = GameManager.instance.GetTheSpeech();
-        }
-        else
-        {
-            Debug.Log("The item is not cursed!!!!");
-            candleButton.interactable = true; // Disable the button
-            GameManager.instance.CancelVoiceRecognition(); ///
-
-            if (isHoldingButton)
-            {
-                // Increase the hold time while holding the button
-                holdTime += Time.deltaTime;
-
-                // Scale hold time to range from startConditionValue to 5
-                candleConditionValue = Mathf.Clamp((holdTime / maxHoldTime) * 5f + startConditionValue, startConditionValue, 5f);
-                anim.SetFloat("CandleCondition", candleConditionValue);
-                // instructionText.text = "value : " + candleConditionValue;
-
-                if (item != null)
+                Debug.Log("The item is now cursed!!!!");
+                candleButton.interactable = false; // Disable the button
+                if (isSpeechReady)
                 {
-                    if (item.isActivated)
-                    {
-                        if (progressBarPocong.fillAmount != 1)
-                        {
-                            progressBarPocong.fillAmount = (candleConditionValue - 2) / 2;
-                        }
-                        instructionText.text = "Hold to snuff out the candle";
-                        if (candleConditionValue >= 4f) // Snuffing the candle at value 4
-                        {
-                            GameManager.instance.PocongTurnedOffItem(item);
-                            StartCoroutine(WaitAndDeactivate());
-                        }
-                    }
-                    else
-                    {
-                        if (progressBar.fillAmount != 1)
-                        {
-                            progressBar.fillAmount = candleConditionValue / 2;
-                        }
-                        instructionText.text = "Tap and Hold to light the candle";
-                        if (candleConditionValue >= 2f) // Lighting the candle at value 2
-                        {
-                            GameManager.instance.KidTurnedOnItem(item);
-                            StartCoroutine(WaitAndDeactivate());
-                        }
-                    }
+                    scrollAnimated.SetActive(true);
+                    StartVoiceRecognitionForCurse(item); // Start speech recognition
+                    IsVoiceCorrect();
                 }
+                // instructionText.text = GameManager.instance.GetTheSpeech();
             }
             else
             {
-                // Gradually decrease candleConditionValue to startConditionValue when not holding the button
-                if (candleConditionValue > startConditionValue)
+                Debug.Log("The item is not cursed!!!!");
+                candleButton.interactable = true; // Disable the button
+                GameManager.instance.CancelVoiceRecognition(); ///
+
+                if (isHoldingButton)
                 {
-                    holdTime -= Time.deltaTime; // Decrease the hold time
+                    // Increase the hold time while holding the button
+                    holdTime += Time.deltaTime;
+
+                    // Scale hold time to range from startConditionValue to 5
                     candleConditionValue = Mathf.Clamp((holdTime / maxHoldTime) * 5f + startConditionValue, startConditionValue, 5f);
-
-                    if (item.isActivated)
-                    {
-                        if (progressBarPocong.fillAmount != 1)
-                        {
-                            progressBarPocong.fillAmount = (candleConditionValue - 2) / 2;
-                        }
-                    }
-                    else
-                    {
-                        if (progressBar.fillAmount != 1)
-                        {
-                            progressBar.fillAmount = candleConditionValue / 2;
-                        }
-                    }
-
-                    // instructionText.text = "value : " + candleConditionValue;
                     anim.SetFloat("CandleCondition", candleConditionValue);
+                    // instructionText.text = "value : " + candleConditionValue;
+
+                    if (item != null)
+                    {
+                        if (item.isActivated)
+                        {
+                            if (progressBarPocong.fillAmount != 1)
+                            {
+                                progressBarPocong.fillAmount = (candleConditionValue - 2) / 2;
+                            }
+                            instructionText.text = "Hold to snuff out the candle";
+                            if (candleConditionValue >= 4f) // Snuffing the candle at value 4
+                            {
+                                GameManager.instance.PocongTurnedOffItem(item);
+                                StartCoroutine(WaitAndDeactivate());
+                            }
+                        }
+                        else
+                        {
+                            if (progressBar.fillAmount != 1)
+                            {
+                                progressBar.fillAmount = candleConditionValue / 2;
+                            }
+                            instructionText.text = "Tap and Hold to light the candle";
+                            if (candleConditionValue >= 2f) // Lighting the candle at value 2
+                            {
+                                GameManager.instance.KidTurnedOnItem(item);
+                                StartCoroutine(WaitAndDeactivate());
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // Gradually decrease candleConditionValue to startConditionValue when not holding the button
+                    if (candleConditionValue > startConditionValue)
+                    {
+                        holdTime -= Time.deltaTime; // Decrease the hold time
+                        candleConditionValue = Mathf.Clamp((holdTime / maxHoldTime) * 5f + startConditionValue, startConditionValue, 5f);
+
+                        if (item.isActivated)
+                        {
+                            if (progressBarPocong.fillAmount != 1)
+                            {
+                                progressBarPocong.fillAmount = (candleConditionValue - 2) / 2;
+                            }
+                        }
+                        else
+                        {
+                            if (progressBar.fillAmount != 1)
+                            {
+                                progressBar.fillAmount = candleConditionValue / 2;
+                            }
+                        }
+
+                        // instructionText.text = "value : " + candleConditionValue;
+                        anim.SetFloat("CandleCondition", candleConditionValue);
+                    }
                 }
             }
         }
