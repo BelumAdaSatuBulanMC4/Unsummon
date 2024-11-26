@@ -114,6 +114,11 @@ public class MainMenuManager : MonoBehaviour
             }
 
         }
+        else if (codeRoomInput.text == "TESTING")
+        {
+            SceneManager.LoadScene("LobbyRoomTesting");
+            HostManager.Instance.StartHost();
+        }
         else
         {
             UI_PopUpRoomNotFound.SetActive(true);

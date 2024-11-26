@@ -432,10 +432,10 @@ MonoBehaviour:
   spiritPrefab: {fileID: 4057405978394237103, guid: 9a7e79eac63824f04b49523f873166d1, type: 3}
   deadBodyPrefab: {fileID: 6560456698916702422, guid: 2d67efaf74ddf48708547a93aebfbb8c, type: 3}
   spiritCheck: {fileID: 2595255624578999491}
-  spiritCheckRadius: 2
+  spiritCheckRadius: 1.19
   whatIsPlayerSpirit:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 65536
   controller_UI: {fileID: 6363562436477985309}
   buttonInteraction: {fileID: 6535000313946925059}
   maxDistance: 12

@@ -23,6 +23,7 @@ public class PlayerKid : Character
     [SerializeField] private Transform spiritCheck;
     [SerializeField] private float spiritCheckRadius;
     [SerializeField] private LayerMask whatIsPlayerSpirit;
+    private bool isTestingDetected;
     private Collider2D[] detectedSpirits;
 
     [SerializeField] private GameObject controller_UI;
@@ -95,6 +96,7 @@ public class PlayerKid : Character
         hidingCoolDownTimer -= Time.deltaTime;
         HandleAnimations();
         HidingCharacter(UI_InGame.instance.GetIsHiding());
+        HandlePlayerCollision();
         // HandleLocationChanged();
         // HandlePlayerCollision();
         HandleMovement();
@@ -122,17 +124,19 @@ public class PlayerKid : Character
     private void HandlePlayerCollision()
     {
         detectedSpirits = Physics2D.OverlapCircleAll(spiritCheck.position, spiritCheckRadius, whatIsPlayerSpirit);
+        // isTestingDetected = detectedSpirits.Length > 0;
 
         if (detectedSpirits.Length > 0)
         {
-            foreach (Collider2D spirit in detectedSpirits)
-            {
-                PlayerSpirit sprt = spirit.GetComponent<PlayerSpirit>();
-                if (sprt != null)
-                {
-                    Physics2D.IgnoreCollision(myCollider, spirit);
-                }
-            }
+            Knocked(10);
+            // foreach (Collider2D spirit in detectedSpirits)
+            // {
+            //     PlayerSpirit sprt = spirit.GetComponent<PlayerSpirit>();
+            //     if (sprt != null)
+            //     {
+            //         Physics2D.IgnoreCollision(myCollider, spirit);
+            //     }
+            // }
         }
     }
 

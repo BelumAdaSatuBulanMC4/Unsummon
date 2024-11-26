@@ -33,7 +33,7 @@ public class AudioManager : MonoBehaviour
             musicAudioSource.volume = 0f;
             sfxAudioSource.volume = 0f;
         }
-        else if (currentSceneName == "GamePlayNew") musicAudioSource.volume = 0f;
+        else if (currentSceneName == "GamePlayNew" || currentSceneName == "GamePlayKid") musicAudioSource.volume = 0f;
         else
         {
             musicAudioSource.volume = PlayerPrefs.GetFloat("MusicVolume", 0.3f);

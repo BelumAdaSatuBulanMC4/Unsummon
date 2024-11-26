@@ -52,11 +52,18 @@ public class LobbyManager : NetworkBehaviour
         // totalCurrentPlayer = NetworkManager.Singleton.ConnectedClientsList.Count;
         if (IsHost)
         {
-            totalCurrentPlayer = NetworkManager.Singleton.ConnectedClientsList.Count;
-            if (totalCurrentPlayer >= 3)
+            if (SceneManager.GetActiveScene().name == "LobbyRoomTesting")
             {
                 EnableButton(startButton);
-                // startButtonObject.SetActive(true);
+            }
+            else
+            {
+                totalCurrentPlayer = NetworkManager.Singleton.ConnectedClientsList.Count;
+                if (totalCurrentPlayer >= 3)
+                {
+                    EnableButton(startButton);
+                    // startButtonObject.SetActive(true);
+                }
             }
         }
         if (totalPreviousPlayer != totalCurrentPlayer)
@@ -217,7 +224,8 @@ public class LobbyManager : NetworkBehaviour
 
     public void UpdateRoomCode(string roomCode)
     {
-        codeRoomOutput.text = roomCode.ToLower();
+        if (codeRoomOutput != null)
+            codeRoomOutput.text = roomCode.ToLower();
     }
 
     // private void UpdatePlayerUI()
@@ -285,7 +293,18 @@ public class LobbyManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void LoadGamePlaySceneServerRpc()
     {
-        NetworkManager.SceneManager.LoadScene("GamePlayNew", LoadSceneMode.Single);
+        if (SceneManager.GetActiveScene().name == "LobbyRoomTesting")
+        {
+            NetworkManager.SceneManager.LoadScene("GamePlayKid", LoadSceneMode.Single);
+            Debug.Log("scene: " + SceneManager.GetActiveScene().name);
+        }
+        else
+        {
+            NetworkManager.SceneManager.LoadScene("GamePlayNew", LoadSceneMode.Single);
+            Debug.Log("else scene: " + SceneManager.GetActiveScene().name);
+        }
+        Debug.Log("luar scene: " + SceneManager.GetActiveScene().name);
+
     }
 
     [ServerRpc(RequireOwnership = false)]
