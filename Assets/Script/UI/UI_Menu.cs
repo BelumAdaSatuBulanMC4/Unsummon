@@ -47,11 +47,16 @@ public class UI_Menu : MonoBehaviour
     [SerializeField] private Button close_UI_PopUpErrorJoinLobby;
     [SerializeField] private Button close_UI_EnterCodeTemp;
     // [SerializeField] private Button close_UI_EditName;
+
+    [Header("Fade Effect UI")]
+    [SerializeField] private GameObject UI_fadeEffectGameObject;
     private UI_FadeEffect fadeEffect;
 
     private void Awake()
     {
-        fadeEffect = GetComponentInChildren<UI_FadeEffect>();
+        UI_fadeEffectGameObject.SetActive(true);
+        fadeEffect = UI_fadeEffectGameObject.GetComponent<UI_FadeEffect>();
+        // fadeEffect = GetComponentInChildren<UI_FadeEffect>();
     }
 
     // Start is called before the first frame update

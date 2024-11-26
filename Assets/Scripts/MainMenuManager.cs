@@ -66,7 +66,11 @@ public class MainMenuManager : MonoBehaviour
         else if (NetworkManager.Singleton.IsClient)
         {
             Debug.Log("MainMenuManager Update - Client sudah berjalan, matikan terlebih dahulu.");
-            await HostManager.Instance.RemovePlayerFromLobby(PlayerInfo.Instance.PlayerId, PlayerInfo.Instance.CurrentLobbyId);
+            if (PlayerInfo.Instance.CurrentLobbyId != null)
+            {
+                await HostManager.Instance.RemovePlayerFromLobby(PlayerInfo.Instance.PlayerId, PlayerInfo.Instance.CurrentLobbyId);
+
+            }
             NetworkManager.Singleton.Shutdown();
         }
     }

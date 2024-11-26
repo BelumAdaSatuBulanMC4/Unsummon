@@ -168,7 +168,11 @@ public class LobbyManager : NetworkBehaviour
         }
         else if (NetworkManager.Singleton != null && NetworkManager.Singleton.IsClient)
         {
-            await HostManager.Instance.RemovePlayerFromLobby(PlayerInfo.Instance.PlayerId, PlayerInfo.Instance.CurrentLobbyId);
+            if (PlayerInfo.Instance.CurrentLobbyId != null)
+            {
+                await HostManager.Instance.RemovePlayerFromLobby(PlayerInfo.Instance.PlayerId, PlayerInfo.Instance.CurrentLobbyId);
+
+            }
             // LeaveLobbyAsync();
             NetworkManager.Singleton.Shutdown();
             Debug.Log("OnBackButtonPressed - NetworkManager in Client shut down successfully.");
