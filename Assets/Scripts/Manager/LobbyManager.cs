@@ -59,7 +59,7 @@ public class LobbyManager : NetworkBehaviour
             else
             {
                 totalCurrentPlayer = NetworkManager.Singleton.ConnectedClientsList.Count;
-                if (totalCurrentPlayer >= 1)
+                if (totalCurrentPlayer >= 3)
                 {
                     EnableButton(startButton);
                     // startButtonObject.SetActive(true);
@@ -72,6 +72,7 @@ public class LobbyManager : NetworkBehaviour
             Debug.Log($"Update - Jumlah player sekarang: {totalCurrentPlayer}");
             Debug.Log($"Update - total player sebelum dan sesudah diubah");
             totalPreviousPlayer = totalCurrentPlayer;
+            UpdatePlayerUI();
         }
 
         if (Application.internetReachability == NetworkReachability.NotReachable)
