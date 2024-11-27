@@ -20,6 +20,7 @@ public class HostManager : MonoBehaviour
     private int maxConnections = 5;
     private string lobbyId;
     private string hostName;
+    private bool isCreatingLobby = false;
 
     private void Awake()
     {
@@ -34,46 +35,62 @@ public class HostManager : MonoBehaviour
         }
         hostName = DataPersistence.LoadUsername();
     }
-    // public async Task StartHost()
+
     public async void StartHost()
     {
-        JoinCode = "...";
-        Allocation allocation;
-        try
+        if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient)
         {
-            allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
+            Debug.Log("StartHost HostManager - Host sudah berjalan, matikan terlebih dahulu.");
+            NetworkManager.Singleton.Shutdown();
         }
-        catch (RelayServiceException ex)
+        if (isCreatingLobby)
         {
-            Debug.Log($"StartHost - Relay create allocation failed: {ex.Message}");
-            lostConnection = true;
-            throw;
+            Debug.LogWarning("StartHost - Lobby is already being created, please wait!");
+            return;
         }
+
+        isCreatingLobby = true;
 
         try
         {
-            JoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
-            Debug.Log($"Room Code: {JoinCode}");
-        }
-        catch (RelayServiceException ex)
-        {
-            Debug.LogError($"StartHost - Relay join code request failed: {ex.Message}");
-            lostConnection = true;
-            throw;
-        }
+            JoinCode = "...";
+            Allocation allocation;
 
-        var relayServerData = new RelayServerData(allocation, "dtls");
-        NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
-
-        Debug.Log($"StartHost - server: {allocation.ConnectionData[0]} {allocation.ConnectionData[1]}");
-        Debug.Log($"StartHost - server: {allocation.AllocationId}");
-
-        try
-        {
-            var createLobbyOptions = new CreateLobbyOptions
+            try
             {
-                IsPrivate = false,
-                Data = new Dictionary<string, DataObject>()
+                allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
+            }
+            catch (RelayServiceException ex)
+            {
+                Debug.Log($"StartHost - Relay create allocation failed: {ex.Message}");
+                lostConnection = true;
+                throw;
+            }
+
+            try
+            {
+                JoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+                Debug.Log($"Room Code: {JoinCode}");
+            }
+            catch (RelayServiceException ex)
+            {
+                Debug.LogError($"StartHost - Relay join code request failed: {ex.Message}");
+                lostConnection = true;
+                throw;
+            }
+
+            var relayServerData = new RelayServerData(allocation, "dtls");
+            NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+
+            Debug.Log($"StartHost - server: {allocation.ConnectionData[0]} {allocation.ConnectionData[1]}");
+            Debug.Log($"StartHost - server: {allocation.AllocationId}");
+
+            try
+            {
+                var createLobbyOptions = new CreateLobbyOptions
+                {
+                    IsPrivate = false,
+                    Data = new Dictionary<string, DataObject>()
                 {
                     {
                         "JoinCode", new DataObject(
@@ -82,44 +99,128 @@ public class HostManager : MonoBehaviour
                         )
                     }
                 }
-            };
+                };
 
-            Lobby lobby = await Lobbies.Instance.CreateLobbyAsync(hostName, maxConnections, createLobbyOptions);
-            lobbyId = lobby.Id;
-            Debug.Log("HostManager try CreateLobby - berhasil dijalankan");
-            StartCoroutine(HeartbeatLobbyCoroutine(15));
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.LogError($"StartHost - CreateLobbyOptions failed: {e.Message}");
-            throw;
-        }
-
-        // codeRoomOutput.text = JoinCode;
-
-        // if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient)
-        // {
-        //     Debug.Log("StartHost - Host sudah berjalan, matikan terlebih dahulu.");
-        //     // DeleteLobbyAsync();
-        //     NetworkManager.Singleton.Shutdown();
-        // }
-
-        if (NetworkManager.Singleton.StartHost())
-        {
-            Debug.Log("StartHost - Host started successfully!");
-            LobbyManager lobbyManager = FindObjectOfType<LobbyManager>();
-            if (lobbyManager != null)
+                Lobby lobby = await Lobbies.Instance.CreateLobbyAsync(hostName, maxConnections, createLobbyOptions);
+                lobbyId = lobby.Id;
+                Debug.Log("HostManager try CreateLobby - berhasil dijalankan");
+                StartCoroutine(HeartbeatLobbyCoroutine(15));
+            }
+            catch (LobbyServiceException e)
             {
-                lobbyManager.UpdateRoomCode(JoinCode);
+                Debug.LogError($"StartHost - CreateLobbyOptions failed: {e.Message}");
+                throw;
+            }
+
+            if (NetworkManager.Singleton.StartHost())
+            {
+                Debug.Log("StartHost - Host started successfully!");
+                LobbyManager lobbyManager = FindObjectOfType<LobbyManager>();
+                if (lobbyManager != null)
+                {
+                    lobbyManager.UpdateRoomCode(JoinCode);
+                }
+            }
+            else
+            {
+                Debug.LogError("StartHost - Failed to start host!");
+                lostConnection = true;
+                SceneManager.LoadScene("MainMenu");
             }
         }
-        else
+        finally
         {
-            Debug.LogError("StartHost - Failed to start host!");
-            lostConnection = true;
-            SceneManager.LoadScene("MainMenu");
+            isCreatingLobby = false; // Reset flag setelah proses selesai
         }
     }
+
+    // public async Task StartHost()
+    // public async void StartHost()
+    // {
+
+    //     JoinCode = "...";
+    //     Allocation allocation;
+    //     try
+    //     {
+    //         allocation = await RelayService.Instance.CreateAllocationAsync(maxConnections);
+    //     }
+    //     catch (RelayServiceException ex)
+    //     {
+    //         Debug.Log($"StartHost - Relay create allocation failed: {ex.Message}");
+    //         lostConnection = true;
+    //         throw;
+    //     }
+
+    //     try
+    //     {
+    //         JoinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+    //         Debug.Log($"Room Code: {JoinCode}");
+    //     }
+    //     catch (RelayServiceException ex)
+    //     {
+    //         Debug.LogError($"StartHost - Relay join code request failed: {ex.Message}");
+    //         lostConnection = true;
+    //         throw;
+    //     }
+
+    //     var relayServerData = new RelayServerData(allocation, "dtls");
+    //     NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
+
+    //     Debug.Log($"StartHost - server: {allocation.ConnectionData[0]} {allocation.ConnectionData[1]}");
+    //     Debug.Log($"StartHost - server: {allocation.AllocationId}");
+
+    //     try
+    //     {
+    //         var createLobbyOptions = new CreateLobbyOptions
+    //         {
+    //             IsPrivate = false,
+    //             Data = new Dictionary<string, DataObject>()
+    //             {
+    //                 {
+    //                     "JoinCode", new DataObject(
+    //                         visibility: DataObject.VisibilityOptions.Member,
+    //                         value: JoinCode
+    //                     )
+    //                 }
+    //             }
+    //         };
+
+    //         Lobby lobby = await Lobbies.Instance.CreateLobbyAsync(hostName, maxConnections, createLobbyOptions);
+    //         lobbyId = lobby.Id;
+    //         Debug.Log("HostManager try CreateLobby - berhasil dijalankan");
+    //         StartCoroutine(HeartbeatLobbyCoroutine(15));
+    //     }
+    //     catch (LobbyServiceException e)
+    //     {
+    //         Debug.LogError($"StartHost - CreateLobbyOptions failed: {e.Message}");
+    //         throw;
+    //     }
+
+    //     // codeRoomOutput.text = JoinCode;
+
+    //     // if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient)
+    //     // {
+    //     //     Debug.Log("StartHost - Host sudah berjalan, matikan terlebih dahulu.");
+    //     //     // DeleteLobbyAsync();
+    //     //     NetworkManager.Singleton.Shutdown();
+    //     // }
+
+    //     if (NetworkManager.Singleton.StartHost())
+    //     {
+    //         Debug.Log("StartHost - Host started successfully!");
+    //         LobbyManager lobbyManager = FindObjectOfType<LobbyManager>();
+    //         if (lobbyManager != null)
+    //         {
+    //             lobbyManager.UpdateRoomCode(JoinCode);
+    //         }
+    //     }
+    //     else
+    //     {
+    //         Debug.LogError("StartHost - Failed to start host!");
+    //         lostConnection = true;
+    //         SceneManager.LoadScene("MainMenu");
+    //     }
+    // }
 
     private IEnumerator HeartbeatLobbyCoroutine(float waitTimeSeconds)
     {
