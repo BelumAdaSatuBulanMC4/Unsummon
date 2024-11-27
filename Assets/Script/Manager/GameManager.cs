@@ -33,11 +33,14 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private Transform[] closetLocs;
     Character currentChar;
 
-    [Header("Audio in GamePlay")]
+    [Header("AudioSource in GamePlay")]
+    private AudioSource musicAudioSource;
+    // private AudioSource sfxAudioSource;
+
+    [Header("AudioClip in GamePlay")]
     public AudioClip pocongWinSound;
     public AudioClip kidsWinSound;
     public AudioClip environmentGamePlay;
-    private AudioSource audioSource;
 
     //SWIFT PLUGIN HERE!!!
     private SwiftPlugin swiftPlugin;
@@ -54,7 +57,7 @@ public class GameManager : NetworkBehaviour
         {
             Destroy(gameObject);
         }
-        audioSource = GetComponent<AudioSource>();
+        musicAudioSource = AudioManager.Instance.GetMusicAudioSource();
         swiftPlugin = GetComponent<SwiftPlugin>();
     }
 
@@ -65,9 +68,8 @@ public class GameManager : NetworkBehaviour
         result.SetActive(false);
         UploadNumbersServerRpc();
         swiftPlugin.Initialize();
-        audioSource.clip = environmentGamePlay;
-        audioSource.Play();
-        // audioSource.PlayOneShot(environmentGamePlay);
+        musicAudioSource.clip = environmentGamePlay;
+        musicAudioSource.Play();
     }
 
 
@@ -392,9 +394,9 @@ public class GameManager : NetworkBehaviour
     // PLAY SOUND WIN AND LOSE
     private void PlayResultSound()
     {
-        audioSource.Stop();
-        if (kidsWin) { audioSource.clip = kidsWinSound; audioSource.Play(); }
-        else if (pocongWin) { audioSource.clip = pocongWinSound; audioSource.Play(); }
+        musicAudioSource.Stop();
+        if (kidsWin) { musicAudioSource.clip = kidsWinSound; musicAudioSource.Play(); }
+        else if (pocongWin) { musicAudioSource.clip = pocongWinSound; musicAudioSource.Play(); }
     }
 
     // =================================================================================

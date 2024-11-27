@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class ButtonSoundManager : MonoBehaviour
 {
-    [SerializeField] private AudioSource audioSourceButton;
+    private AudioSource audioSourceButton;
     public AudioClip clickSound;
     private Button[] allButtons;
 
@@ -15,6 +15,11 @@ public class ButtonSoundManager : MonoBehaviour
 
         // Menambahkan listener untuk ketika scene baru dimuat
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void Start()
+    {
+        audioSourceButton = AudioManager.Instance.GetSFXAudioSource(0);
     }
 
     private void OnDestroy()
@@ -50,6 +55,7 @@ public class ButtonSoundManager : MonoBehaviour
         if (audioSourceButton != null && clickSound != null)
         {
             audioSourceButton.PlayOneShot(clickSound);  // Memainkan sound effect ketika tombol diklik
+            Debug.Log("PlayClickSound - berhasil dijalankan");
         }
     }
 }

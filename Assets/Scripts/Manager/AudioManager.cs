@@ -10,7 +10,13 @@ public class AudioManager : MonoBehaviour
 
     [Header("Audio References")]
     [SerializeField] private AudioSource musicAudioSource;
-    [SerializeField] private AudioSource sfxAudioSource;
+    private AudioSource[] sfxAudioSources;
+
+
+    [Header("AudioClip References")]
+    [SerializeField] private AudioClip musicGamePlay;
+    [SerializeField] private AudioClip musicMenuLobby;
+
     private string currentSceneName;
 
     private void Awake()
@@ -22,6 +28,7 @@ public class AudioManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         SceneManager.sceneLoaded += OnSceneLoaded;
+        sfxAudioSources = GetAllSFXAudioSource();
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -31,14 +38,45 @@ public class AudioManager : MonoBehaviour
         if (currentSceneName == "GameStory")
         {
             musicAudioSource.volume = 0f;
-            sfxAudioSource.volume = 0f;
+            for (int i = 0; i < sfxAudioSources.Length; i++) sfxAudioSources[i].volume = 0f;
         }
-        else if (currentSceneName == "GamePlayNew" || currentSceneName == "GamePlayKid") musicAudioSource.volume = 0f;
+        else if (currentSceneName == "GamePlayNew" || currentSceneName == "GamePlayKid")
+        {
+            musicAudioSource.clip = musicGamePlay;
+            musicAudioSource.Play();
+        }
         else
         {
+            musicAudioSource.clip = musicMenuLobby;
+            if (!musicAudioSource.isPlaying) musicAudioSource.Play();
             musicAudioSource.volume = PlayerPrefs.GetFloat("MusicVolume", 0.3f);
-            sfxAudioSource.volume = PlayerPrefs.GetFloat("SFXVolume", 0.3f); ;
+            for (int i = 0; i < sfxAudioSources.Length; i++)
+            {
+                sfxAudioSources[i].volume = PlayerPrefs.GetFloat("SFXVolume", 0.3f);
+            }
+
         }
+    }
+
+    public AudioSource GetMusicAudioSource()
+    {
+        AudioManager audioManager = FindObjectOfType<AudioManager>();
+        AudioSource musicAudioSource = audioManager.transform.Find("AudioMusic")?.GetComponent<AudioSource>();
+        return musicAudioSource;
+    }
+
+    public AudioSource GetSFXAudioSource(int index)
+    {
+        AudioManager audioManager = FindObjectOfType<AudioManager>();
+        AudioSource[] audioSources = audioManager.transform.Find("AudioSFX")?.GetComponents<AudioSource>();
+        return audioSources[index];
+    }
+
+    public AudioSource[] GetAllSFXAudioSource()
+    {
+        AudioManager audioManager = FindObjectOfType<AudioManager>();
+        AudioSource[] audioSources = audioManager.transform.Find("AudioSFX")?.GetComponents<AudioSource>();
+        return audioSources;
     }
 
 }
