@@ -20,14 +20,22 @@ public class LobbyItem : MonoBehaviour
         joinButton.onClick.AddListener(Join);
     }
 
-    public void Initialise(LobbiesList lobbiesList, Lobby lobby)
+    public void Initialise(LobbiesList lobbiesList, Lobby lobby, string roomName)
     {
         this.lobbiesList = lobbiesList;
         this.lobby = lobby;
 
-        lobbyNameText.text = lobby.Name;
+        if (lobby == null)
+        {
+            Debug.LogError("Initialise LobbyItem - Lobby is null in Initialise!");
+            return;
+        }
+
+        lobbyNameText.text = roomName;
         lobbyPlayersText.text = $"{lobby.Players.Count}/{lobby.MaxPlayers}";
         codeRoomText.text = lobby.Data["JoinCode"].Value;
+        Debug.Log($"Initialise - JoinCode harusnya: {lobby.Data["JoinCode"].Value}");
+        Debug.Log($"Initialise - JoinCode harusnya: {lobby.Data}");
     }
 
     public void Join()
@@ -39,10 +47,3 @@ public class LobbyItem : MonoBehaviour
         // SceneManager.LoadScene("LobbyRoom");
     }
 }
-
-#if false
-'only comment'
-------------------
-Initialise: Digunakan untuk menginisialisasi semua variable yang perlu diberikan value, dieksekusi pada LobbiesList
-------------------
-#endif

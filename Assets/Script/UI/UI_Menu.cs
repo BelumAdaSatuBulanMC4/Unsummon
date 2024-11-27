@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UI_Menu : MonoBehaviour
@@ -12,6 +13,7 @@ public class UI_Menu : MonoBehaviour
     [SerializeField] private GameObject UI_PopUpRoomNotFound;
     [SerializeField] private GameObject UI_PopUpLostConnection;
     [SerializeField] private GameObject UI_PopUpErrorJoinLobby;
+    [SerializeField] private GameObject UI_PopUpErrorSomething;
 
     [Header("GameObject UI")]
     [SerializeField] private GameObject UI_JoinRoom;
@@ -39,13 +41,15 @@ public class UI_Menu : MonoBehaviour
     [SerializeField] private Button close_UI_Settings;
     [SerializeField] private Button close_UI_Credits;
     [SerializeField] private Button close_UI_Help;
+    [SerializeField] private Button close_UI_EnterCodeTemp;
 
     [Header("Close Error UI")]
     [SerializeField] private Button close_UI_PopUpFull;
     [SerializeField] private Button close_UI_PopUpRoomNotFound;
     [SerializeField] private Button close_UI_PopUpLostConnection;
     [SerializeField] private Button close_UI_PopUpErrorJoinLobby;
-    [SerializeField] private Button close_UI_EnterCodeTemp;
+    [SerializeField] private Button close_UI_PopUpErrorSomething;
+
     // [SerializeField] private Button close_UI_EditName;
 
     [Header("Fade Effect UI")]
@@ -65,7 +69,11 @@ public class UI_Menu : MonoBehaviour
         Debug.Log("Start - UI_Menu Fungsi berhasil dijalankan");
         // OPEN UI
         open_UI_JoinRoom.onClick.AddListener(() => OpenUI(UI_JoinRoom));
-        open_UI_LobbiesList.onClick.AddListener(() => OpenUI(UI_LobbiesList));
+        open_UI_LobbiesList.onClick.AddListener(() =>
+        {
+            SceneManager.LoadScene("LobbyList");
+            // OpenUI(UI_LobbiesList);
+        });
         open_UI_EnterCode.onClick.AddListener(() => OpenUI(UI_EnterCode));
         open_UI_Settings.onClick.AddListener(() => OpenUI(UI_Settings));
         open_UI_Credits.onClick.AddListener(() => OpenUI(UI_Credits));
@@ -84,6 +92,7 @@ public class UI_Menu : MonoBehaviour
         close_UI_Help.onClick.AddListener(() => CloseUI(UI_Help));
         close_UI_PopUpErrorJoinLobby.onClick.AddListener(() => CloseUI(UI_PopUpErrorJoinLobby));
         close_UI_EnterCodeTemp.onClick.AddListener(() => CloseUI(UI_EnterCode));
+        close_UI_PopUpErrorSomething.onClick.AddListener(() => CloseUI(UI_PopUpErrorSomething));
 
         fadeEffect.ScreenFade(0, 4f);
     }

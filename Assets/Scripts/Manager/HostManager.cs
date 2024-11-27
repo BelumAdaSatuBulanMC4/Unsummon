@@ -33,6 +33,10 @@ public class HostManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
         }
+    }
+
+    private void Start()
+    {
         hostName = DataPersistence.LoadUsername();
     }
 
@@ -94,14 +98,14 @@ public class HostManager : MonoBehaviour
                 {
                     {
                         "JoinCode", new DataObject(
-                            visibility: DataObject.VisibilityOptions.Member,
+                            visibility: DataObject.VisibilityOptions.Public,
                             value: JoinCode
                         )
                     }
                 }
                 };
 
-                Lobby lobby = await Lobbies.Instance.CreateLobbyAsync(hostName, maxConnections, createLobbyOptions);
+                Lobby lobby = await Lobbies.Instance.CreateLobbyAsync(JoinCode, maxConnections, createLobbyOptions);
                 lobbyId = lobby.Id;
                 Debug.Log("HostManager try CreateLobby - berhasil dijalankan");
                 StartCoroutine(HeartbeatLobbyCoroutine(15));
@@ -131,6 +135,56 @@ public class HostManager : MonoBehaviour
         finally
         {
             isCreatingLobby = false; // Reset flag setelah proses selesai
+        }
+    }
+
+    private IEnumerator HeartbeatLobbyCoroutine(float waitTimeSeconds)
+    {
+        var delay = new WaitForSecondsRealtime(waitTimeSeconds);
+        while (true)
+        {
+            Lobbies.Instance.SendHeartbeatPingAsync(lobbyId);
+            Debug.Log("HostManager HeartbeatLobbyCoroutine - berhasil dijalankan");
+            yield return delay;
+        }
+    }
+
+    public string GetLobbyId()
+    {
+        if (lobbyId != null) return lobbyId;
+        else return null;
+    }
+
+
+    public async void DeleteLobbyAsync()
+    {
+        try
+        {
+            lobbyId ??= PlayerInfo.Instance.CurrentLobbyId;
+            Debug.Log($"DeleteLobbyAsync - CurrentLobbyID Host: {lobbyId}");
+            Debug.Log($"DeleteLobbyAsync - CurrentLobbyID: {PlayerInfo.Instance.CurrentLobbyId}");
+            await Lobbies.Instance.DeleteLobbyAsync(lobbyId);
+            Debug.Log("DeleteLobbyAsync - Successfully delete lobby.");
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.LogError($"DeleteLobbyAsync - Failed delete lobby: {e.Message}");
+        }
+    }
+
+    // public async void RemovePlayerFromLobby(string playerId)
+    public async Task RemovePlayerFromLobby(string playerId, string currentLobbyId)
+    {
+        Debug.Log("RemovePlayerFromLobby - berhasil dijalankan.");
+        try
+        {
+            Debug.Log($"RemovePlayerFromLobby Join -  LobbyID: {currentLobbyId}");
+            await Lobbies.Instance.RemovePlayerAsync(currentLobbyId, playerId);
+            Debug.Log("RemovePlayerFromLobby - Successfully remove player from lobby.");
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.LogError($"RemovePlayerFromLobby - Failed remove player from lobby: {e.Message}");
         }
     }
 
@@ -220,55 +274,5 @@ public class HostManager : MonoBehaviour
     //         lostConnection = true;
     //         SceneManager.LoadScene("MainMenu");
     //     }
-    // }
-
-    private IEnumerator HeartbeatLobbyCoroutine(float waitTimeSeconds)
-    {
-        var delay = new WaitForSecondsRealtime(waitTimeSeconds);
-        while (true)
-        {
-            Lobbies.Instance.SendHeartbeatPingAsync(lobbyId);
-            Debug.Log("HostManager HeartbeatLobbyCoroutine - berhasil dijalankan");
-            yield return delay;
-        }
-    }
-
-    public string GetLobbyId()
-    {
-        if (lobbyId != null) return lobbyId;
-        else return null;
-    }
-
-
-    public async void DeleteLobbyAsync()
-    {
-        try
-        {
-            lobbyId ??= PlayerInfo.Instance.CurrentLobbyId;
-            Debug.Log($"DeleteLobbyAsync - CurrentLobbyID Host: {lobbyId}");
-            Debug.Log($"DeleteLobbyAsync - CurrentLobbyID: {PlayerInfo.Instance.CurrentLobbyId}");
-            await Lobbies.Instance.DeleteLobbyAsync(lobbyId);
-            Debug.Log("DeleteLobbyAsync - Successfully delete lobby.");
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.LogError($"DeleteLobbyAsync - Failed delete lobby: {e.Message}");
-        }
-    }
-
-    // public async void RemovePlayerFromLobby(string playerId)
-    public async Task RemovePlayerFromLobby(string playerId, string currentLobbyId)
-    {
-        Debug.Log("RemovePlayerFromLobby - berhasil dijalankan.");
-        try
-        {
-            Debug.Log($"RemovePlayerFromLobby Join -  LobbyID: {currentLobbyId}");
-            await Lobbies.Instance.RemovePlayerAsync(currentLobbyId, playerId);
-            Debug.Log("RemovePlayerFromLobby - Successfully remove player from lobby.");
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.LogError($"RemovePlayerFromLobby - Failed remove player from lobby: {e.Message}");
-        }
-    }
+    // }    
 }

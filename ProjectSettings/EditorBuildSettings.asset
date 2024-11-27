@@ -29,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/LobbyRoom.unity
     guid: 522e576b810204d34aa79e6cb731e029
+  - enabled: 1
+    path: Assets/Scenes/LobbyList.unity
+    guid: 65f2374e2205d46eaa80f4a3dbb6742a
   - enabled: 0
     path: Assets/Scenes/GamePlay.unity
     guid: 31e635899efac4b3b83d62011d22003a
