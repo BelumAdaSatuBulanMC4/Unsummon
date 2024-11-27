@@ -13,6 +13,7 @@ public class LobbiesList : MonoBehaviour
     [SerializeField] private Transform lobbyItemParent;
     [SerializeField] private LobbyItem lobbyItemPrefab;
     [SerializeField] private Button refreshButton;
+    [SerializeField] private Button backButton;
 
     [Header("PopUp Error")]
     [SerializeField] private GameObject UI_PopUpFull;
@@ -20,25 +21,47 @@ public class LobbiesList : MonoBehaviour
     [SerializeField] private GameObject UI_PopUpLostConnection;
     [SerializeField] private GameObject UI_PopUpErrorJoinLobby;
     [SerializeField] private GameObject textNoRoomAvailable;
+    [SerializeField] private GameObject textLoading;
     private bool isRefreshing;
     private bool isJoining;
     private int totalRoomAvailable;
 
+    private const float RefreshCooldown = 5f;
+    private float lastRefreshTime;
 
-    private void OnEnable()
+    private void Start()
     {
         refreshButton.onClick.AddListener(RefreshList);
+        backButton.onClick.AddListener(() => SceneManager.LoadScene("MainMenu"));
         RefreshList();
+    }
+
+    // private void OnEnable()
+    // {
+    //     refreshButton.onClick.AddListener(RefreshList);
+    //     RefreshList();
+    // }
+    private void Update()
+    {
+        textLoading.SetActive(isRefreshing);
+        // textNoRoomAvailable.SetActive(!isRefreshing);
     }
 
     public async void RefreshList()
     {
-        if (isRefreshing) return;
+        // if (isRefreshing) return;
+        if (isRefreshing || Time.time - lastRefreshTime < RefreshCooldown) return;
 
+        lastRefreshTime = Time.time;
         isRefreshing = true;
+        textNoRoomAvailable.SetActive(false);
+        // refreshButton.interactable = false;
+        // textLoading.SetActive(true);
 
         try
         {
+            foreach (Transform child in lobbyItemParent) Destroy(child.gameObject);
+
             QueryLobbiesOptions options = new()
             {
                 Count = 25,
@@ -57,15 +80,12 @@ public class LobbiesList : MonoBehaviour
 
             QueryResponse lobbies = await Lobbies.Instance.QueryLobbiesAsync(options);
 
-            foreach (Transform child in lobbyItemParent)
-            {
-                Destroy(child.gameObject);
-            }
-
-            foreach (Lobby lobby in lobbies.Results)
+            // foreach (Lobby lobby in lobbies.Results)
+            for (int i = 0; i < lobbies.Results.Count; i++)
             {
                 LobbyItem lobbyItemInstance = Instantiate(lobbyItemPrefab, lobbyItemParent);
-                lobbyItemInstance.Initialise(this, lobby);
+                // lobbyItemInstance.Initialise(this, lobby);
+                lobbyItemInstance.Initialise(this, lobbies.Results[i], $"Room {i + 1}");
             }
             totalRoomAvailable = lobbies.Results.Count;
             if (totalRoomAvailable == 0) textNoRoomAvailable.SetActive(true);
@@ -78,6 +98,8 @@ public class LobbiesList : MonoBehaviour
         }
 
         isRefreshing = false;
+        textLoading.SetActive(false);
+        // refreshButton.interactable = true;
     }
 
     public async void JoinAsync(Lobby lobby)
@@ -132,9 +154,3 @@ public class LobbiesList : MonoBehaviour
 }
 
 
-#if false 
-'only comment'
-------------------
-Initialise: Digunakan untuk menginisialisasi semua variable yang perlu diberikan value, dieksekusi pada LobbiesList
-------------------
-#endif

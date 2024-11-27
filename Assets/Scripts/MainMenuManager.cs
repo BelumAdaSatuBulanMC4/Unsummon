@@ -6,6 +6,7 @@ using TMPro;
 using Unity.Netcode;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject UI_PopUpFull;
     [SerializeField] private GameObject UI_PopUpRoomNotFound;
     [SerializeField] private GameObject UI_PopUpLostConnection;
+    [SerializeField] private GameObject UI_PopUpErrorSomething;
     [SerializeField] private TextMeshProUGUI textIsConnect;
     [SerializeField] private Image connected;
     [SerializeField] private Image disconnected;
@@ -53,6 +55,7 @@ public class MainMenuManager : MonoBehaviour
         catch (Exception e)
         {
             Debug.Log($"Start MainMenuManager - login failed: {e.Message}");
+            // UI_PopUpErrorSomething.SetActive(true);
             return;
         }
     }
