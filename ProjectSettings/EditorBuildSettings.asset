@@ -38,4 +38,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GamePlayNew.unity
     guid: 46634b1bd05d14da9a30e220f4364911
+  - enabled: 1
+    path: Assets/Scenes/GAMETESTING/GamePlayKid.unity
+    guid: b66192a8d4ffe470885824b034a5511d
+  - enabled: 1
+    path: Assets/Scenes/GAMETESTING/LobbyRoomTesting.unity
+    guid: 8acdd57c81e3b4d81acd04f691507bf0
   m_configObjects: {}

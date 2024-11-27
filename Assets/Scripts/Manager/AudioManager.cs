@@ -40,7 +40,7 @@ public class AudioManager : MonoBehaviour
             musicAudioSource.volume = 0f;
             for (int i = 0; i < sfxAudioSources.Length; i++) sfxAudioSources[i].volume = 0f;
         }
-        else if (currentSceneName == "GamePlayNew")
+        else if (currentSceneName == "GamePlayNew" || currentSceneName == "GamePlayKid")
         {
             musicAudioSource.clip = musicGamePlay;
             musicAudioSource.Play();
