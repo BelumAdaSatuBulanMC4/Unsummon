@@ -38,11 +38,11 @@ public class HostManager : MonoBehaviour
 
     public async void StartHost()
     {
-        if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient)
-        {
-            Debug.Log("StartHost HostManager - Host sudah berjalan, matikan terlebih dahulu.");
-            NetworkManager.Singleton.Shutdown();
-        }
+        // if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient)
+        // {
+        //     Debug.Log("StartHost HostManager - Host sudah berjalan, matikan terlebih dahulu.");
+        //     NetworkManager.Singleton.Shutdown();
+        // }
         if (isCreatingLobby)
         {
             Debug.LogWarning("StartHost - Lobby is already being created, please wait!");

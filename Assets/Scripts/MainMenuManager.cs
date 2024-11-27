@@ -21,6 +21,8 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject UI_PopUpRoomNotFound;
     [SerializeField] private GameObject UI_PopUpLostConnection;
     [SerializeField] private TextMeshProUGUI textIsConnect;
+    [SerializeField] private Image connected;
+    [SerializeField] private Image disconnected;
     private bool isConnect = false;
 
     private void Start()
@@ -89,11 +91,15 @@ public class MainMenuManager : MonoBehaviour
         if (Application.internetReachability == NetworkReachability.NotReachable)
         {
             textIsConnect.text = "No internet!";
+            disconnected.enabled = true;
+            connected.enabled = false;
             isConnect = false;
         }
         else
         {
-            textIsConnect.text = "Connect!";
+            textIsConnect.text = "Connected!";
+            disconnected.enabled = false;
+            connected.enabled = true;
             isConnect = true;
         }
     }
