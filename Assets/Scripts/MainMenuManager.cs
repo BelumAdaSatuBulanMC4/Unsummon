@@ -20,13 +20,27 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject UI_PopUpFull;
     [SerializeField] private GameObject UI_PopUpRoomNotFound;
     [SerializeField] private GameObject UI_PopUpLostConnection;
+    [SerializeField] private TextMeshProUGUI textIsConnect;
+    private bool isConnect = false;
 
-    private async void Start()
+    private void Start()
     {
         Debug.Log($"{DataPersistence.LoadUsername()}");
         createRoomButton.onClick.AddListener(StartHost);
         joinRoomButton.onClick.AddListener(StartClient);
+        SignInUser();
+    }
 
+    private void Update()
+    {
+        CheckInternetConnection();
+        if (!isConnect) return;
+        CheckIfPlayerStillJoinAsync();
+        CheckSignInStatus();
+    }
+
+    private async void SignInUser()
+    {
         try
         {
             await UnityServices.InitializeAsync();
@@ -39,20 +53,6 @@ public class MainMenuManager : MonoBehaviour
             Debug.Log($"Start MainMenuManager - login failed: {e.Message}");
             return;
         }
-
-#if UNITY_IOS
-        Debug.Log("Start - MainMenuManager: If iOS berhasil dipanggil UNITY_IOS");
-#endif
-
-        if (Application.platform == RuntimePlatform.IPhonePlayer)
-        {
-            Debug.Log("Start - MainMenuManager: If iOS berhasil dipanggil RuntimePlatform");
-        }
-    }
-
-    private void Update()
-    {
-        CheckIfPlayerStillJoinAsync();
     }
 
     private async void CheckIfPlayerStillJoinAsync()
@@ -75,10 +75,37 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
+    private void CheckSignInStatus()
+    {
+        if (!AuthenticationService.Instance.IsSignedIn)
+        {
+            Debug.Log("Update MainMenuManager - User belum SignIn, retrying");
+            SignInUser();
+        }
+    }
+
+    private void CheckInternetConnection()
+    {
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            textIsConnect.text = "No internet!";
+            isConnect = false;
+        }
+        else
+        {
+            textIsConnect.text = "Connect!";
+            isConnect = true;
+        }
+    }
+
     public void StartHost()
     {
+        if (Application.internetReachability == NetworkReachability.NotReachable)
+        {
+            UI_PopUpLostConnection.SetActive(true);
+            return;
+        }
         Debug.Log("Seharusnya start Host");
-        // Masih belum nampil pop up lost nya
         HostManager.Instance.StartHost();
         if (HostManager.Instance.lostConnection)
         {

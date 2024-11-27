@@ -42,8 +42,7 @@ public class UI_SetUsername : MonoBehaviour
 
     private void Start()
     {
-        bool isFirstTime = DataPersistence.GetIsFirstTime();
-        if (!isFirstTime)
+        if (!DataPersistence.GetIsFirstTime())
         {
             setUsernameUI.SetActive(false);
         }
@@ -70,20 +69,13 @@ public class UI_SetUsername : MonoBehaviour
             }
         }
 
-        if (DataPersistence.GetIsFirstTime())
-        {
-            setUsernameUI.SetActive(true);
-        }
-        else
-        {
-            setUsernameUI.SetActive(false);
-        }
     }
 
     public void OnSaveButtonClicked()
     {
         string newUsername = "Player";
         DataPersistence.EditUsername(newUsername);
+        setUsernameUI.SetActive(false);
     }
 
     public void OnNextButtonClicked()
