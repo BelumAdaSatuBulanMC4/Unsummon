@@ -81,11 +81,10 @@ public class Character : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         inputPlayer = new InputActions();
-        AudioSource[] audioSources = GetComponents<AudioSource>();
         rendererCharacter = GetComponentInChildren<Renderer>();
         colliderCharacter = GetComponent<CapsuleCollider2D>();
-        sfxMovement = audioSources[0];
-        sfxPocongKill = audioSources[1];
+        sfxMovement = AudioManager.Instance.GetSFXAudioSource(0);
+        sfxPocongKill = AudioManager.Instance.GetSFXAudioSource(1);
         sfxMovement.clip = sfxMovementClip;
         sfxPocongKill.clip = sfxPocongKillClip;
     }

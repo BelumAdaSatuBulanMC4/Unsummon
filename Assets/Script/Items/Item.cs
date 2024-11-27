@@ -13,7 +13,7 @@ public class Item : NetworkBehaviour
     public AudioClip onCandle;
     public AudioClip offCandle;
     private AudioSource audioSource;
-    private Light2D light;
+    private new Light2D light;
 
     // [SerializeField] private GameObject rendererOutline;
     private CircleCollider2D colliderCircle;
@@ -21,7 +21,7 @@ public class Item : NetworkBehaviour
     private void Awake()
     {
         anim = GetComponent<Animator>();
-        audioSource = GetComponent<AudioSource>();
+        audioSource = AudioManager.Instance.GetSFXAudioSource(2);
         light = GetComponentInChildren<Light2D>();
         // colliderCircle = rendererOutline.GetComponent<CircleCollider2D>();
     }

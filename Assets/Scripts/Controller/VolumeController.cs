@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class VolumeController : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class VolumeController : MonoBehaviour
 
     [Header("Audio References")]
     [SerializeField] private AudioSource musicAudioSource;
-    [SerializeField] private AudioSource sfxAudioSource;
+    private AudioSource[] sfxAudioSources;
 
     private void Start()
     {
@@ -35,41 +36,36 @@ public class VolumeController : MonoBehaviour
     // Fungsi yang akan dipanggil saat scene baru dimuat
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // Coba untuk mendapatkan referensi AudioSource dari AudioManager
         TryGetAudioSources();
     }
 
     // Mencoba untuk mendapatkan referensi AudioSource dari AudioManager yang ada
     private void TryGetAudioSources()
     {
+        musicAudioSource = AudioManager.Instance.GetMusicAudioSource();
+        sfxAudioSources = AudioManager.Instance.GetAllSFXAudioSource();
         // Cari AudioManager yang ada di scene
-        AudioManager audioManager = FindObjectOfType<AudioManager>();
-        if (audioManager != null)
+        Debug.Log($"TryGetAudioSources: musicAudio: {musicAudioSource} sfxAudio: {sfxAudioSources.Length}");
+        if (musicAudioSource != null)
         {
-            // Ambil AudioSource dari child MusicAudio
-            musicAudioSource = audioManager.transform.Find("AudioMusic")?.GetComponent<AudioSource>();
-            // Ambil AudioSource dari child SFXAudio
-            sfxAudioSource = audioManager.transform.Find("AudioSFX")?.GetComponent<AudioSource>();
-
-            Debug.Log($"TryGetAudioSources: musicAudio: {musicAudioSource} sfxAudio: {sfxAudioSource}");
-            if (musicAudioSource != null)
-            {
-                musicAudioSource.volume = PlayerPrefs.GetFloat("MusicVolume", 0.3f);
-                musicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVolume", 0.3f);
-                musicVolumeSlider.onValueChanged.AddListener(UpdateMusicVolume);
-            }
-
-            if (sfxAudioSource != null)
-            {
-                sfxAudioSource.volume = PlayerPrefs.GetFloat("SFXVolume", 0.3f);
-                sfxVolumeSlider.value = PlayerPrefs.GetFloat("SFXVolume", 0.3f);
-                sfxVolumeSlider.onValueChanged.AddListener(UpdateSFXVolume);
-            }
+            musicAudioSource.volume = PlayerPrefs.GetFloat("MusicVolume", 0.3f);
+            musicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVolume", 0.3f);
+            musicVolumeSlider.onValueChanged.AddListener(UpdateMusicVolume);
         }
-        else
+        else Debug.Log("TryGetAudioSources - musicAudioSource not found");
+
+        if (sfxAudioSources.Length > 0 && sfxAudioSources != null)
         {
-            Debug.LogError("AudioManager tidak ditemukan di scene!");
+            for (int i = 0; i < sfxAudioSources.Length; i++)
+            {
+                Debug.Log($"TryGetAudioSources: Volume {i}: {sfxAudioSources[i].volume}");
+                sfxAudioSources[i].volume = PlayerPrefs.GetFloat("SFXVolume", 0.3f);
+            }
+            sfxVolumeSlider.value = PlayerPrefs.GetFloat("SFXVolume", 0.3f);
+            sfxVolumeSlider.onValueChanged.AddListener(UpdateSFXVolume);
         }
+        else Debug.Log("TryGetAudioSources - sfxAudioSources not found");
+
     }
 
 
@@ -86,9 +82,12 @@ public class VolumeController : MonoBehaviour
 
     private void UpdateSFXVolume(float value)
     {
-        if (sfxAudioSource != null)
+        if (sfxAudioSources.Length > 0)
         {
-            sfxAudioSource.volume = value;
+            for (int i = 0; i < sfxAudioSources.Length; i++)
+            {
+                sfxAudioSources[i].volume = value;
+            }
             PlayerPrefs.SetFloat("SFXVolume", value);
             PlayerPrefs.Save();
         }
@@ -96,48 +95,3 @@ public class VolumeController : MonoBehaviour
 }
 
 
-// using System.Collections;
-// using System.Collections.Generic;
-// using UnityEngine;
-// using UnityEngine.UI;
-
-// public class VolumeController : MonoBehaviour
-// {
-//     [Header("UI References")]
-//     [SerializeField] private Slider musicVolumeSlider;
-//     [SerializeField] private Slider sfxVolumeSlider;
-
-//     [Header("Audio References")]
-//     [SerializeField] private AudioSource musicAudioSource;
-//     [SerializeField] private AudioSource sfxAudioSource;
-
-//     private void Start()
-//     {
-//         musicAudioSource.volume = PlayerPrefs.GetFloat("MusicVolume", 0.3f);
-//         musicVolumeSlider.value = PlayerPrefs.GetFloat("MusicVolume", 0.3f);
-//         musicVolumeSlider.onValueChanged.AddListener(UpdateMusicVolume);
-//         sfxVolumeSlider.onValueChanged.AddListener(UpdateSFXVolume);
-//     }
-
-//     // Fungsi untuk memperbarui volume AudioSource
-//     private void UpdateMusicVolume(float value)
-//     {
-//         musicAudioSource.volume = value;
-//         PlayerPrefs.SetFloat("MusicVolume", value);
-//         PlayerPrefs.Save();
-//     }
-
-//     private void UpdateSFXVolume(float value)
-//     {
-//         sfxAudioSource.volume = value;
-//         PlayerPrefs.SetFloat("SFXVolume", value);
-//         PlayerPrefs.Save();
-//     }
-
-//     private void OnDestroy()
-//     {
-//         // Menghapus listener untuk mencegah memory leak
-//         musicVolumeSlider.onValueChanged.RemoveListener(UpdateMusicVolume);
-//         sfxVolumeSlider.onValueChanged.RemoveListener(UpdateSFXVolume);
-//     }
-// }
