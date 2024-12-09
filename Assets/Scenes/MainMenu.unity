@@ -13886,7 +13886,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 617657128}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.19895902
+  m_Size: 0.198959
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -14984,9 +14984,9 @@ MonoBehaviour:
   m_MaxConnectAttempts: 60
   m_DisconnectTimeoutMS: 30000
   ConnectionData:
-    Address: 127.0.0.1
+    Address: 0.0.0.0
     Port: 7777
-    ServerListenAddress: 127.0.0.1
+    ServerListenAddress: 0.0.0.0
   DebugSimulator:
     PacketDelayMS: 0
     PacketJitterMS: 0
