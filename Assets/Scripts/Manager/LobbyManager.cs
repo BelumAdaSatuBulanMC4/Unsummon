@@ -264,14 +264,14 @@ public class LobbyManager : NetworkBehaviour
         }
         for (int i = 0; i < playerJoin.Length; i++)
         {
+            if (playerJoin[i] == null) continue;
             playerJoin[i].SetActive(false);
             playerName[i].text = "Waiting";
         }
         for (int i = 0; i < playerDataList.Count; i++)
         {
+            if (playerJoin[i] == null) continue;
             playerJoin[i].SetActive(true);
-
-            // Check if the player is the local player
             if (playerDataList[i].clientId == NetworkManager.Singleton.LocalClientId)
             {
                 playerName[i].text = "You";

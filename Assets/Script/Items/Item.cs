@@ -13,7 +13,7 @@ public class Item : NetworkBehaviour
     public AudioClip onCandle;
     public AudioClip offCandle;
     private AudioSource audioSource;
-    private new Light2D light;
+    private Light2D light;
 
     // [SerializeField] private GameObject rendererOutline;
     private CircleCollider2D colliderCircle;
