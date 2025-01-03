@@ -11,7 +11,7 @@ public class PlayerKid : Character
     private Collider2D myCollider;
 
     [Header("KnockBack")]
-    [SerializeField] private float knockBackDuration = 1;
+    [SerializeField] private float knockBackDuration = 1.5f;
     [SerializeField] private Vector2 knockBackPower;
     private bool isKnocked;
 
@@ -23,11 +23,18 @@ public class PlayerKid : Character
     [SerializeField] private Transform spiritCheck;
     [SerializeField] private float spiritCheckRadius;
     [SerializeField] private LayerMask whatIsPlayerSpirit;
+    private bool isTestingDetected;
     private Collider2D[] detectedSpirits;
 
     [SerializeField] private GameObject controller_UI;
 
     [SerializeField] private GameObject buttonInteraction;
+
+    private Vector3 pocongPosition;
+    public float maxDistance = 12f;
+    public float minIntensity = 0f;
+    public float maxIntensity = 1f;
+    private bool isHiding = false;
 
     protected override void Awake()
     {
@@ -36,8 +43,9 @@ public class PlayerKid : Character
         myCollider = GetComponent<Collider2D>();
     }
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         anim = GetComponentInChildren<Animator>();
         StartCoroutine(RegisterKidWhenReady());
         myCollider = GetComponent<Collider2D>();
@@ -55,6 +63,24 @@ public class PlayerKid : Character
         Debug.Log("Player manager berhasil diintansiasi");
     }
 
+    protected void HidingCharacter(bool hiding)
+    {
+        Debug.Log("Di dalem Hidecharacter SERVER anak" + HidingNow());
+
+        // Debug.Log("sekarang dia hide HidingCharacter " + currentCloset.isUsed);
+        // Debug.Log("sekarang dia UI() HidingCharacter " + hiding);
+        // Debug.Log("sekarang dia Hiding() HidingCharacter " + UI_InGame.instance.GetIsHiding());
+
+        if (!isHidingNow)
+        {
+            PlayerManager.instance.RegisterKid(this);
+        }
+        else
+        {
+            PlayerManager.instance.UnregisterKid(this);
+        }
+    }
+
     public override void OnDestroy()
     {
         base.OnDestroy();
@@ -64,11 +90,22 @@ public class PlayerKid : Character
     protected override void Update()
     {
         if (!IsOwner) { return; }
+
+
         base.Update();
+        hidingCoolDownTimer -= Time.deltaTime;
         HandleAnimations();
-        // HandleLocationChanged();
+        HidingCharacter(UI_InGame.instance.GetIsHiding());
         HandlePlayerCollision();
+        // HandleLocationChanged();
+        // HandlePlayerCollision();
         HandleMovement();
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            HandlePocongFear();
+            Debug.Log("Update Character.cs: If iOS berhasil dipanggil");
+        }
+
         // PlayerManager.instance.UpdateKidPositionServerRpc(NetworkObjectId, transform.position);
 
         // HandleButtonInteraction();
@@ -87,17 +124,47 @@ public class PlayerKid : Character
     private void HandlePlayerCollision()
     {
         detectedSpirits = Physics2D.OverlapCircleAll(spiritCheck.position, spiritCheckRadius, whatIsPlayerSpirit);
+        // isTestingDetected = detectedSpirits.Length > 0;
 
         if (detectedSpirits.Length > 0)
         {
-            foreach (Collider2D spirit in detectedSpirits)
-            {
-                PlayerSpirit sprt = spirit.GetComponent<PlayerSpirit>();
-                if (sprt != null)
-                {
-                    Physics2D.IgnoreCollision(myCollider, spirit);
-                }
-            }
+            Knocked(10);
+            // foreach (Collider2D spirit in detectedSpirits)
+            // {
+            //     PlayerSpirit sprt = spirit.GetComponent<PlayerSpirit>();
+            //     if (sprt != null)
+            //     {
+            //         Physics2D.IgnoreCollision(myCollider, spirit);
+            //     }
+            // }
+        }
+    }
+
+    private void HandlePocongFear()
+    {
+        pocongPosition = PlayerManager.instance.GetPocongPosition();
+        float distance = Vector3.Distance(pocongPosition, transform.position);
+        Debug.Log("Distance with pocong: " + distance);
+
+        float intensity = Mathf.Lerp(maxIntensity, minIntensity, distance / maxDistance);
+        intensity = Mathf.Clamp(intensity, minIntensity, maxIntensity);
+
+        if (distance < maxDistance)
+        {
+            GameManager.instance.StartConHapticFeedback(intensity);
+        }
+        // else if (distance > 4 && distance < 8)
+        // {
+        //     GameManager.instance.StartConHapticFeedback(0.5f);
+
+        // }
+        // else if (distance < 4)
+        // {
+        //     GameManager.instance.StartConHapticFeedback(0.8f);
+        // }
+        else
+        {
+            GameManager.instance.StopConHapticFeedback();
         }
     }
 
@@ -157,44 +224,64 @@ public class PlayerKid : Character
     {
         // Debug.Log("the player has been killed");
         // Transform kidTransform = transform;
+        rb.constraints = RigidbodyConstraints2D.FreezePosition;
+
         sfxPocongKill.loop = false;
         sfxPocongKill.Play();
         // if (isAuthor)
         // {
         // CameraManager.instance.CameraShake();
-        GameManager.instance.UpdateKilledKids();
 
         KidKilledServerRpc(OwnerClientId);
+        // StartCoroutine(WaitForPlayersUpdate());
+        GameManager.instance.UpdateKilledKids();
+        // UI_InGame.instance.SetKilledScreen(true);
+
+        // GamePlayManager.instance.UpdatePlayerCharacterListServerRpc(OwnerClientId, CharacterType.Spirit);
+        // GameManager.instance.UpdateKilledKids();
+        // GamePlayManager.instance.debugOutput.text += "\nGettingKilled -  berhasil dijalankan";
+
         // spirit.GetComponentInChildren<PlayerSpirit>().SetAuthor(isAuthor);
         // }
+        GamePlayManager.instance.DebugTesting();
 
+    }
+
+    private IEnumerator WaitForPlayersUpdate()
+    {
+        yield return new WaitForSeconds(2.5f);
+        KidKilledServerRpc(OwnerClientId);
     }
 
     public void Knocked(float sourceOfDamage)
     {
-        float knockbackDir = 1;
+        GettingKilled();
+        // float knockbackDir = 1;
+        // // rb.velocity = new Vector2(0, 0);
 
-        if (transform.position.x < sourceOfDamage)
-        {
-            knockbackDir = -1;
-        }
+        // if (transform.position.x < sourceOfDamage)
+        // {
+        //     knockbackDir = -1;
+        // }
 
-        if (isKnocked)
-        {
-            return;
-        }
-        StartCoroutine(KnockedRoutine());
-        rb.velocity = new Vector2(knockBackPower.x * knockbackDir, knockBackPower.y);
+        // if (isKnocked)
+        // {
+        //     return;
+        // }
+        // StartCoroutine(KnockedRoutine());
+        // rb.velocity = new Vector2(knockBackPower.x * knockbackDir, knockBackPower.y);
     }
 
     private IEnumerator KnockedRoutine()
     {
         isKnocked = true;
+        isNowKilled = true;
         anim.SetBool("isHit", isKnocked);
 
         yield return new WaitForSeconds(knockBackDuration);
 
         isKnocked = false;
+        isNowKilled = false;
         anim.SetBool("isHit", isKnocked);
         GettingKilled();
     }
@@ -216,6 +303,7 @@ public class PlayerKid : Character
     private void OnDrawGizmos()
     {
         DrawItemDetector();
+        DrawClosetDetector();
         Gizmos.DrawWireSphere(spiritCheck.position, spiritCheckRadius);
     }
 
@@ -236,9 +324,23 @@ public class PlayerKid : Character
                 deadBody.GetComponent<NetworkObject>().Spawn();
 
                 GameObject spirit = Instantiate(spiritPrefab, transform.position, Quaternion.identity);
+                // UI_InGame.instance.SetKilledScreen(true);
+                // StartCoroutine(WaitAndSpawnDeadBody());
+
+                // UI_InGame.instance.SwitchToSpirit();
+
+                UI_InGame.instance.SetAuthorCharacter(null);
+
+                // UI_InGame.instance.InstantiateUIForCharacter(spirit.GetComponentInChildren<Character>());
+
                 PlayerSpirit newSpirit = spiritPrefab.GetComponent<PlayerSpirit>();
                 spirit.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
+
+
                 // UI_NoiseButton uiNoiseButton = FindObjectOfType<UI_NoiseButton>();  // Assuming you have only one UI_NoiseButton
+
+                GamePlayManager.instance.UpdatePlayerCharacterListClientRpc(clientId, CharacterType.Spirit);
+                // GamePlayManager.instance.debugOutput.text += "\nKidKilledServerRpc -  berhasil dijalankan";
 
                 // if (uiNoiseButton != null)
                 // {
@@ -247,6 +349,15 @@ public class PlayerKid : Character
                 // CameraManager.instance.ChangeCameraFollow(spirit.transform);
             }
         }
+    }
+
+    private IEnumerator WaitAndSpawnDeadBody()
+    {
+        UI_InGame.instance.SetKilledScreen(true);
+        // Wait for 2 seconds
+        yield return new WaitForSeconds(1f);
+
+        UI_InGame.instance.SetKilledScreen(false);
     }
 
     // [ClientRpc]
@@ -338,5 +449,15 @@ public class PlayerKid : Character
     //     }
     // }
 
+
+    public void RegisterTheKid()
+    {
+        PlayerManager.instance.RegisterKid(this);
+    }
+
+    public void UnRegisterTheKid()
+    {
+        PlayerManager.instance.UnregisterKid(this);
+    }
 
 }

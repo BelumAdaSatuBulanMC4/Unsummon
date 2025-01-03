@@ -8,11 +8,11 @@ public class PlayerSpirit : Character
     private Animator anim;
     private Collider2D spiritCollider;
 
-    [Header("Collision Enabler")]
-    [SerializeField] private Transform playerCheck;
-    [SerializeField] private float playerCheckRadius;
-    [SerializeField] private LayerMask whatIsPlayerKid;
-    [SerializeField] private LayerMask whatIsPlayerPocong;
+    // [Header("Collision Enabler")]
+    // [SerializeField] private Transform playerCheck;
+    // [SerializeField] private float playerCheckRadius;
+    // [SerializeField] private LayerMask whatIsPlayerKid;
+    // [SerializeField] private LayerMask whatIsPlayerPocong;
 
     [Header("Noise Info")]
     [SerializeField] private float noiseCooldown = 7f; // Cooldown duration
@@ -24,8 +24,8 @@ public class PlayerSpirit : Character
     private Collider2D[] detectedKids;
     private Collider2D[] detectedPocong;
 
-    private bool isKidDetected = false;
-    private bool isPocongDetected = false;
+    // private bool isKidDetected = false;
+    // private bool isPocongDetected = false;
 
     // private float noiseTime = 5f;
 
@@ -38,6 +38,13 @@ public class PlayerSpirit : Character
         typeChar = "Spirit";
         anim = GetComponentInChildren<Animator>();
         spiritCollider = GetComponent<Collider2D>();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        UI_InGame.instance.SetKilledScreen(true);
+        // StartCoroutine(WaitAndSpawnDeadBody());
     }
 
     protected override void Update()
@@ -61,31 +68,31 @@ public class PlayerSpirit : Character
         // controller_UI.SetActive(IsOwner);
     }
 
-    private void HandlePlayerCollision()
-    {
-        detectedKids = Physics2D.OverlapCircleAll(playerCheck.position, playerCheckRadius, whatIsPlayerKid);
-        detectedPocong = Physics2D.OverlapCircleAll(playerCheck.position, playerCheckRadius, whatIsPlayerPocong);
+    // private void HandlePlayerCollision()
+    // {
+    //     detectedKids = Physics2D.OverlapCircleAll(playerCheck.position, playerCheckRadius, whatIsPlayerKid);
+    //     detectedPocong = Physics2D.OverlapCircleAll(playerCheck.position, playerCheckRadius, whatIsPlayerPocong);
 
-        if (detectedKids.Length > 0)
-            foreach (Collider2D kidCollider in detectedKids)
-            {
-                PlayerKid kid = kidCollider.GetComponent<PlayerKid>();
-                if (kid != null)
-                {
-                    Physics2D.IgnoreCollision(spiritCollider, kidCollider);
-                }
-            }
+    //     if (detectedKids.Length > 0)
+    //         foreach (Collider2D kidCollider in detectedKids)
+    //         {
+    //             PlayerKid kid = kidCollider.GetComponent<PlayerKid>();
+    //             if (kid != null)
+    //             {
+    //                 Physics2D.IgnoreCollision(spiritCollider, kidCollider);
+    //             }
+    //         }
 
-        if (detectedPocong.Length > 0)
-            foreach (Collider2D pocongCollider in detectedPocong)
-            {
-                Pocong pocong = pocongCollider.GetComponent<Pocong>();  // Assuming you have a PlayerPocong script
-                if (pocong != null)
-                {
-                    Physics2D.IgnoreCollision(spiritCollider, pocongCollider);
-                }
-            }
-    }
+    //     if (detectedPocong.Length > 0)
+    //         foreach (Collider2D pocongCollider in detectedPocong)
+    //         {
+    //             Pocong pocong = pocongCollider.GetComponent<Pocong>();  // Assuming you have a PlayerPocong script
+    //             if (pocong != null)
+    //             {
+    //                 Physics2D.IgnoreCollision(spiritCollider, pocongCollider);
+    //             }
+    //         }
+    // }
 
     private void MakeNoise()
     {
@@ -114,6 +121,8 @@ public class PlayerSpirit : Character
         // noiseCooldownTimer = noiseCooldown;
         isMakingNoise = false;
     }
+
+
 
     private void HandleAnimations()
     {

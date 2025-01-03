@@ -195,6 +195,11 @@ public class PlayerManager : NetworkBehaviour
         pocongPosition = newPosition;
     }
 
+    public Vector3 GetPocongPosition()
+    {
+        return pocongPosition;
+    }
+
     [ServerRpc(RequireOwnership = false)]
     public void RemoveKidPositionServerRpc(ulong kidId)
     {

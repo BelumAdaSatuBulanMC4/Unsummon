@@ -6,6 +6,9 @@ using UnityEngine;
 public class UI_CandleCounter : MonoBehaviour
 {
     private TextMeshProUGUI candleText; // Reference to the TextMeshPro UI component
+    [SerializeField] GameObject[] progressBar;
+    [SerializeField] GameObject[] progressBarCurse;
+
 
     private void Awake()
     {
@@ -36,6 +39,9 @@ public class UI_CandleCounter : MonoBehaviour
     // Method to update the candle counter text
     public void UpdateCandleCounter(int activeItems)
     {
-        candleText.text = activeItems + "/" + GameManager.instance.GetTotalItems();
+        for (int i = 0; i < progressBar.Length; i++)
+        {
+            progressBar[i].SetActive(i < activeItems);
+        }
     }
 }

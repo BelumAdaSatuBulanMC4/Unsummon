@@ -11,7 +11,7 @@ public class GameManager : NetworkBehaviour
 {
     public static GameManager instance;
     private int totalItems = 5;
-    private int totalKids;
+    public int totalKids;
     private int activeItems = 0;
     private int killedKids = 0;
     private bool kidsWin;
@@ -29,14 +29,23 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private Image splash;
     [SerializeField] private GameObject result;
     [SerializeField] private GameObject[] candleLocs;
+    [SerializeField] private GameObject[] mirrorTeleports;
+    [SerializeField] private Transform[] closetLocs;
     Character currentChar;
 
-    [Header("Audio in GamePlay")]
+    [Header("AudioSource in GamePlay")]
+    private AudioSource musicAudioSource;
+    // private AudioSource sfxAudioSource;
+
+    [Header("AudioClip in GamePlay")]
     public AudioClip pocongWinSound;
     public AudioClip kidsWinSound;
     public AudioClip environmentGamePlay;
-    private AudioSource audioSource;
 
+    //SWIFT PLUGIN HERE!!!
+    private SwiftPlugin swiftPlugin;
+
+    private bool curseRemoved = false;
 
     private void Awake()
     {
@@ -48,6 +57,8 @@ public class GameManager : NetworkBehaviour
         {
             Destroy(gameObject);
         }
+        musicAudioSource = AudioManager.Instance.GetMusicAudioSource();
+        swiftPlugin = GetComponent<SwiftPlugin>();
     }
 
     private void Start()
@@ -56,10 +67,9 @@ public class GameManager : NetworkBehaviour
         currentChar = FindAuthorCharacter();
         result.SetActive(false);
         UploadNumbersServerRpc();
-        audioSource = GetComponent<AudioSource>();
-        audioSource.clip = environmentGamePlay;
-        audioSource.Play();
-        // audioSource.PlayOneShot(environmentGamePlay);
+        swiftPlugin.Initialize();
+        musicAudioSource.clip = environmentGamePlay;
+        musicAudioSource.Play();
     }
 
 
@@ -67,15 +77,93 @@ public class GameManager : NetworkBehaviour
     {
         // FindAllPlayerKids();
         Debug.Log($"Achive items : {activeItems}/{totalItems}");
-        kidsWin = activeItems == totalItems;
-        pocongWin = killedKids == totalKids;
-        // if ((kidsWin || pocongWin) && isGamePlaying)
+        kidsWin = activeItems >= totalItems;
+        pocongWin = killedKids >= totalKids;
         if (kidsWin || pocongWin)
         {
-            // isGamePlaying = false;
             EndGame();
         }
     }
+
+    public bool IsPocongWin()
+    {
+        Debug.Log($"IsPocongWin - result: {pocongWin}");
+        return pocongWin;
+    }
+
+    public bool IsKidsWin()
+    {
+        Debug.Log($"IsKidsWin - result: {kidsWin}");
+        return kidsWin;
+    }
+
+
+    public GameObject[] GetAllMirrors()
+    {
+        return mirrorTeleports;
+    }
+
+    public Transform[] GetAllClosets()
+    {
+        return closetLocs;
+    }
+
+    public void StartSpeechRecognitionForCurseRemoval(Item cursedItem, System.Action<string, bool> feedbackCallback)
+    {
+        swiftPlugin.StartRecording();
+        // StartCoroutine(CheckSpeechRecognizer(cursedItem, feedbackCallback));
+    }
+
+    public string GetTheSpeech()
+    {
+        return swiftPlugin.GetTranscribedTextFromSwift();
+    }
+
+    private IEnumerator CheckSpeechRecognizer(Item cursedItem, System.Action<string, bool> feedbackCallback)
+    {
+        while (swiftPlugin.IsSwiftRecording())
+        {
+            yield return null; // Wait until the recording stops
+        }
+
+        string recognizedText = swiftPlugin.GetTranscribedTextFromSwift();
+        if (recognizedText.ToLower().Contains("pulang"))
+        {
+            cursedItem.RemoveCurse(); // Remove the curse if the word is correctly recognized
+            feedbackCallback?.Invoke("Correct! You said 'Buka'", true); // Trigger callback for correct feedback
+        }
+        else
+        {
+            feedbackCallback?.Invoke("Incorrect, try again.", false); // Trigger callback for incorrect feedback
+        }
+    }
+
+    // public void StartSpeechRecognitionForCurseRemoval(Item cursedItem)
+    // {
+    //     swiftPlugin.StartRecording();
+    //     StartCoroutine(CheckSpeechRecognizer(cursedItem));
+    // }
+
+    // private IEnumerator CheckSpeechRecognizer(Item cursedItem)
+    // {
+    //     while (swiftPlugin.IsSwiftRecording())
+    //     {
+    //         yield return null; // Wait until the recording stops
+    //     }
+
+    //     string recognizedText = swiftPlugin.GetTranscribedTextFromSwift();
+    //     if (recognizedText.ToLower().Contains("buka"))
+    //     {
+    //         cursedItem.CurseDectivated(); // Remove the curse if the word is correctly recognized
+    //         Debug.Log("Curse removed successfully " + cursedItem.isCursed);
+    //     }
+    // }
+
+    public void CancelVoiceRecognition()
+    {
+        swiftPlugin.StopRecording();
+    }
+
     public int[] GetRandomIndexNumbers()
     {
         return randomIndexNumbers;
@@ -157,7 +245,8 @@ public class GameManager : NetworkBehaviour
         Debug.Log("type " + currentChar.GetTypeChar());
         if (activeItems < totalItems)
         {
-            item.ChangeVariable();
+            item.ItemActivated();
+            // item.CurseDectivated();
             AddActiveItemsServerRpc();
         }
     }
@@ -165,7 +254,7 @@ public class GameManager : NetworkBehaviour
     private Character FindAuthorCharacter()
     {
         Character[] allCharacters = FindObjectsOfType<Character>();
-        Debug.Log("jumlah author " + allCharacters.Length);
+        // Debug.Log("jumlah author " + allCharacters.Length);
         foreach (Character character in allCharacters)
         {
             if (character.GetIsAuthor())
@@ -176,15 +265,30 @@ public class GameManager : NetworkBehaviour
         return null;
     }
 
+    public String GetTypeCharacter()
+    {
+        return currentChar.GetTypeChar();
+    }
+
+    public Character GetTypeOwnerCharacter()
+    {
+        return currentChar;
+    }
+
+
     public bool GetPocongWin() => pocongWin;
     public bool GetKidsWin() => kidsWin;
 
     public void PocongTurnedOffItem(Item item)
     {
-        if (activeItems > 0)
+        if (activeItems > 0 && !item.isCursed)
         {
-            item.ResetValue();
-            item.DeActivatedCandle();
+            item.ItemDeactivated();
+            // item.CurseActivated();
+            //activate curse
+            // item.CurseActivated();
+
+            // item.DeActivatedCandle();
             // activeItems--;
             DecActiveItemsServerRpc();
             Debug.Log("Pocong turned off an item. Active items: " + activeItems);
@@ -277,7 +381,7 @@ public class GameManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void UploadNumbersServerRpc()
     {
-        randomIndexNumbers = GenerateUniqueRandomNumbers(0, candleLocs.Length, 10);
+        randomIndexNumbers = GenerateUniqueRandomNumbers(0, candleLocs.Length, 6);
         UploadNumbersClientRpc(randomIndexNumbers);
     }
 
@@ -290,10 +394,49 @@ public class GameManager : NetworkBehaviour
     // PLAY SOUND WIN AND LOSE
     private void PlayResultSound()
     {
-        audioSource.Stop();
-        if (kidsWin) { audioSource.clip = kidsWinSound; audioSource.Play(); }
-        else if (pocongWin) { audioSource.clip = pocongWinSound; audioSource.Play(); }
+        musicAudioSource.Stop();
+        if (kidsWin) { musicAudioSource.clip = kidsWinSound; musicAudioSource.Play(); }
+        else if (pocongWin) { musicAudioSource.clip = pocongWinSound; musicAudioSource.Play(); }
+    }
+
+    // =================================================================================
+    // COREMOTION!!
+
+    public void StartGyroCoreMotion()
+    {
+        swiftPlugin.StartGyro();
+    }
+
+    public void StopGyroCoreMotion()
+    {
+        swiftPlugin.StopGyro();
+    }
+
+    public double GetRollValueFromSwift()
+    {
+        return swiftPlugin.GetRollValue();
+    }
+
+    public double GetPitchValueFromSwift()
+    {
+        return swiftPlugin.GetPitchValue();
+    }
+
+    public double GetYawValueFromSwift()
+    {
+        return swiftPlugin.GetYawValue();
+    }
+
+    //================================================================
+    //COREHAPTIC
+    public void StartConHapticFeedback(float intensity)
+    {
+        swiftPlugin.TriggerHapticFeedback(intensity);
+    }
+
+    public void StopConHapticFeedback()
+    {
+        swiftPlugin.StopHapticFeedback();
     }
 
 }
-

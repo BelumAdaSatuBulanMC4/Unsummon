@@ -20,11 +20,12 @@ public class DataPersistence : MonoBehaviour
             string json = File.ReadAllText(path);
             userData = JsonUtility.FromJson<UserData>(json);
             Debug.Log($"Data loaded: Username: {userData.username}, isFirstTime: {userData.isFirstTime}");
+            Debug.Log(path);
         }
         else
         {
             // Set defaults if file doesn't exist
-            userData.username = "username";
+            userData.username = "NoName";
             userData.isFirstTime = true;
             SaveUserData(userData.username);
             Debug.Log("Default user data created and saved.");

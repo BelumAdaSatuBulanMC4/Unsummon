@@ -1,0 +1,23 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.10 (swiftlang-5.10.0.13 clang-1500.3.9.4)
+// swift-module-flags: -target arm64-apple-ios17.4 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -enable-bare-slash-regex -module-name SpeechRecognitionPlugin
+import AVFoundation
+import Foundation
+import Speech
+@_exported import SpeechRecognitionPlugin
+import Swift
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@_cdecl("GetTranscribedText")
+public func GetTranscribedText() -> Swift.UnsafePointer<Swift.CChar>?
+@_cdecl("IsRecording")
+public func IsRecording() -> Swift.Bool
+@_cdecl("GetFeedbackMessage")
+public func GetFeedbackMessage() -> Swift.UnsafePointer<Swift.CChar>?
+@_cdecl("InitializeSpeechRecognizer")
+public func initialize()
+@_cdecl("StartSpeechRecognition")
+public func startRecording()
+@_cdecl("StopSpeechRecognition")
+public func stopRecording()

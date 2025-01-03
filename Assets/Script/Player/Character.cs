@@ -1,9 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+// using static UnityEditor.Progress;
 
 public class Character : NetworkBehaviour
 {
@@ -30,6 +30,7 @@ public class Character : NetworkBehaviour
     [SerializeField] protected float itemCheckRadius;
     [SerializeField] protected LayerMask whatIsItem;
     protected Collider2D[] detectedItems;
+    protected Item currentItem;
 
     [Header("Dash info")]
     [SerializeField] protected float dashSpeed;
@@ -37,10 +38,7 @@ public class Character : NetworkBehaviour
     protected float dashTime;
     [SerializeField] protected float dashCooldown;
     protected float dashCooldownTimer;
-
     protected string currentlocation;
-
-    protected Item currentItem;
 
     [SerializeField] protected GameObject mySelf;
 
@@ -50,20 +48,76 @@ public class Character : NetworkBehaviour
     public AudioClip sfxMovementClip;  // AudioClip untuk AudioSource pertama
     public AudioClip sfxPocongKillClip;  // AudioClip untuk AudioSource kedua
 
+    // BAGIAN CLOSET
+    [Header("Closet Check")]
+    [SerializeField] protected Transform closetCheck;
+    [SerializeField] protected float closetCheckRadius;
+    [SerializeField] protected LayerMask whatIsCloset;
+    protected Collider2D[] detectedClosets;
+    protected Closet currentCloset;
+    private Vector3 LatestPosition;
+
+    [Header("Lighting")]
+    [SerializeField] private GameObject characterSpotLight;
+
+    [Header("Kamera")]
+    [SerializeField] Volume volume;
+
+    [Header("Hiding info")]
+    [SerializeField] protected float hidingCoolDown;
+    protected float hidingCoolDownTimer;
+    private Vignette vignette;
+
+    //set visible di sini ya
+    protected Renderer rendererCharacter;
+    protected CapsuleCollider2D colliderCharacter;
+    protected bool isNowKilled = false;
+    protected bool isTeleported = false;
+    protected bool isHidingNow { get; private set; }
+    public bool IsTransitioning { get; private set; }
+
+
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         inputPlayer = new InputActions();
-        AudioSource[] audioSources = GetComponents<AudioSource>();
-        sfxMovement = audioSources[0];
-        sfxPocongKill = audioSources[1];
+        rendererCharacter = GetComponentInChildren<Renderer>();
+        colliderCharacter = GetComponent<CapsuleCollider2D>();
+        sfxMovement = AudioManager.Instance.GetSFXAudioSource(0);
+        sfxPocongKill = AudioManager.Instance.GetSFXAudioSource(1);
         sfxMovement.clip = sfxMovementClip;
         sfxPocongKill.clip = sfxPocongKillClip;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         UserManager.instance.SetYourRole(typeChar);
+        Debug.Log("woylah ini masuk ke character start!");
+        if (IsOwner) characterSpotLight.SetActive(true);
+        if (IsOwner)
+        {
+            if (volume != null && volume.profile.TryGet(out vignette))
+            {
+                Debug.LogWarning("Vignette effect found in the Volume profile.");
+                // Example: Set the vignette intensity
+                if (typeChar == "Pocong")
+                {
+                    vignette.active = false;
+                    // vignette.intensity.value = 0f; // Adjust this value as needed
+                    Debug.Log("Pocong masuk sini! " + vignette.active);
+                }
+                else
+                {
+                    vignette.active = true;
+                    vignette.intensity.value = .5f; // Adjust this value as needed
+                    Debug.Log("Player masuk sini! " + vignette.active);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No Vignette effect found in the Volume profile.");
+            }
+        }
     }
 
     public void MakeANoise()
@@ -77,26 +131,9 @@ public class Character : NetworkBehaviour
         inputPlayer.Kid.Move.performed += ctx => { moveInput = ctx.ReadValue<Vector2>(); };
         inputPlayer.Kid.Move.canceled += ctx => moveInput = Vector2.zero;
     }
-
-    private void OnDisable()
-    {
-        inputPlayer.Disable();
-    }
-
-    public string GetCurrentLocation() => currentlocation;
-    public void CurrentLocationChanged(string loc)
-    {
-        currentlocation = loc;
-    }
-
-    public string GetTypeChar()
-    {
-        return typeChar;
-    }
-    public void DashButton() => DashAbility();
-
     protected virtual void Update()
     {
+        // Debug.Log("collider is " + colliderCharacter + " and " + rendererCharacter);
         if (!IsOwner) { return; }
         Debug.Log($"PlayerID: {OwnerClientId} adalah {typeChar}");
         if (typeChar == "Player" || typeChar == "Pocong")
@@ -108,16 +145,58 @@ public class Character : NetworkBehaviour
         {
             HandleMovement();
         }
+        Debug.Log("Di dalem Hidecharacter SERVER luar" + isHidingNow);
+
+        // if (IsOwner && currentItem == null)
+        // {
+        //     currentItem.ItemDetectedOutline(false);
+        // }
+        // else
+        // {
+        //     currentItem.ItemDetectedOutline(true);
+        // }
+
         HandleItemInteraction();
+        // HandleClosetInteraction();
         HandleFlip();
         SendPositionToServerServerRpc();
         HandleMovementSound();
     }
 
-    public Item GetCurrentItem()
+    protected bool HidingNow()
     {
-        return currentItem;
+        return isHidingNow;
     }
+
+    private void OnDisable()
+    {
+        inputPlayer.Disable();
+    }
+
+    public string GetCurrentLocation() => currentlocation;
+    public void CurrentLocationChanged(string location, bool isEntering)
+    {
+        if (isEntering)
+        {
+            IsTransitioning = true;
+            currentlocation = location;
+            // Handle logic for entering the room
+            Debug.Log($"Entered: {location}");
+        }
+        else
+        {
+            IsTransitioning = false;
+            currentlocation = location;
+            // Handle logic for exiting to "Yard"
+            Debug.Log($"Exited to: {location}");
+        }
+    }
+
+    public string GetTypeChar()
+    {
+        return typeChar;
+    }
+    public void DashButton() => DashAbility();
 
     public float GetDashCooldown()
     {
@@ -146,20 +225,154 @@ public class Character : NetworkBehaviour
         if (typeChar == "Player" || typeChar == "Pocong")
         {
             detectedItems = Physics2D.OverlapCircleAll(itemCheck.position, itemCheckRadius, whatIsItem);
-            foreach (Collider2D itemCollider in detectedItems)
-            {
-                Item item = itemCollider.GetComponent<Item>();
-                if (item != null)
-                {
-                    // InteractWithItem(item);
-                    currentItem = item;
-                    // Debug.Log("item ada " + currentItem.isActivated);
-                }
-            }
+            detectedClosets = Physics2D.OverlapCircleAll(closetCheck.position, closetCheckRadius, whatIsCloset);
+
+            // if (detectedClosets != null)
+            // {
+            //     Debug.Log("Closet is not null");
+            // }
+            // else
+            // {
+            //     Debug.Log("Closet is null");
+            // }
+
             if (detectedItems.Length == 0)
             {
+                // currentItem.ItemDetectedOutline(false);
                 currentItem = null;
             }
+            else
+            {
+                foreach (Collider2D itemCollider in detectedItems)
+                {
+                    Item item = itemCollider.GetComponent<Item>();
+                    if (item != null)
+                    {
+                        // InteractWithItem(item);
+                        currentItem = item;
+                        // currentItem.ItemDetectedOutline(true);
+                        // Debug.Log("item ada " + currentItem.isActivated);
+                    }
+                }
+            }
+
+            // Debug.Log("eaea");
+            if (typeChar == "Player")
+            {
+                // Debug.Log("ini di mau masuk!");
+                if (detectedClosets.Length == 0)
+                {
+                    // Debug.Log("lho kosong!");
+                    currentCloset = null;
+                }
+                else
+                {
+                    // Debug.Log("Closet detected!");
+                    foreach (Collider2D detectedClosets in detectedClosets)
+                    {
+                        Closet closet = detectedClosets.GetComponent<Closet>();
+                        if (closet != null)
+                        {
+                            // InteractWithItem(item);
+                            currentCloset = closet;
+                            // Debug.Log("item ada " + currentItem.isActivated);
+                        }
+                    }
+                }
+            }
+            // Debug.Log("Uhuk");
+        }
+    }
+
+    public Item GetCurrentItem()
+    {
+        return currentItem;
+    }
+
+    // closet interaction
+    private void HandleClosetInteraction()
+    {
+        Debug.Log("masuk ke HandleClosetInteraction");
+        if (typeChar == "Player")
+        {
+            Debug.Log("typechar " + typeChar);
+            detectedClosets = Physics2D.OverlapCircleAll(closetCheck.position, closetCheckRadius, whatIsCloset);
+            foreach (Collider2D closetCollider in detectedClosets)
+            {
+                Debug.Log("masuk ke foreach ");
+
+                Closet closet = closetCollider.GetComponent<Closet>();
+                if (closet != null)
+                {
+                    currentCloset = closet;
+                    Debug.Log("Closet detected ");
+                }
+            }
+            if (detectedClosets.Length == 0)
+            {
+                currentCloset = null;
+                Debug.Log("Closet not detected ");
+            }
+        }
+        Debug.Log("Di bagian luar!");
+    }
+
+    public Closet GetCurrentCloset()
+    {
+        return currentCloset;
+    }
+
+    public void HideTheCharacter(bool isHiding)
+    {
+        // Renderer[] renderers = gameObject.GetComponentsInChildren<Renderer>();
+        // foreach (Renderer renderer in renderers)
+        // {
+        //     renderer.enabled = false;
+        // }
+
+        // Collider[] colliders = gameObject.GetComponents<Collider>();
+        // foreach (Collider collider in colliders)
+        // {
+        //     collider.enabled = false;
+        // }
+
+
+
+        if (isHiding)
+        {
+            // isHidingNow = true;
+            // Debug.Log("Harusnya karakter GAK kelihatan lagi! HidingCharacter " + isHidingNow);
+            LatestPosition = transform.position;
+            transform.position = currentCloset.transform.position;
+            // gameObject.SetActive(false);
+            HideCharacterServerRpc(false);
+        }
+        else
+        {
+            // gameObject.SetActive(true);
+            HideCharacterServerRpc(true);
+            // isHidingNow = false;
+            // Debug.Log("Harusnya karakter udh kelihatan lagi! HidingCharacter " + isHidingNow);
+            transform.position = LatestPosition;
+        }
+    }
+
+    [ServerRpc]
+    private void HideCharacterServerRpc(bool isHiding)
+    {
+        HideCharacterClientRpc(isHiding);
+    }
+
+    [ClientRpc]
+    private void HideCharacterClientRpc(bool isHiding)
+    {
+        // gameObject.SetActive(isHiding);
+        isHidingNow = !isHiding;
+        Debug.Log("Di dalem Hidecharacter SERVER" + isHidingNow);
+        if (rendererCharacter != null && colliderCharacter != null)
+        {
+            rendererCharacter.enabled = isHiding;
+            colliderCharacter.enabled = isHiding;
         }
     }
 
@@ -194,18 +407,45 @@ public class Character : NetworkBehaviour
 
     protected virtual void HandleMovement()
     {
-        if (dashTime > 0)
+        Vector2 joystickGame = UI_InGame.instance.joystickGame.GetJoystickDirection();
+        if (!isNowKilled || !isTeleported)
         {
-            rb.velocity = new Vector2(moveInput.x * moveSpeed * dashSpeed, moveInput.y * moveSpeed * dashSpeed);
-        }
-        else
-        {
-            rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
+            if (dashTime > 0)
+            {
+                if (Application.platform == RuntimePlatform.IPhonePlayer)
+                {
+                    rb.velocity = new Vector2(joystickGame.x * moveSpeed * dashSpeed, joystickGame.y * moveSpeed * dashSpeed);
+
+                }
+                else
+                {
+
+                    rb.velocity = new Vector2(moveInput.x * moveSpeed * dashSpeed, moveInput.y * moveSpeed * dashSpeed);
+                }
+
+
+            }
+            else
+            {
+                if (Application.platform == RuntimePlatform.IPhonePlayer)
+                {
+
+                    rb.velocity = new Vector2(joystickGame.x * moveSpeed, joystickGame.y * moveSpeed);
+                }
+                else
+                {
+
+                    rb.velocity = new Vector2(moveInput.x * moveSpeed, moveInput.y * moveSpeed);
+                }
+
+
+            }
         }
     }
     private void HandleFlip()
     {
-        if (moveInput.x < 0 && facingRight || moveInput.x > 0 && !facingRight)
+        Vector2 joystickGame = UI_InGame.instance.joystickGame.GetJoystickDirection();
+        if (joystickGame.x < 0 && facingRight || joystickGame.x > 0 && !facingRight)
             Flip();
     }
 
@@ -220,6 +460,11 @@ public class Character : NetworkBehaviour
     protected void DrawItemDetector()
     {
         Gizmos.DrawWireSphere(itemCheck.position, itemCheckRadius);
+    }
+
+    protected void DrawClosetDetector()
+    {
+        Gizmos.DrawWireSphere(closetCheck.position, closetCheckRadius);
     }
 
     [ServerRpc]
@@ -241,7 +486,7 @@ public class Character : NetworkBehaviour
 
     private void HandleMovementSound()
     {
-        if (moveInput != Vector2.zero)
+        if (UI_InGame.instance.joystickGame.GetJoystickDirection() != Vector2.zero || moveInput != Vector2.zero)
         {
             if (!sfxMovement.isPlaying)
             {
@@ -257,4 +502,13 @@ public class Character : NetworkBehaviour
         }
     }
 
+    public float GetHidingCooldown()
+    {
+        return hidingCoolDownTimer;
+    }
+
+    public void ResetHidingCooldown()
+    {
+        hidingCoolDownTimer = hidingCoolDown;
+    }
 }

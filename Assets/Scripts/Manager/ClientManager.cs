@@ -8,6 +8,7 @@ using Unity.Networking.Transport.Relay;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ClientManager : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class ClientManager : MonoBehaviour
     public bool roomNotFound = false;
     public bool roomFull = false;
     public bool lostConnection = false;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -42,8 +44,7 @@ public class ClientManager : MonoBehaviour
         }
         catch (RelayServiceException ex)
         {
-            Debug.LogError($"JOIN RELAY FAILED: {ex}");
-            Debug.LogError(ex.ErrorCode);
+            Debug.LogError($"StartClient - try JoinAllocationAsync failed: {ex.Message}");
             if (
                 ex.ErrorCode == (int)RelayExceptionReason.AllocationNotFound ||
                 ex.ErrorCode == (int)RelayExceptionReason.JoinCodeNotFound ||
@@ -68,18 +69,21 @@ public class ClientManager : MonoBehaviour
 
         NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
 
+        // if (NetworkManager.Singleton.IsHost || NetworkManager.Singleton.IsClient)
+        // {
+        //     Debug.Log("StartClient - Host sudah berjalan, matikan terlebih dahulu.");
+        //     NetworkManager.Singleton.Shutdown();
+        // }
+
+
         if (NetworkManager.Singleton.StartClient())
         {
             Debug.Log("Client connect successfully!");
-            // LobbyManager lobbyManager = FindObjectOfType<LobbyManager>();
-            // if (lobbyManager != null)
-            // {
-            //     lobbyManager.UpdateRoomCode(codeRoom);
-            // }
         }
         else
         {
             Debug.LogError("Failed to start client!");
+            SceneManager.LoadScene("MainMenu");
         }
     }
 }
