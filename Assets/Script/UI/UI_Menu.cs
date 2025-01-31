@@ -17,7 +17,7 @@ public class UI_Menu : MonoBehaviour
 
     [Header("GameObject UI")]
     [SerializeField] private GameObject UI_JoinRoom;
-    [SerializeField] private GameObject UI_LobbiesList;
+    // [SerializeField] private GameObject UI_LobbiesList;
     [SerializeField] private GameObject UI_EnterCode;
     [SerializeField] private GameObject UI_Settings;
     [SerializeField] private GameObject UI_Credits;
@@ -85,7 +85,7 @@ public class UI_Menu : MonoBehaviour
         close_UI_PopUpLostConnection.onClick.AddListener(() => CloseUI(UI_PopUpLostConnection));
         // CLOSE UI 
         close_UI_JoinRoom.onClick.AddListener(() => CloseUI(UI_JoinRoom));
-        close_UI_LobbiesList.onClick.AddListener(() => CloseUI(UI_LobbiesList));
+        // close_UI_LobbiesList.onClick.AddListener(() => CloseUI(UI_LobbiesList));
         close_UI_EnterCode.onClick.AddListener(() => CloseUI(UI_EnterCode));
         close_UI_Settings.onClick.AddListener(() => CloseUI(UI_Settings));
         close_UI_Credits.onClick.AddListener(() => CloseUI(UI_Credits));
