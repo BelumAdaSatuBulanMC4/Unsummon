@@ -59,8 +59,7 @@
         "moduleName": "SpeechRecognitionPlugin",
         "declAttributes": [
           "AccessControl",
-          "CDecl",
-          "RawDocComment"
+          "CDecl"
         ],
         "funcSelfKind": "NonMutating"
       },
