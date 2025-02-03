@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -45,7 +43,6 @@ public class UI_DashButton : MonoBehaviour
 
     private void Update()
     {
-        // If the character exists, check the cooldown timer
         if (chara != null)
         {
             if (chara.GetDashCooldown() <= 0)
@@ -97,38 +94,16 @@ public class UI_DashButton : MonoBehaviour
         }
     }
 
-    // Method to enable the button
     private void EnableButton()
     {
         button.interactable = true;
-        buttonImage.color = enabledColor;  // Set to full visibility
+        buttonImage.color = enabledColor;
     }
 
-    // Method to disable the button
     private void DisableButton()
     {
         button.interactable = false;
-        buttonImage.color = disabledColor;  // Set to semi-transparency
+        buttonImage.color = disabledColor;
     }
 }
 
-
-// public class UI_DashButton : MonoBehaviour
-// {
-//     [SerializeField] Character kid;
-//     private Button button;
-
-//     private void Awake()
-//     {
-//         button = GetComponent<Button>();
-//     }
-
-//     private void Start()
-//     {
-//         button.onClick.AddListener(TriggerDash);
-//     }
-//     public void TriggerDash()
-//     {
-//         kid.DashButton();
-//     }
-// }

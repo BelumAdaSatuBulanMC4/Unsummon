@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,10 +17,8 @@ public class PluginTest : MonoBehaviour
 
     private void Start()
     {
-        // Initialize the speech recognizer
         speechPlugin.Initialize();
         speechPlugin.StartGyro();
-        // button.onClick.AddListener(speechPlugin.StartRecording);
     }
 
     private void OnDestroy()
@@ -31,20 +26,12 @@ public class PluginTest : MonoBehaviour
         speechPlugin.StopRecording();
     }
 
-    // private void Update()
-    // {
-    //     text.text = "Transcribed Text: " + speechPlugin.GetTranscribedTextFromSwift();
-    //     info.text = "Feedback Message: " + speechPlugin.GetFeedbackMessageFromSwift();
-    // }
-
     private void Update()
     {
-        // Fetch roll, pitch, and yaw from CoreMotionManager
         double roll = speechPlugin.GetRollValue();
         double pitch = speechPlugin.GetPitchValue();
         double yaw = speechPlugin.GetYawValue();
 
-        // Use pitch and roll to move character based on tilt
         Vector3 movement = new Vector3((float)roll, 0, (float)pitch) * 3;
         transform.Translate(movement * Time.deltaTime, Space.World);
     }
@@ -71,26 +58,4 @@ public class PluginTest : MonoBehaviour
         Debug.Log("Is Recording: " + isRecording);
     }
 
-    // private SwiftPlugin swiftPlugin = new SwiftPlugin();
-    // [SerializeField] TMP_Text text;
-
-    // private void Start()
-    // {
-    //     swiftPlugin.Initialize();
-    // }
-
-    // private void Update()
-    // {
-    //     text.text = swiftPlugin.GetPrintSwift();
-    // }
-
-    // public void OnStartRecording()
-    // {
-    //     swiftPlugin.StartRecording();
-    // }
-
-    // public void OnStopRecording()
-    // {
-    //     swiftPlugin.StopRecording();
-    // }
 }

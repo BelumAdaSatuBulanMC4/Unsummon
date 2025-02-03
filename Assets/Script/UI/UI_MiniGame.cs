@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System.Runtime.Serialization.Formatters;
 
 public class UI_MiniGame : MonoBehaviour
 {
@@ -22,8 +21,8 @@ public class UI_MiniGame : MonoBehaviour
 
     private bool isHoldingButton = false;
     private float holdTime = 0f;
-    private float maxHoldTime = 5f; // Maximum hold time (5 seconds)
-    private float startConditionValue = 0f; // Initial condition value
+    private float maxHoldTime = 5f;
+    private float startConditionValue = 0f;
     private float candleConditionValue = 0f;
 
     private Item item;

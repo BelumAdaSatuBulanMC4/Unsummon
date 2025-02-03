@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using TMPro;
 using UnityEngine;
 
 public class SwiftPlugin : MonoBehaviour
@@ -80,26 +77,12 @@ public class SwiftPlugin : MonoBehaviour
     public void StartRecording()
     {
         StartSpeechRecognition();
-
-        // if (!isRecordingStarted)
-        // {
-        //     StartSpeechRecognition();
-        //     Debug.Log("Started recording");
-        //     isRecordingStarted = true;
-        // }
     }
 
     // Call the StopSpeechRecognition function
     public void StopRecording()
     {
         StopSpeechRecognition();
-
-        // if (isRecordingStarted)
-        // {
-        //     StopSpeechRecognition();
-        //     Debug.Log("Stopped recording");
-        //     isRecordingStarted = false;
-        // }
     }
 
     // Call the GetTranscribedText function

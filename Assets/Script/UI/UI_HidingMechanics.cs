@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,8 +19,6 @@ public class UI_HidingMechanics : MonoBehaviour
 
     private float minPositionX;
     private float maxPositionX;
-
-    //swiftplugin pake gameManager
     private Vector2 targetPosition;
     private bool isGaugeCorrect;
     // [SerializeField] private Slider progressBar;

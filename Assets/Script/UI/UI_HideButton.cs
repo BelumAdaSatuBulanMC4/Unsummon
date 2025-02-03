@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -108,21 +106,18 @@ public class UI_HideButton : MonoBehaviour
         {
             Debug.Log("Harusnya sih hiding UI muncul");
             UI_InGame.instance.OpenHidingMechanics();
-            // UI_HidingMechanics.instance.CurrentCloset(authorCharacter.GetCurrentCloset());
         }
     }
 
-    // Method to enable the button
     private void EnableButton()
     {
         button.interactable = true;
-        buttonImage.color = enabledColor;  // Set to full visibility
+        buttonImage.color = enabledColor;
     }
 
-    // Method to disable the button
     private void DisableButton()
     {
         button.interactable = false;
-        buttonImage.color = disabledColor;  // Set to semi-transparency
+        buttonImage.color = disabledColor;
     }
 }
