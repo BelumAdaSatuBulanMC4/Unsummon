@@ -1,9 +1,11 @@
 using TMPro;
 using Unity.Services.Lobbies.Models;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
+// Digunakan pada GameObject Prefab Row_LobbyRoom
+// Terdapat di Scene LobbyList
 public class LobbyItem : MonoBehaviour
 {
     [Header("References")]

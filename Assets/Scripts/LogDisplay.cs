@@ -2,6 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Digunakan pada GameObject LogDisplayDebugging
+// Terdapat di Scene MainMenu, LobbyRoom, LobbyList
 public class LogDisplay : MonoBehaviour
 {
     public TextMeshProUGUI logText; // Assign via Inspector

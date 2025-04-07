@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Digunakan pada GameObject UI_Help
+// Terdapat di Scene MainMenu
 public class UI_Help : MonoBehaviour
 {
     [SerializeField] private Button rightButton;

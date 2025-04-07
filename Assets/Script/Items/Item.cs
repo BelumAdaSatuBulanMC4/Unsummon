@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -15,36 +13,16 @@ public class Item : NetworkBehaviour
     private AudioSource audioSource;
     private Light2D light;
 
-    // [SerializeField] private GameObject rendererOutline;
-    private CircleCollider2D colliderCircle;
-
     private void Awake()
     {
         anim = GetComponent<Animator>();
         audioSource = AudioManager.Instance.GetSFXAudioSource(2);
         light = GetComponentInChildren<Light2D>();
-        // colliderCircle = rendererOutline.GetComponent<CircleCollider2D>();
     }
 
     private void Start()
     {
-        if (isActivated)
-        {
-            anim.SetFloat("isCandleActive", 0);
-        }
-        // else
-        // {
-        //     anim.SetFloat("isCandleActive", 0);
-        // }
-    }
-
-    public void ItemDetectedOutline(bool isDetected)
-    {
-        // if (IsOwner)
-        // {
-        // rendererOutline.SetActive(isDetected);
-        // Debug.Log("Harusnya masuk ke itemdetected " + rendererOutline + " dan " + isDetected);
-        // }
+        if (isActivated) anim.SetFloat("isCandleActive", 0);
     }
 
     private void Update()
@@ -58,30 +36,6 @@ public class Item : NetworkBehaviour
             anim.SetFloat("isCandleActive", isActivated ? 1 : 0);
             light.enabled = isActivated;
         }
-        // if (isActivated)
-        // {
-        //     anim.SetFloat("isCandleActive", 1);
-        //     light.enabled = true;
-        // }
-        // else
-        // {
-        //     anim.SetFloat("isCandleActive", 0);
-        //     light.enabled = false;
-        // }
-
-        //check the logic
-        // if (isActivated && !isCursed)
-        // {
-        //     anim.SetFloat("isCandleActive", 1);
-        // }
-        // else if (!isActivated && !isCursed)
-        // {
-        //     anim.SetFloat("isCandleActive", 0);
-        // }
-        // else if (!isActivated && isCursed)
-        // {
-        //     // anim.SetFloat("isCandleActive", 2);
-        // }
     }
 
     public void ItemActivated()
@@ -93,13 +47,6 @@ public class Item : NetworkBehaviour
             UpdateCandleToMap();
             SetCursedStateServerRpc(false);
         }
-        // if (!isCursed && !isActivated)
-        // {
-        //     audioSource.PlayOneShot(onCandle);
-        //     SetActivatedStateServerRpc(true);
-        //     SetCursedStateServerRpc(false);
-        //     // ItemActivatedServerRpc();
-        // }
     }
     public void ItemDeactivated()
     {
@@ -110,15 +57,6 @@ public class Item : NetworkBehaviour
             UpdateCurseToMap();
             SetCursedStateServerRpc(true);
         }
-        // if (isActivated)
-        // {
-        //     audioSource.PlayOneShot(offCandle);
-        //     SetActivatedStateServerRpc(false);
-        //     SetCursedStateServerRpc(true);
-        //     // ItemDeactivatedServerRpc();
-        //     // CurseActivated();
-        //     Debug.Log("Cursing successfully " + isCursed);
-        // }
     }
 
     public void RemoveCurse()
@@ -140,23 +78,27 @@ public class Item : NetworkBehaviour
         CurseDectivatedServerRpc();
     }
 
+    public void ActivatedCandle()
+    {
+        anim.SetFloat("isCandleActive", 1);
+    }
+
+    public void DeActivatedCandle()
+    {
+        anim.SetFloat("isCandleActive", 0);
+    }
+    public void UpdateCandleToMap()
+    {
+        UI_InGame.instance.RegisterCandleToMap(transform.position);
+    }
+
+    public void UpdateCurseToMap()
+    {
+        UI_InGame.instance.RegisterCurseToMap(transform.position);
+    }
 
 
-    //================================================================
-
-    // [ServerRpc(RequireOwnership = false)]
-    // private void SetActivatedStateServerRpc(bool state)
-    // {
-    //     isActivated = state;
-    //     UpdateActivatedStateClientRpc(state);
-    // }
-
-    // [ServerRpc(RequireOwnership = false)]
-    // private void SetCursedStateServerRpc(bool state)
-    // {
-    //     isCursed = state;
-    //     UpdateCursedStateClientRpc(state);
-    // }
+    // ============================= SERVER RPC ===================================
 
     [ServerRpc(RequireOwnership = false)]
     private void SetActivatedStateServerRpc(bool state)
@@ -190,13 +132,12 @@ public class Item : NetworkBehaviour
         isCursed = state;
     }
 
-    //================================================================
-
     [ServerRpc(RequireOwnership = false)]
     public void ItemActivatedServerRpc()
     {
         ItemActivatedClientRpc();
     }
+
 
     [ServerRpc(RequireOwnership = false)]
     public void ItemDeactivatedServerRpc()
@@ -204,27 +145,25 @@ public class Item : NetworkBehaviour
         ItemDeactivatedClientRpc();
     }
 
-    //turn the curse off
     [ServerRpc(RequireOwnership = false)]
     public void CurseDectivatedServerRpc()
     {
-        // ItemDeactivatedClientRpc();
         CurseDectivatedClientRpc();
     }
     //turn the curse on
     [ServerRpc(RequireOwnership = false)]
     public void CurseActivatedServerRpc()
     {
-        // ItemDeactivatedClientRpc();
         CurseActivatedClientRpc();
     }
+
+    // ============================= CLIENT RPC ===================================
 
     [ClientRpc(RequireOwnership = false)]
     public void ItemActivatedClientRpc()
     {
         isActivated = true;
         anim.SetFloat("isCandleActive", 1);
-        // GetComponent<SpriteRenderer>().color = Color.green;
     }
 
     [ClientRpc(RequireOwnership = false)]
@@ -232,44 +171,18 @@ public class Item : NetworkBehaviour
     {
         isActivated = false;
         anim.SetFloat("isCandleActive", 0);
-        // GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     [ClientRpc(RequireOwnership = false)]
     public void CurseActivatedClientRpc()
     {
         isCursed = true;
-        // anim.SetFloat("isCandleActive", 1);
-        // GetComponent<SpriteRenderer>().color = Color.green;
     }
 
     [ClientRpc(RequireOwnership = false)]
     public void CurseDectivatedClientRpc()
     {
         isCursed = false;
-        // anim.SetFloat("isCandleActive", 0);
-        // GetComponent<SpriteRenderer>().color = Color.white;
-    }
-
-    public void ActivatedCandle()
-    {
-        anim.SetFloat("isCandleActive", 1);
-    }
-
-    public void DeActivatedCandle()
-    {
-        anim.SetFloat("isCandleActive", 0);
-    }
-
-    //Update the candle to map
-    public void UpdateCandleToMap()
-    {
-        UI_InGame.instance.RegisterCandleToMap(transform.position);
-    }
-
-    public void UpdateCurseToMap()
-    {
-        UI_InGame.instance.RegisterCurseToMap(transform.position);
     }
 }
 

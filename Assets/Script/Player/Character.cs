@@ -93,9 +93,9 @@ public class Character : NetworkBehaviour
     {
         UserManager.instance.SetYourRole(typeChar);
         Debug.Log("woylah ini masuk ke character start!");
-        if (IsOwner) characterSpotLight.SetActive(true);
         if (IsOwner)
         {
+            characterSpotLight.SetActive(true);
             if (volume != null && volume.profile.TryGet(out vignette))
             {
                 Debug.LogWarning("Vignette effect found in the Volume profile.");
